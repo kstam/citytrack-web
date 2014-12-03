@@ -1,0 +1,11 @@
+node_modules
+
+## IntelliJ
+.idea
+*.iml
+
+## Project
+public/js/build
+public/styles/vendor/
+public/styles/*.css
+public/img/vendor/
