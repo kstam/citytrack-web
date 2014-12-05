@@ -8,14 +8,22 @@ var ATTRIBUTION = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreet
     'Imagery © <a href="http://mapbox.com">Mapbox</a>';
 var ID = 'examples.map-i875mjb7';
 
-var tileLayer = L.tileLayer(TILE_URL, {
-    maxZoom: MAX_ZOOM,
-    attribution: ATTRIBUTION,
-    id: ID
-});
-
 module.exports = function(mapId) {
-    var map = L.map(mapId).setView([20, 10], 3);
-    tileLayer.addTo(map);
+
+    var map;
+    var tileLayer;
+
+    var initMap = function() {
+        map  = L.map(mapId).setView([20, 10], 3);
+        tileLayer = L.tileLayer(TILE_URL, {
+            maxZoom: MAX_ZOOM,
+            attribution: ATTRIBUTION,
+            id: ID
+        });
+        tileLayer.addTo(map);
+    };
+
+    initMap();
+
     return map;
 };
