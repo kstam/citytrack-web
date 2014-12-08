@@ -8,13 +8,13 @@ var ATTRIBUTION = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreet
     'Imagery © <a href="http://mapbox.com">Mapbox</a>';
 var ID = 'examples.map-i875mjb7';
 
-module.exports = function(mapId) {
+module.exports = function MapView(elementId) {
 
     var map;
     var tileLayer;
 
     var initMap = function() {
-        map  = L.map(mapId).setView([20, 10], 3);
+        map  = L.map(elementId).setView([20, 10], 3);
         tileLayer = L.tileLayer(TILE_URL, {
             maxZoom: MAX_ZOOM,
             attribution: ATTRIBUTION,
@@ -23,7 +23,13 @@ module.exports = function(mapId) {
         tileLayer.addTo(map);
     };
 
+    var getMap = function getMap() {
+        return map;
+    };
+
     initMap();
 
-    return map;
+    return {
+        getMap: getMap
+    };
 };
