@@ -1,12 +1,26 @@
 @import "variables";
+@import "mixins";
 
 .headerSection {
-    padding: @gutter-size;
+    .clearfix();
+    padding: 2 * @gutter-size;
     background: #333;
     color: #EEE;
 
-    h1 {
-        margin: 0;
-        font-size: 22px;
+    .logo {
+        float: left;
+
+        h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+    }
+
+    .search {
+        margin: 6px 0 0 4* @gutter-size;
+        float: left;
+        font-size: 16px;
+        color: #AAA;
+
     }
 }
