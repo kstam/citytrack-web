@@ -1,19 +1,41 @@
 var gulp = require('gulp');
-var server = require('gulp-express');
+var livereload = require('gulp-livereload');
+var app = require('../app');
 
-gulp.task('server', function () {
-    // Start the server at the beginning of the task
-    server.run({
-        file: './bin/www'
+var serverStarted = false;
+var server;
+
+function startServer() {
+    app.set('port', process.env.PORT || 3000);
+
+    if (serverStarted) {
+        console.log('restarting server');
+        server.close();
+        serverStarted = false;
+    }
+    server = app.listen(app.get('port'), function() {
+        console.log('Express server listening on port ' + server.address().port);
+        serverStarted = true;
     });
+}
 
-    // Restart the server when file changes
-//    gulp.watch(['views/*.hbs', 'views/**/*.hbs'], [server.run]);
-//    gulp.watch(['public/styles/*.less', 'public/styles/**/*.less'], ['styles:less']);
-//    gulp.watch(['public/styles/*.css', 'public/styles/**/*.css'], ['styles:css', server.notify]);
-    gulp.watch(['public/js/**/*.js', "!public/js/build/main.js"], ['browserify']);
-    gulp.watch(['views/js/**/*.js', "!public/js/build/main.js"], ['browserify']);
-    gulp.watch('public/js/build/main.js', server.notify);
-//    gulp.watch(['public/img/**/*'], server.notify);
-//    gulp.watch(['app.js', 'routes/**/*.js'], [server.run]);
+gulp.task('server:dev', function () {
+    // Start the server at the beginning of the task
+    livereload.listen();
+    startServer();
+
+    // watch the less files
+    gulp.watch(['src/client/less/*.less', 'src/client/less/**/*.less'], ['less']);
+
+    // watch javascript and templates
+    gulp.watch(['src/client/js/*.js', 'src/client/js/**/*.js'], ['browserify']);
+    gulp.watch(['views/**/*.hbs'], ['browserify']);
+
+    // when compiled version changes notify the server
+    gulp.watch('public/css/*.css').on('change', livereload.changed);
+    gulp.watch('public/js/main.js').on('change', livereload.changed);
+    gulp.watch('public/img/**/*').on('change', livereload.changed);
+
+    gulp.watch('app.js').on('change', startServer);
+
 });
