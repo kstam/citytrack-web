@@ -1,0 +1,32 @@
+{
+  "name": "citytrack-web",
+  "version": "0.0.1",
+  "authors": [
+    "kstamatoukos <stamatoukosks@gmail.com>"
+  ],
+  "description": "City Track Web Client",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "city",
+    "track"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "select2": "~3.5.2",
+    "normalize.css": "~3.0.2",
+    "jquery": "~2.1.1",
+    "leaflet": "~0.7.3"
+  },
+  "devDependencies": {}
+}

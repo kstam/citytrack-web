@@ -12,6 +12,7 @@ gulp.task('server', function () {
 //    gulp.watch(['public/styles/*.less', 'public/styles/**/*.less'], ['styles:less']);
 //    gulp.watch(['public/styles/*.css', 'public/styles/**/*.css'], ['styles:css', server.notify]);
     gulp.watch(['public/js/**/*.js', "!public/js/build/main.js"], ['browserify']);
+    gulp.watch(['views/js/**/*.js', "!public/js/build/main.js"], ['browserify']);
     gulp.watch('public/js/build/main.js', server.notify);
 //    gulp.watch(['public/img/**/*'], server.notify);
 //    gulp.watch(['app.js', 'routes/**/*.js'], [server.run]);

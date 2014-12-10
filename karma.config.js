@@ -35,7 +35,8 @@ module.exports = function(config) {
         },
 
         browserify: {
-            debug: false
+            debug: false,
+            transform: ['browserify-handlebars', 'debowerify']
         },
 
         // test results reporter to use

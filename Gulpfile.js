@@ -6,4 +6,4 @@ var requireDir = require('require-dir');
 requireDir('./tasks');
 
 // define default task
-gulp.task('default', ['browserify', 'vendor']);
+gulp.task('default', ['bower', 'browserify', 'less']);

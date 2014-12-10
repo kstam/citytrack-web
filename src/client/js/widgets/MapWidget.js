@@ -2,7 +2,7 @@ var L = require('leaflet');
 
 'use strict';
 
-L.Icon.Default.imagePath = 'img/vendor/leaflet';
+L.Icon.Default.imagePath = '/img/vendor';
 
 var TILE_URL = 'https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png';
 var MAX_ZOOM = 18;
