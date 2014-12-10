@@ -1,8 +1,9 @@
 var L = require('leaflet');
+
 'use strict';
 
+L.Icon.Default.imagePath = 'img/vendor/leaflet';
 
-L.Icon.Default.imagePath = 'img/vendor/leaflet/dist/images/';
 var TILE_URL = 'https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png';
 var MAX_ZOOM = 18;
 var ATTRIBUTION = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +

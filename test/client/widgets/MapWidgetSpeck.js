@@ -1,5 +1,5 @@
 'use strict';
-var MapWidget = require('../../public/js/MapWidget.js');
+var MapWidget = require('../../../public/js/widgets/MapWidget.js');
 var $ = require('jquery');
 
 describe('MapWidget', function() {
