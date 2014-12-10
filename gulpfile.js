@@ -1,9 +1,14 @@
 var gulp = require('gulp');
-var server = require('gulp-express');
 var requireDir = require('require-dir');
+var runSequence = require('run-sequence');
 
 // load tasks
 requireDir('./tasks');
 
 // define default task
-gulp.task('default', ['bower', 'browserify', 'less']);
+gulp.task('default', function(done) {
+    return runSequence(
+        'bower',
+        ['browserify', 'less'],
+        done);
+});

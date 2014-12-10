@@ -6,8 +6,11 @@ var runSequence = require('run-sequence');
 var minify = require('gulp-minify-css');
 var replace = require('gulp-replace');
 
-gulp.task('bower', function () {
-    runSequence('bower:install', 'bower:move');
+gulp.task('bower', function (done) {
+    runSequence(
+        'bower:install',
+        'bower:move',
+        done);
 });
 
 gulp.task('bower:install', function () {
