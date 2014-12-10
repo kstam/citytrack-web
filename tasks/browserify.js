@@ -8,7 +8,7 @@ var rename = require('gulp-rename');
 gulp.task('browserify', function() {
     var production = gutil.env.type === 'production';
 
-    return gulp.src(['./src/client/js/main.js'], {read: false})
+    return gulp.src(['./src/js/client/main.js'], {read: false})
 
         .pipe(browserify({
             debug: !production,

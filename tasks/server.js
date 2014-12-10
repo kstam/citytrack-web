@@ -28,7 +28,7 @@ gulp.task('server:dev', function () {
     gulp.watch(['src/less/*.less', 'src/less/**/*.less'], ['less']);
 
     // watch javascript and templates
-    gulp.watch(['src/client/js/*.js', 'src/client/js/**/*.js'], ['browserify']);
+    gulp.watch(['src/js/client/*.js', 'src/js/client/**/*.js'], ['browserify']);
     gulp.watch(['views/**/*.hbs'], ['browserify']);
 
     // when compiled version changes notify the server
