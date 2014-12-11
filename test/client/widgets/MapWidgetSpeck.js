@@ -45,5 +45,4 @@ describe('MapWidget', function() {
         expect(MapWidget instanceof Function).to.be.true();
     });
 
-
 });

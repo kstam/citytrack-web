@@ -8,7 +8,7 @@ requireDir('./tasks');
 // define default task
 gulp.task('default', function(done) {
     return runSequence(
-        'bower',
+        ['bower', 'jshint'],
         ['browserify', 'less'],
         done);
 });
