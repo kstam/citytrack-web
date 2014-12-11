@@ -38,11 +38,16 @@ describe('MapWidget', function() {
             var mapWidget = new MapWidget(CONTAINER_ID);
             expect(mapWidget.getMap()).to.not.be.undefined();
         });
+
+        it('accepts an HTMLElement as initialization argument', function() {
+            var containerElement = $('#' + CONTAINER_ID)[0];
+            var mapWidget = new MapWidget(containerElement);
+            expect(mapWidget.getMap()).to.not.be.undefined();
+        });
     });
 
     it('should do correctly define a constructor object', function() {
         expect(MapWidget).to.not.be.undefined();
         expect(MapWidget instanceof Function).to.be.true();
     });
-
 });

@@ -16,6 +16,7 @@ module.exports = function(config) {
         // list of files / patterns to load in the browser
         files: [
             //test files
+            'test/common/*Speck.js',
             'test/client/*Speck.js',
             'test/client/**/*Speck.js'
         ],
@@ -31,7 +32,8 @@ module.exports = function(config) {
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
             'test/client/**/*.js': [ 'browserify' ],
-            'test/client/*.js': [ 'browserify' ]
+            'test/client/*.js': [ 'browserify' ],
+            'test/common/*.js': [ 'browserify' ]
         },
 
         browserify: {

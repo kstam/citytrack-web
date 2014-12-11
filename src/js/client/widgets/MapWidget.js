@@ -1,6 +1,8 @@
 'use strict';
 
 var L = require('leaflet');
+var utils = require('../../common/utils');
+
 L.Icon.Default.imagePath = '/img/vendor';
 var TILE_URL = 'https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png';
 var MAX_ZOOM = 18;
@@ -9,13 +11,20 @@ var ATTRIBUTION = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreet
     'Imagery © <a href="http://mapbox.com">Mapbox</a>';
 var ID = 'examples.map-i875mjb7';
 
-module.exports = function MapView(elementId) {
+var validateElement = function validateElement(element) {
+    if (!(utils.isString(element) || utils.isHTMLElement(element))) {
+        throw new Error('element should be a string or an HTMLElement');
+    }
+};
+
+module.exports = function MapView(element) {
+    validateElement(element);
 
     var map;
     var tileLayer;
 
     var initMap = function() {
-        map  = L.map(elementId).setView([20, 10], 3);
+        map  = L.map(element).setView([20, 10], 3);
         tileLayer = L.tileLayer(TILE_URL, {
             maxZoom: MAX_ZOOM,
             attribution: ATTRIBUTION,
