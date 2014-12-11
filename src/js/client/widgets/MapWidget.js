@@ -2,14 +2,9 @@
 
 var L = require('leaflet');
 var utils = require('../../common/utils');
+var leafletConfig = require('../config/leafletConfig');
 
-L.Icon.Default.imagePath = '/img/vendor';
-var TILE_URL = 'https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png';
-var MAX_ZOOM = 18;
-var ATTRIBUTION = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-    'Imagery © <a href="http://mapbox.com">Mapbox</a>';
-var ID = 'examples.map-i875mjb7';
+L.Icon.Default.imagePath = leafletConfig.imagePath;
 
 var validateElement = function validateElement(element) {
     if (!(utils.isString(element) || utils.isHTMLElement(element))) {
@@ -24,11 +19,11 @@ module.exports = function MapView(element) {
     var tileLayer;
 
     var initMap = function() {
-        map  = L.map(element).setView([20, 10], 3);
-        tileLayer = L.tileLayer(TILE_URL, {
-            maxZoom: MAX_ZOOM,
-            attribution: ATTRIBUTION,
-            id: ID
+        map  = L.map(element).setView([40, 10], 2);
+        tileLayer = L.tileLayer(leafletConfig.tileUrl, {
+            maxZoom: leafletConfig.maxZoom,
+            attribution: leafletConfig.attribution,
+            id: leafletConfig.appId
         });
         tileLayer.addTo(map);
     };
