@@ -19,7 +19,7 @@ function startServer() {
     });
 }
 
-gulp.task('server:dev', function () {
+gulp.task('server:dev', ['build'], function () {
     // Start the server at the beginning of the task
     livereload.listen();
     startServer();
@@ -32,9 +32,7 @@ gulp.task('server:dev', function () {
     gulp.watch(['views/**/*.hbs'], ['browserify']);
 
     // when compiled version changes notify the server
-    gulp.watch('public/css/*.css').on('change', livereload.changed);
-    gulp.watch('public/js/main.js').on('change', livereload.changed);
-    gulp.watch('public/img/**/*').on('change', livereload.changed);
+    gulp.watch('public/**/*').on('change', livereload.changed);
 
     gulp.watch('app.js').on('change', startServer);
 

@@ -5,10 +5,12 @@ var runSequence = require('run-sequence');
 // load tasks
 requireDir('./tasks');
 
-// define default task
-gulp.task('default', function(done) {
+gulp.task('build', function(done) {
     return runSequence(
         ['bower', 'jshint', 'test:client'],
         ['browserify', 'less'],
         done);
 });
+
+// define default task
+gulp.task('default', ['build']);
