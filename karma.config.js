@@ -16,9 +16,9 @@ module.exports = function(config) {
         // list of files / patterns to load in the browser
         files: [
             //test files
-            'test/common/*Speck.js',
-            'test/client/*Speck.js',
-            'test/client/**/*Speck.js'
+            'test/common/*Spec.js',
+            'test/client/*Spec.js',
+            'test/client/**/*Spec.js'
         ],
 
 
