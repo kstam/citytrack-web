@@ -30,8 +30,8 @@ utils.isInteger = function(obj) {
 };
 
 utils.isHTMLElement = function(obj) {
-    return utils.isNotNullOrUndefined(obj)
-        && utils.isString(obj.innerHTML);
+    return utils.isNotNullOrUndefined(obj) &&
+        utils.isString(obj.innerHTML);
 };
 
 module.exports = utils;
