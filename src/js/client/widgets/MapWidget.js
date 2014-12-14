@@ -1,8 +1,8 @@
 'use strict';
 
 var L = require('leaflet');
-var utils = require('../../common/utils');
-var leafletConfig = require('../config/leafletConfig');
+var utils = require('common/utils');
+var leafletConfig = require('client/config/leafletConfig');
 
 L.Icon.Default.imagePath = leafletConfig.imagePath;
 

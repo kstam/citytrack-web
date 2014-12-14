@@ -1,7 +1,9 @@
 'use strict';
 
 var $ = require('jquery');
-var MapView = require('./widgets/MapWidget');
+var MapWidget = require('client/widgets/MapWidget');
+
+// elements
 var mapContainer = $('.mainMapContainer:first')[0];
 
-var map = new MapView(mapContainer);
+MapWidget(mapContainer);
