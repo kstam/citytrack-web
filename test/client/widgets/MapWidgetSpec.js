@@ -39,10 +39,21 @@ describe('MapWidget', function() {
             expect(mapWidget.getMap()).to.not.be.undefined();
         });
 
-        it('accepts an HTMLElement as initialization argument', function() {
+        it('should accept an HTMLElement as initialization argument', function() {
             var containerElement = $('#' + CONTAINER_ID)[0];
             var mapWidget = new MapWidget(containerElement);
             expect(mapWidget.getMap()).to.not.be.undefined();
+        });
+
+        it('should pass the options given to the map', function() {
+            var options = {
+                zoom: 1.5,
+                center: [20, 90]
+            };
+            var mapWidget = new MapWidget(CONTAINER_ID, options);
+            expect(mapWidget.getMap().getZoom()).to.be.equal(1.5);
+            expect(mapWidget.getMap().getCenter().lat).to.be.equal(20);
+            expect(mapWidget.getMap().getCenter().lng).to.be.equal(90);
         });
     });
 

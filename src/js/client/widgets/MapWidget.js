@@ -3,23 +3,27 @@
 var L = require('leaflet');
 var utils = require('common/utils');
 var leafletConfig = require('client/config/leafletConfig');
+var deepExtend = require('deep-extend');
+var domify = require('domify');
+var $ = require('jquery');
+var template = require('widgets/map-widget.hbs');
 
 L.Icon.Default.imagePath = leafletConfig.imagePath;
 
-var validateElement = function validateElement(element) {
-    if (!(utils.isString(element) || utils.isHTMLElement(element))) {
-        throw new Error('element should be a string or an HTMLElement');
-    }
+var defaultOptions = {
+    center: [40, 10],
+    zoom: 2
 };
 
-module.exports = function MapView(element) {
-    validateElement(element);
-
+module.exports = function MapWidget(theParent, userOptions) {
+    var parent = utils.getElement(theParent);
+    var element = domify(template());
+    var options = deepExtend({}, defaultOptions, userOptions);
     var map;
     var tileLayer;
 
-    var initMap = function() {
-        map  = L.map(element).setView([40, 10], 2);
+    var initMap = function(element, options) {
+        map  = L.map(element).setView(options.center, options.zoom);
         tileLayer = L.tileLayer(leafletConfig.tileUrl, {
             maxZoom: leafletConfig.maxZoom,
             attribution: leafletConfig.attribution,
@@ -32,7 +36,12 @@ module.exports = function MapView(element) {
         return map;
     };
 
-    initMap();
+    var initialize = function() {
+        $(parent).append(element);
+        initMap(element, options);
+    };
+
+    initialize();
 
     return {
         getMap: getMap
