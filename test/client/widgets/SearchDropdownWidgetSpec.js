@@ -74,11 +74,11 @@ describe('SearchDropdownWidget', function() {
             expect(searchWidget.getValue()).to.equal('k');
         });
 
-        it('should throw an error if trying to select a value that does not exist', function() {
+        it('should reset the value to undefined if trying to select a value that does not exist', function() {
             searchWidget.selectValue('k');
             searchWidget.selectValue('wrong');
             expect(searchWidget.getValue()).to.be.undefined();
-        })
+        });
     });
 
     describe('events', function() {
@@ -96,6 +96,16 @@ describe('SearchDropdownWidget', function() {
 
             searchWidget.selectValue('k');
             expect(callback).to.have.been.calledWith('k');
+        });
+
+        it('should not fire a second onChange event if set is called with existing value', function() {
+            var callback = sinon.spy();
+            searchWidget.onChange(callback);
+
+            searchWidget.selectValue('k');
+            searchWidget.selectValue('k');
+
+            expect(callback).to.have.callCount(1);
         });
 
         it('should allow registering an onType listener', function() {

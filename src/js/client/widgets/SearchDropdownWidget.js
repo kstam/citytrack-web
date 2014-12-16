@@ -28,7 +28,9 @@ var SearchDropdownWidget = function SearchDropdownWidget(theParent) {
     };
 
     var selectValue = function(value) {
-        selectize.setValue(value);
+        if (value !== getValue()) {
+            selectize.setValue(value);
+        }
     };
 
     var getValue = function() {
