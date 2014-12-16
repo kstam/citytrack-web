@@ -28,8 +28,11 @@ gulp.task('server:dev', ['build'], function () {
     gulp.watch(['src/less/*.less', 'src/less/**/*.less'], ['less']);
 
     // watch javascript and templates
-    gulp.watch(['src/js/client/*.js', 'src/js/client/**/*.js'], ['browserify']);
-    gulp.watch(['views/**/*.hbs'], ['browserify']);
+    gulp.watch(['src/js/client/*.js', 'src/js/client/**/*.js'], ['browserify:app']);
+    gulp.watch(['views/**/*.hbs'], ['browserify:app']);
+
+    // watch vendor files
+    gulp.watch(['node_modules', 'bower_components'], ['browserify:vendor', 'bower:move']);
 
     // when compiled version changes notify the server
     gulp.watch('public/**/*').on('change', livereload.changed);
