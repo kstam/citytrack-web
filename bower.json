@@ -27,7 +27,8 @@
     "jquery": "~2.1.1",
     "normalize.css": "~3.0.2",
     "selectize": "~0.11.2",
-    "es5-shim": "~4.0.5"
+    "es5-shim": "~4.0.5",
+    "eventEmitter": "~4.2.11"
   },
   "devDependencies": {}
 }
