@@ -1,6 +1,6 @@
 'use strict';
 
-var expect = require('../../chaiExpect');
+var expect = require('../../testCommons/chaiExpect');
 var sinon = require('sinon');
 var areaService = require('client/services/areaService');
 var utils = require('client/services/areaService');

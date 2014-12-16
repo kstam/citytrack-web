@@ -1,6 +1,6 @@
 'use strict';
 
-var expect = require('../../chaiExpect');
+var expect = require('../../testCommons/chaiExpect');
 var $ = require('jquery');
 var SearchDropdownWidget = require('client/widgets/SearchDropdownWidget.js');
 var sinon = require('sinon');

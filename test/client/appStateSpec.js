@@ -1,7 +1,7 @@
 'use strict';
 
 var sinon = require('sinon');
-var expect = require('../chaiExpect');
+var expect = require('../testCommons/chaiExpect');
 
 var eventBus = require('client/eventBus');
 var testUtils = require('../testCommons/testUtils');
