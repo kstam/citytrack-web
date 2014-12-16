@@ -4,6 +4,8 @@
 var APP_STATE_CHANGED_EVT = 'AppState:Changed';
 var AREA_CHANGED_EVT = 'AppState:AreaChanged';
 var eventBus = require('client/eventBus');
+var utils = require('common/utils');
+var Area = require('model/Area');
 
 var AppState = function() {
 
@@ -16,8 +18,11 @@ var AppState = function() {
     };
 
     var setArea = function(newArea) {
-        area = newArea;
-        fireChangeEvent(AREA_CHANGED_EVT, newArea);
+        utils.verify(newArea instanceof Area, 'setArea: ' + newArea + ' is not a valid Area');
+        if (! newArea.equals(area)) {
+            area = newArea;
+            fireChangeEvent(AREA_CHANGED_EVT, newArea);
+        }
     };
 
     var getArea = function() {

@@ -3,8 +3,10 @@
 var latLngBounds = require('leaflet').latLngBounds;
 var latLng = require('leaflet').latLng;
 var Area = require('model/Area');
+var testUtils = require('../testCommons/testUtils');
 
 describe('Area', function() {
+
     describe('constructor', function() {
         var name = 'Athens';
         var center = latLng(20, 50);
@@ -45,6 +47,26 @@ describe('Area', function() {
             expect(function() {
                 new Area(name, center, null);
             }).to.throw(Error);
+        });
+    });
+
+    describe('equals', function() {
+        it('should return true if two areas are the same', function() {
+            var area1 = testUtils.createRandomArea('Athens');
+            var area2 = area1;
+            var area3 = testUtils.cloneArea(area1);
+
+            expect(area1.equals(area2)).to.be.true();
+            expect(area1.equals(area3)).to.be.true();
+        });
+
+        it('should return false otherwise', function() {
+            var area1 = testUtils.createRandomArea('Athens');
+            var area2 = testUtils.createRandomArea('Zurich');
+
+            expect(area1.equals(null)).to.be.false();
+            expect(area1.equals()).to.be.false();
+            expect(area1.equals(area2)).to.be.false();
         });
     });
 });

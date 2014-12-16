@@ -11,4 +11,8 @@ testUtils.createRandomArea = function (name) {
     return new Area(name, {lat: lat, lng: lng}, [{lat: lat-10, lng: lng-10}, {lat: lat+10, lng: lng+10}]);
 };
 
+testUtils.cloneArea = function(area) {
+   return new Area(area.getName(), area.getCenter(), area.getBoundingBox());
+};
+
 module.exports = testUtils;
