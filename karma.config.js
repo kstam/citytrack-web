@@ -15,10 +15,9 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
+            'bower_components/es5-shim/es5-shim.js',
             //test files
-            'test/common/*Spec.js',
-            'test/client/*Spec.js',
-            'test/client/**/*Spec.js'
+            'test/**/*Spec.js'
         ],
 
 
@@ -32,19 +31,20 @@ module.exports = function(config) {
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
             'test/client/**/*.js': [ 'browserify' ],
-            'test/client/*.js': [ 'browserify' ],
-            'test/common/*.js': [ 'browserify' ]
+            'test/common/*.js': [ 'browserify' ],
+            'test/model/*.js': [ 'browserify' ]
         },
 
         browserify: {
-            debug: false,
-            transform: ['browserify-handlebars', 'debowerify']
+            debug: true,
+            transform: ['debowerify'],
+            paths: ['./node_modules', './src/js', './views']
         },
 
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress'],
+        reporters: ['dots'],
 
 
         // web server port
