@@ -9,23 +9,47 @@
 
     .logo {
         float: left;
+        margin-left: 30px;
 
         h1 {
-            margin: 0;
-            font-size: 22px;
+            margin: 8px 0;
+            font-size: 26px;
         }
     }
 
     .search {
-        margin: 0 0 0 4* @gutter-size;
+        margin: 4px 0 0 4* @gutter-size;
         float: left;
         font-size: 16px;
         color: #AAA;
+        .clearfix();
 
-        input {
-            font-size: 14px;
-            color: #777;
-            padding: 5px;
+        > div {
+            float: left;
+            margin-left: 8px;
+            margin-right: 8px;
+        }
+
+        .keywordLabel {
+            margin-top: 10px;
+        }
+
+        .keywordBox {
+            .searchDropdown {
+                float:left;
+                width: 150px;
+            }
+        }
+
+        .areaLabel {
+            margin-top: 10px;
+        }
+
+        .areaDropdown {
+            .searchDropdown {
+                float:left;
+                width: 150px;
+            }
         }
     }
 }
