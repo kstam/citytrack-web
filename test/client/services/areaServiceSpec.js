@@ -4,6 +4,7 @@ var expect = require('../../chaiExpect');
 var sinon = require('sinon');
 var areaService = require('client/services/areaService');
 var utils = require('client/services/areaService');
+var testUtils = require('../../testCommons/testUtils');
 var Area = require('model/Area');
 
 describe('areaService', function() {
@@ -60,7 +61,7 @@ describe('areaService', function() {
             var callback = sinon.spy();
             areaService.getAreas(callback);
             var data = [
-                new Area('Athens', {lat: 12, lng: 14}, [{lat: 11, lng: 13}, {lat: 13, lng: 15}])
+                testUtils.createRandomArea('Athens')
             ];
             respondJsonToRequest(data);
 
