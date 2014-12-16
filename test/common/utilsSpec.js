@@ -53,4 +53,24 @@ describe('utils', function() {
             expect(utils.isHTMLElement('')).to.be.false();
         });
     });
+
+    describe('getElement', function() {
+        it('should not allow illegal element argument', function() {
+            expect(function() {
+                utils.getElement()
+            }).to.throw(Error);
+            expect(function() {
+                utils.getElement('')
+            }).to.throw(Error);
+            expect(function() {
+                utils.getElement(null)
+            }).to.throw(Error);
+            expect(function() {
+                utils.getElement({})
+            }).to.throw(Error);
+            expect(function() {
+                utils.getElement([])
+            }).to.throw(Error);
+        });
+    });
 });
