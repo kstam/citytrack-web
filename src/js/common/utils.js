@@ -31,6 +31,13 @@ utils.isArray = function(obj) {
     return utils.isType(obj, 'Array');
 };
 
+utils.verify = function(expr, msg) {
+    var message = msg || '';
+    if (!expr) {
+        throw new Error(message);
+    }
+};
+
 utils.isInteger = function(obj) {
     return typeof(obj) === 'number' &&
         isFinite(obj) &&

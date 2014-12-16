@@ -1,5 +1,6 @@
 'use strict';
-var MapWidget = require('../../../src/js/client/widgets/MapWidget.js');
+var MapWidget = require('client/widgets/MapWidget.js');
+var Area = require('model/Area');
 var $ = require('jquery');
 
 describe('MapWidget', function() {
@@ -54,6 +55,23 @@ describe('MapWidget', function() {
             expect(mapWidget.getMap().getZoom()).to.be.equal(1.5);
             expect(mapWidget.getMap().getCenter().lat).to.be.equal(20);
             expect(mapWidget.getMap().getCenter().lng).to.be.equal(90);
+        });
+    });
+
+    describe('setView', function() {
+        var mapWidget;
+        beforeEach(function() {
+            mapWidget = new MapWidget(CONTAINER_ID);
+        });
+
+        it('should allow centering the view to a given area', function() {
+            var athens = new Area('Athens', {lat: 30, lng: 50}, [{lat: 20, lng: 40}, {lat: 40, lng: 60}]);
+
+            mapWidget.setView(athens);
+            var center = mapWidget.getMap().getCenter();
+
+            expect(center.lat).to.equal(athens.getCenter().lat);
+            expect(center.lng).to.equal(athens.getCenter().lng);
         });
     });
 

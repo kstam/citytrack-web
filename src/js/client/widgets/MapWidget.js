@@ -36,6 +36,13 @@ module.exports = function MapWidget(theParent, userOptions) {
         return map;
     };
 
+    var setView = function setView(area) {
+        utils.verify(utils.isNotNullOrUndefined(area), 'setView: area cannot be null or undefined');
+        var center = L.latLng(area.getCenter().lat, area.getCenter().lng);
+        var zoom = map.getBoundsZoom(area.getBoundingBox());
+        map.setView(center, zoom);
+    };
+
     var initialize = function() {
         $(parent).append(element);
         initMap(element, options);
@@ -44,6 +51,7 @@ module.exports = function MapWidget(theParent, userOptions) {
     initialize();
 
     return {
-        getMap: getMap
+        getMap: getMap,
+        setView: setView
     };
 };
