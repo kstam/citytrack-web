@@ -36,6 +36,13 @@
 
         .keywordBox {
             .searchDropdown {
+                .selectize-input {
+                    cursor: text;
+
+                    &:after, &::after {
+                        display: none;
+                    }
+                }
                 float:left;
                 width: 150px;
             }
