@@ -3,7 +3,7 @@
 require('es5-shim');
 var $ = require('jquery');
 var MapWidget = require('client/widgets/MapWidget');
-var HeaderWidget = require('client/widgets/HeaderWidget');
+var HeaderController = require('client/controllers/HeaderController');
 var eventBus = require('client/eventBus');
 var appState = require('client/appState');
 
