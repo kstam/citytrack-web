@@ -19,11 +19,34 @@ var HeaderWidget = function(theHeaderElement) {
     var areaSelectWidget = new AreaSelectWidget(areaSelectContainer);
     var keywordWidget = new SearchDropdownWidget(keywordContainer);
 
-    var initialize = function() {
+    var getKeywordWidget = function() {
+        return keywordWidget;
+    };
 
+    var getAreaSelectWidget = function() {
+        return areaSelectWidget;
+    };
+
+    var initializeListeners = function() {
+        areaSelectWidget.onChange(function(newArea) {
+            appState.setArea(newArea);
+        });
+
+        eventBus.on(appState.AREA_CHANGED_EVT, function(newArea) {
+            areaSelectWidget.setArea(newArea);
+        });
+    };
+
+    var initialize = function() {
+        initializeListeners();
     };
 
     initialize();
+
+    return {
+        getAreaSelectWidget: getAreaSelectWidget,
+        getKeywordWidget: getKeywordWidget
+    }
 };
 
 module.exports = HeaderWidget;

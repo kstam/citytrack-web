@@ -6,8 +6,6 @@ var SearchDropdownWidget = require('client/widgets/SearchDropdownWidget');
 var Option = require('client/widgets/SearchDropdownWidget').SearchDropdownOption;
 var areaService = require('client/services/areaService');
 var Area = require('model/Area');
-var appState = require('client/appState');
-var eventBus = require('client/eventBus');
 var constants = require('client/config/constants');
 
 var AreaSelectWidget = function(theContainer) {
@@ -44,6 +42,13 @@ var AreaSelectWidget = function(theContainer) {
         searchDropdownWidget.clearSelection();
     };
 
+    var onChange = function(callback) {
+        utils.verify(utils.isFunction(callback), 'onChange: expects a function as callback');
+        searchDropdownWidget.onChange(function(newAreaValue) {
+            callback(areas[newAreaValue]);
+        });
+    };
+
     var initializeAvailableAreas = function() {
         areaService.getAreas(function(theAreas) {
             var selectDropdownValues = [];
@@ -55,19 +60,9 @@ var AreaSelectWidget = function(theContainer) {
         });
     };
 
-    var initializeListeners = function() {
-        searchDropdownWidget.onChange(function() {
-            appState.setArea(areas[searchDropdownWidget.getValue()]);
-        });
-
-        eventBus.on(appState.AREA_CHANGED_EVT, function() {
-            setArea(appState.getArea());
-        });
-    };
-
     var initializeCurrentLocation = function() {
         areaService.getCurrentArea(function(error, theArea) {
-            if(!error) {
+            if (!error) {
                 setArea(theArea);
             }
         });
@@ -75,7 +70,6 @@ var AreaSelectWidget = function(theContainer) {
 
     var initialize = function() {
         initializeAvailableAreas();
-        initializeListeners();
         initializeCurrentLocation();
     };
 
@@ -85,6 +79,7 @@ var AreaSelectWidget = function(theContainer) {
         getAvailableAreas: getAvailableAreas,
         setArea: setArea,
         getArea: getArea,
+        onChange: onChange,
         clearSelection: clearSelection
     };
 };

@@ -8,7 +8,7 @@ var headerAreaTemplate = require('partials/header.hbs');
 var areaService = require('client/services/areaService');
 var constants = require('client/config/constants');
 var testUtils = require('../../testCommons/testUtils');
-
+var appState = require('client/appState');
 
 describe('HeaderController', function() {
 
@@ -46,6 +46,32 @@ describe('HeaderController', function() {
             var areaId = 'theId';
             headerArea.id = areaId;
             expect(new HeaderController(areaId)).to.not.be.undefined();
+        });
+    });
+
+    describe('listens to events and', function() {
+
+        var headerController;
+        var areaSelectWidget;
+
+        beforeEach(function() {
+            headerController = new HeaderController(headerArea);
+            areaSelectWidget = headerController.getAreaSelectWidget();
+        });
+
+        it('should update the appState when the area selection changes', function() {
+            areaSelectWidget.setArea(mockedData[0]);
+            expect(appState.getArea()).to.equal(mockedData[0]);
+            areaSelectWidget.setArea(mockedData[1]);
+            expect(appState.getArea()).to.equal(mockedData[1]);
+        });
+
+        it('should update the selected area when the appState changes', function() {
+            appState.setArea(mockedData[0]);
+            appState.setArea(mockedData[1]);
+            expect(areaSelectWidget.getArea()).to.equal(mockedData[1]);
+            appState.setArea(mockedData[0]);
+            expect(areaSelectWidget.getArea()).to.equal(mockedData[0]);
         });
     });
 });

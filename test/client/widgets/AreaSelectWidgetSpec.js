@@ -6,7 +6,6 @@ var areaService = require('client/services/areaService');
 var AreaSelecteWidget = require('client/widgets/AreaSelectWidget');
 var testUtils = require('../../testCommons/testUtils');
 var expect = require('../../testCommons/chaiExpect');
-var appState = require('client/appState');
 var constants = require('client/config/constants');
 
 describe('AreaSelectWidget', function() {
@@ -82,20 +81,19 @@ describe('AreaSelectWidget', function() {
         });
     });
 
-    describe('listens to events and', function() {
-        it('should update the appState when the selection changes', function() {
-            areaSelectWidget.setArea(mockedData[0]);
-            expect(appState.getArea()).to.equal(mockedData[0]);
-            areaSelectWidget.setArea(mockedData[1]);
-            expect(appState.getArea()).to.equal(mockedData[1]);
+    describe('onChange', function() {
+        it('should throw an error if called with a non function object', function() {
+            expect(function() {
+                areaSelectWidget.onChange({});
+            }).to.throw(Error);
         });
 
-        it('should update the selected area when the appState changes', function() {
-            appState.setArea(mockedData[0]);
-            appState.setArea(mockedData[1]);
-            expect(areaSelectWidget.getArea()).to.equal(mockedData[1]);
-            appState.setArea(mockedData[0]);
-            expect(areaSelectWidget.getArea()).to.equal(mockedData[0]);
+        it('should register a new listener for the change event', function() {
+            var callback = sinon.spy();
+            areaSelectWidget.setArea(mockedData[0]);
+            areaSelectWidget.onChange(callback);
+            areaSelectWidget.setArea(mockedData[1]);
+            expect(callback).to.have.been.calledWith(mockedData[1]);
         });
     });
 });
