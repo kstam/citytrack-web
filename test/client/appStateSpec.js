@@ -24,16 +24,18 @@ describe('appState', function() {
             areaChangedListener = sinon.spy();
         });
 
-        it('does not allow setting invalid area', function() {
+        it('should not allow setting invalid area', function() {
             expect(function() {
                 appState.set({});
             }).to.throw(Error);
             expect(function() {
-                appState.set();
-            }).to.throw(Error);
-            expect(function() {
                 appState.set(null);
             }).to.throw(Error);
+        });
+
+        it('should allow setting the area back to undefined', function() {
+            appState.setArea(undefined);
+            expect(appState.getArea()).to.be.undefined();
         });
 
         it('should allow setting the area and should emit the corresponding events', function() {

@@ -18,17 +18,30 @@ var AreaSelectWidget = function(theContainer) {
         return areas;
     };
 
-    var setArea = function(area) {
-        utils.verify(area instanceof Area, 'setArea: ' + area + ' is not a valid Area.');
+    var handleSpecialAreas = function(area) {
         if (area.getName() === constants.CURRENT_AREA_ID) {
             areas[area.getName()] = area;
             searchDropdownWidget.addOption(Option(area.name, area.name));
         }
-        searchDropdownWidget.selectValue(area.getName());
+    };
+
+    var setArea = function(area) {
+        if (area) {
+            utils.verify(area instanceof Area, 'setArea: ' + area + ' is not a valid Area.');
+            handleSpecialAreas(area);
+            searchDropdownWidget.selectValue(area.getName());
+        } else {
+            utils.verify(typeof area === 'undefined', 'setArea: accepts only Area objects or undefined');
+            searchDropdownWidget.clearSelection();
+        }
     };
 
     var getArea = function() {
         return areas[searchDropdownWidget.getValue()];
+    };
+
+    var clearSelection = function() {
+        searchDropdownWidget.clearSelection();
     };
 
     var initializeAvailableAreas = function() {
@@ -71,7 +84,8 @@ var AreaSelectWidget = function(theContainer) {
     return {
         getAvailableAreas: getAvailableAreas,
         setArea: setArea,
-        getArea: getArea
+        getArea: getArea,
+        clearSelection: clearSelection
     };
 };
 

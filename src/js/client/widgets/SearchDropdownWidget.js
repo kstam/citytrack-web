@@ -22,7 +22,7 @@ var SearchDropdownWidget = function SearchDropdownWidget(theParent) {
     };
 
     var validateOption = function(option) {
-        if (!(option && option.value && option.label)) {
+        if (!(option && utils.isString(option.value) && utils.isString(option.label))) {
             throw new Error('Attemped to add invalid option ' + option);
         }
     };
@@ -61,7 +61,10 @@ var SearchDropdownWidget = function SearchDropdownWidget(theParent) {
 
     var addOption = function(option) {
         selectize.addOption(option);
-        selectize.refreshOptions();
+    };
+
+    var clearSelection = function() {
+        selectize.clear();
     };
 
     var onChange = function(listener) {
@@ -78,6 +81,7 @@ var SearchDropdownWidget = function SearchDropdownWidget(theParent) {
         getAvailableValues: getAvailableValues,
         setData: setOptions,
         selectValue: selectValue,
+        clearSelection: clearSelection,
         getValue: getValue,
         addOption: addOption,
 

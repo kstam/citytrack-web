@@ -18,8 +18,10 @@ var AppState = function() {
     };
 
     var setArea = function(newArea) {
-        utils.verify(newArea instanceof Area, 'setArea: ' + newArea + ' is not a valid Area');
-        if (! newArea.equals(area)) {
+        var areaChanged = ((typeof newArea === 'undefined') && (newArea !== area)) ||
+            ((newArea instanceof Area) && (!newArea.equals(area)));
+
+        if (areaChanged) {
             area = newArea;
             fireChangeEvent(AREA_CHANGED_EVT, newArea);
         }

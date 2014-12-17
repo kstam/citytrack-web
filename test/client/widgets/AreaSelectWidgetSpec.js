@@ -66,6 +66,7 @@ describe('AreaSelectWidget', function() {
 
     describe('set/get', function() {
         it('should return undefined if nothing is selected', function() {
+            areaSelectWidget.clearSelection();
             expect(areaSelectWidget.getArea()).to.be.undefined();
         });
 
