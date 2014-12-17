@@ -7,6 +7,7 @@ var AreaSelecteWidget = require('client/widgets/AreaSelectWidget');
 var testUtils = require('../../testCommons/testUtils');
 var expect = require('../../testCommons/chaiExpect');
 var appState = require('client/appState');
+var constants = require('client/config/constants');
 
 describe('AreaSelectWidget', function() {
 
@@ -17,6 +18,7 @@ describe('AreaSelectWidget', function() {
         testUtils.createRandomArea('Athens'),
         testUtils.createRandomArea('Zurich')
     ];
+    var currentAreaMock = testUtils.createRandomArea(constants.CURRENT_AREA_ID);
 
     beforeEach(function() {
         $container = $('<div id="' + CONTAINER_ID + '"></div>');
@@ -28,12 +30,17 @@ describe('AreaSelectWidget', function() {
             callback(mockedData);
         });
 
+        sinon.stub(areaService, 'getCurrentArea', function(callback) {
+            callback(null, currentAreaMock);
+        });
+
         areaSelectWidget = new AreaSelecteWidget(container);
         $selectInput = $(container).find('input:first');
     });
 
     afterEach(function() {
         areaService.getAreas.restore();
+        areaService.getCurrentArea.restore();
         $container.remove();
     });
 
@@ -47,8 +54,13 @@ describe('AreaSelectWidget', function() {
         });
 
         it('should call the areaService to get the available locations from the server', function() {
-            expect(areaService.getAreas).to.have.been.callCount(1);
+            expect(areaService.getAreas).to.have.callCount(1);
             expect(areaSelectWidget.getAvailableAreas()['Athens']).to.equal(mockedData[0]);
+        });
+
+        it('should call the area service to get the current location of the user', function() {
+            expect(areaService.getCurrentArea).to.have.callCount(1);
+            expect(areaSelectWidget.getAvailableAreas()[constants.CURRENT_AREA_ID]).to.equal(currentAreaMock);
         });
     });
 

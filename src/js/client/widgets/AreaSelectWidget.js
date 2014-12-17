@@ -3,10 +3,12 @@
 var $ = require('jquery');
 var utils = require('common/utils');
 var SearchDropdownWidget = require('client/widgets/SearchDropdownWidget');
+var Option = require('client/widgets/SearchDropdownWidget').SearchDropdownOption;
 var areaService = require('client/services/areaService');
 var Area = require('model/Area');
 var appState = require('client/appState');
 var eventBus = require('client/eventBus');
+var constants = require('client/config/constants');
 
 var AreaSelectWidget = function(theContainer) {
     var areas = {};
@@ -18,6 +20,10 @@ var AreaSelectWidget = function(theContainer) {
 
     var setArea = function(area) {
         utils.verify(area instanceof Area, 'setArea: ' + area + ' is not a valid Area.');
+        if (area.getName() === constants.CURRENT_AREA_ID) {
+            areas[area.getName()] = area;
+            searchDropdownWidget.addOption(Option(area.name, area.name));
+        }
         searchDropdownWidget.selectValue(area.getName());
     };
 
@@ -30,10 +36,7 @@ var AreaSelectWidget = function(theContainer) {
             var selectDropdownValues = [];
             theAreas.forEach(function(area) {
                 areas[area.name] = area;
-                selectDropdownValues.push({
-                    label: area.name,
-                    value: area.name
-                });
+                selectDropdownValues.push(Option(area.name, area.name));
             });
             searchDropdownWidget.setData(selectDropdownValues);
         });
@@ -49,9 +52,18 @@ var AreaSelectWidget = function(theContainer) {
         });
     };
 
+    var initializeCurrentLocation = function() {
+        areaService.getCurrentArea(function(error, theArea) {
+            if(!error) {
+                setArea(theArea);
+            }
+        });
+    };
+
     var initialize = function() {
         initializeAvailableAreas();
         initializeListeners();
+        initializeCurrentLocation();
     };
 
     initialize();
