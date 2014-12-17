@@ -59,6 +59,11 @@ var SearchDropdownWidget = function SearchDropdownWidget(theParent) {
         selectValue(selectedValue);
     };
 
+    var addOption = function(option) {
+        selectize.addOption(option);
+        selectize.refreshOptions();
+    };
+
     var onChange = function(listener) {
         selectize.on('change', listener);
     };
@@ -74,12 +79,23 @@ var SearchDropdownWidget = function SearchDropdownWidget(theParent) {
         setData: setOptions,
         selectValue: selectValue,
         getValue: getValue,
+        addOption: addOption,
 
         onChange: onChange,
         onType: onType
     };
 };
 
+var SearchDropdownOption = function(label, value) {
+    utils.verify(utils.isString(label), label + ' is not a valid string object');
+    utils.verify(utils.isString(value), value + ' is not a valid string object');
+    return {
+        label: label,
+        value: value
+    };
+};
+
 SearchDropdownWidget.SELECTION_CHANGED_EVT = 'SearchDropdown:SelectionChanged';
+SearchDropdownWidget.SearchDropdownOption = SearchDropdownOption;
 
 module.exports = SearchDropdownWidget;

@@ -3,6 +3,7 @@
 var expect = require('../../testCommons/chaiExpect');
 var $ = require('jquery');
 var SearchDropdownWidget = require('client/widgets/SearchDropdownWidget.js');
+var Option = require('client/widgets/SearchDropdownWidget.js').SearchDropdownOption;
 var sinon = require('sinon');
 
 describe('SearchDropdownWidget', function() {
@@ -30,28 +31,24 @@ describe('SearchDropdownWidget', function() {
 
         it('should allow adding an array of rows', function() {
             var data = [
-                {label: 'Kostas', value: 'k'},
-                {label: 'Giorgos', value: 'g'}
+                Option('Kostas', 'k'),
+                Option('Giorgos', 'g')
             ];
             searchWidget.setData(data);
             expect(searchWidget.getAvailableValues()).to.deep.equal(['k', 'g']);
         });
 
         it('should keep the value selected if it is still in the new data', function() {
-            searchWidget.setData([{label: 'Kostas', value: 'k'},
-                {label: 'Giorgos', value: 'g'}]);
+            searchWidget.setData([Option('Kostas', 'k'), Option('Giorgos', 'g')]);
             searchWidget.selectValue('g');
-            searchWidget.setData([{label: 'Nikos', value: 'n'},
-                {label: 'Giorgos', value: 'g'}]);
+            searchWidget.setData([Option('Nikos', 'n'), Option('Giorgos', 'g')]);
             expect(searchWidget.getValue()).to.equal('g');
         });
 
         it('should reset the value selected if it is not in the new data', function() {
-            searchWidget.setData([{label: 'Kostas', value: 'k'},
-                {label: 'Giorgos', value: 'g'}]);
+            searchWidget.setData([Option('Kostas', 'k'), Option('Giorgos', 'g')]);
             searchWidget.selectValue('k');
-            searchWidget.setData([{label: 'Nikos', value: 'n'},
-                {label: 'Giorgos', value: 'g'}]);
+            searchWidget.setData([Option('Nikos', 'n'), Option('Giorgos', 'g')]);
             expect(searchWidget.getValue()).to.be.undefined();
         });
     });
@@ -60,8 +57,8 @@ describe('SearchDropdownWidget', function() {
 
         beforeEach(function() {
             searchWidget.setData([
-                {label: 'Kostas', value: 'k'},
-                {label: 'Giorgos', value: 'g'}
+                Option('Kostas', 'k'),
+                Option('Giorgos', 'g')
             ]);
         });
 
@@ -81,12 +78,26 @@ describe('SearchDropdownWidget', function() {
         });
     });
 
+    describe('add option', function() {
+
+        beforeEach(function() {
+            searchWidget.setData([
+                Option('Kostas', 'k')
+            ]);
+        });
+
+        it('should allow adding an option', function() {
+            searchWidget.addOption(Option('Nikos', 'n'));
+            expect(searchWidget.getAvailableValues()).to.deep.equal(['k', 'n']);
+        });
+    });
+
     describe('events', function() {
 
         beforeEach(function() {
             searchWidget.setData([
-                {label: 'Kostas', value: 'k'},
-                {label: 'Giorgos', value: 'g'}
+                Option('Kostas', 'k'),
+                Option('Giorgos', 'g')
             ]);
         });
 
