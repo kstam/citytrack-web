@@ -12,7 +12,7 @@ var headerSection = $('.headerSection:first')[0];
 var mainMapSection = $('.mainMapSection:first')[0];
 
 // widgets
-var headerWidget = new HeaderWidget(headerSection);
+var headerWidget = new HeaderController(headerSection);
 var mainMapWidget = new MapWidget(mainMapSection);
 
 eventBus.on(appState.AREA_CHANGED_EVT, function(newArea) {

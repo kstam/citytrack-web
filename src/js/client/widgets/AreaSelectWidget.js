@@ -3,7 +3,7 @@
 var $ = require('jquery');
 var utils = require('common/utils');
 var SearchDropdownWidget = require('client/widgets/SearchDropdownWidget');
-var Option = require('client/widgets/SearchDropdownWidget').SearchDropdownOption;
+var SearchDropdownOption = require('client/widgets/SearchDropdownWidget').SearchDropdownOption;
 var areaService = require('client/services/areaService');
 var Area = require('model/Area');
 var constants = require('client/config/constants');
@@ -19,7 +19,7 @@ var AreaSelectWidget = function(theContainer) {
     var handleSpecialAreas = function(area) {
         if (area.getName() === constants.CURRENT_AREA_ID) {
             areas[area.getName()] = area;
-            searchDropdownWidget.addOption(Option(area.name, area.name));
+            searchDropdownWidget.addOption(new SearchDropdownOption(area.name, area.name));
         }
     };
 
@@ -54,7 +54,7 @@ var AreaSelectWidget = function(theContainer) {
             var selectDropdownValues = [];
             theAreas.forEach(function(area) {
                 areas[area.name] = area;
-                selectDropdownValues.push(Option(area.name, area.name));
+                selectDropdownValues.push(new SearchDropdownOption(area.name, area.name));
             });
             searchDropdownWidget.setData(selectDropdownValues);
         });

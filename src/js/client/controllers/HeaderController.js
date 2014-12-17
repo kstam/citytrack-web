@@ -46,7 +46,7 @@ var HeaderWidget = function(theHeaderElement) {
     return {
         getAreaSelectWidget: getAreaSelectWidget,
         getKeywordWidget: getKeywordWidget
-    }
+    };
 };
 
 module.exports = HeaderWidget;
