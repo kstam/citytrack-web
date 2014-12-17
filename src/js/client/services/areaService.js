@@ -2,6 +2,8 @@
 
 var $ = require('jquery');
 var Area = require('model/Area');
+var utils = require('common/utils');
+var constants = require('client/config/constants');
 
 var extractArea = function(a) {
     return new Area(a.name, a.center, a.boundingBox);
@@ -22,6 +24,32 @@ var getAreas = function getAreas(callback) {
         });
 };
 
+
+var getCurrentArea = function(callback) {
+    utils.verify(utils.isFunction(callback), callback + ' is not a valid function');
+    var navigator = window.navigator;
+
+    if ((!navigator) || (!navigator.geolocation) || (!navigator.geolocation.getCurrentPosition)) {
+        callback(new Error('Browser does not support geolocation'));
+    }
+
+    function onSuccess(position) {
+        var center = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        };
+        var boundingBox = [center, center];
+        callback(undefined, new Area(constants.CURRENT_AREA_ID, center, boundingBox));
+    }
+
+    function onError(error) {
+        callback(error, undefined);
+    }
+
+    navigator.geolocation.getCurrentPosition(onSuccess, onError);
+};
+
 module.exports = {
-    getAreas: getAreas
+    getAreas: getAreas,
+    getCurrentArea: getCurrentArea
 };

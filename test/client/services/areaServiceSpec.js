@@ -6,6 +6,7 @@ var areaService = require('client/services/areaService');
 var utils = require('client/services/areaService');
 var testUtils = require('../../testCommons/testUtils');
 var Area = require('model/Area');
+var constants = require('client/config/constants');
 
 describe('areaService', function() {
     var server;
@@ -14,7 +15,7 @@ describe('areaService', function() {
         requestNumber = requestNumber || 0;
         server.requests[requestNumber].respond(
             200,
-            { "Content-Type": "application/json" },
+            {"Content-Type": "application/json"},
             JSON.stringify(data));
     }
 
@@ -44,7 +45,7 @@ describe('areaService', function() {
 
             server.requests[0].respond(
                 200,
-                { "Content-Type": "application/json" },
+                {"Content-Type": "application/json"},
                 JSON.stringify([]));
 
             expect(callback.firstCall.args[0]).to.deep.equal([]);
@@ -71,6 +72,101 @@ describe('areaService', function() {
             expect(response[0].getName()).to.equal(data[0].getName());
             expect(response[0].getCenter()).to.deep.equal(data[0].getCenter());
             expect(response[0].getBoundingBox()).to.deep.equal(data[0].getBoundingBox());
+        });
+    });
+
+    describe('getCurrentArea', function() {
+
+        var mockedPosition = {
+            coords: {
+                latitude: 10,
+                longitude: 50,
+                accuracy: 5
+            },
+            timestamp: new Date().getTime()
+        };
+
+        var savedNavigator;
+        beforeEach(function() {
+            savedNavigator = window.navigator;
+            window.navigator = {
+                geolocation: {
+                    getCurrentPosition: function() {}
+                }
+            };
+        });
+
+        afterEach(function() {
+            window.navigator = savedNavigator;
+        });
+
+        it('should not allow non function object to be passed as callback', function() {
+            expect(function() {
+                areaService.getCurrentArea({});
+            }).to.throw(Error);
+        });
+
+        describe('when browser does not support geolocation', function() {
+            it('should return appropriate error if navigator does not exist', function(done) {
+                window.navigator = undefined;
+                areaService.getCurrentArea(function(err, area) {
+                    expect(err instanceof Error).to.be.true();
+                    expect(area).to.be.undefined();
+                    done();
+                });
+            });
+
+            it('should return appropriate error if geolocation does not exist', function(done) {
+                window.navigator.geolocation = undefined;
+                areaService.getCurrentArea(function(err, area) {
+                    expect(err instanceof Error).to.be.true();
+                    expect(area).to.be.undefined();
+                    done();
+                });
+            });
+        });
+
+        describe('on success', function() {
+            beforeEach(function() {
+                sinon.stub(window.navigator.geolocation, 'getCurrentPosition', function(success) {
+                    success(mockedPosition);
+                });
+            });
+
+            afterEach(function() {
+                window.navigator.geolocation.getCurrentPosition.restore();
+            });
+
+            it('returns an area with center the same as the position', function(done) {
+                areaService.getCurrentArea(function(err, area) {
+                    expect(err).to.be.undefined();
+                    var center = area.getCenter();
+                    expect(area.getName()).to.equal(constants.CURRENT_AREA_ID);
+                    expect(center.lat).to.equal(mockedPosition.coords.latitude);
+                    expect(center.lng).to.equal(mockedPosition.coords.longitude);
+                    done();
+                });
+            });
+        });
+
+        describe('on error', function() {
+            beforeEach(function() {
+                sinon.stub(window.navigator.geolocation, 'getCurrentPosition', function(success, error) {
+                    error(new Error());
+                });
+            });
+
+            afterEach(function() {
+                window.navigator.geolocation.getCurrentPosition.restore();
+            });
+
+            it('returns an area with center the same as the position', function(done) {
+                areaService.getCurrentArea(function(err, area) {
+                    expect(err instanceof Error).to.be.true();
+                    expect(area).to.be.undefined();
+                    done();
+                });
+            });
         });
     });
 });
