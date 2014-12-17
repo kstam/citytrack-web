@@ -1,21 +1,39 @@
 'use strict';
 
 var $ = require('jquery');
+var sinon = require('sinon');
 var HeaderWidget = require('client/widgets/HeaderWidget');
 var domify = require('domify');
 var headerAreaTemplate = require('partials/header.hbs');
+var areaService = require('client/services/areaService');
+var constants = require('client/config/constants');
+var testUtils = require('../../testCommons/testUtils');
 
 
 describe('HeaderWidget', function() {
 
     var headerArea;
+    var mockedData = [
+        testUtils.createRandomArea('Athens'),
+        testUtils.createRandomArea('Zurich')
+    ];
+    var currentAreaMock = testUtils.createRandomArea(constants.CURRENT_AREA_ID);
 
     beforeEach(function() {
         headerArea = domify(headerAreaTemplate());
+        sinon.stub(areaService, 'getAreas', function(callback) {
+            callback(mockedData);
+        });
+
+        sinon.stub(areaService, 'getCurrentArea', function(callback) {
+            callback(null, currentAreaMock);
+        });
         $(document.body).prepend(headerArea);
     });
 
     afterEach(function() {
+        areaService.getAreas.restore();
+        areaService.getCurrentArea.restore();
         $(headerArea).remove();
     });
 
