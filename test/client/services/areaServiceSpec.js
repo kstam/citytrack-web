@@ -62,16 +62,20 @@ describe('areaService', function() {
             var callback = sinon.spy();
             areaService.getAreas(callback);
             var data = [
-                testUtils.createRandomArea('Athens')
+                testUtils.createRandomAreaServerResult('Athens')
             ];
             respondJsonToRequest(data);
 
             var response = callback.firstCall.args[0];
 
             expect(response[0] instanceof Area).to.be.true();
-            expect(response[0].getName()).to.equal(data[0].getName());
-            expect(response[0].getCenter()).to.deep.equal(data[0].getCenter());
-            expect(response[0].getBoundingBox()).to.deep.equal(data[0].getBoundingBox());
+            expect(response[0].getName()).to.equal(data[0].name);
+            expect(response[0].getCenter().lng).to.equal(data[0].center.lng);
+            expect(response[0].getCenter().lat).to.equal(data[0].center.lat);
+            expect(response[0].getBoundingBox().getWest()).to.equal(data[0].bbox.minLng);
+            expect(response[0].getBoundingBox().getEast()).to.equal(data[0].bbox.maxLng);
+            expect(response[0].getBoundingBox().getNorth()).to.equal(data[0].bbox.maxLat);
+            expect(response[0].getBoundingBox().getSouth()).to.equal(data[0].bbox.minLat);
         });
     });
 

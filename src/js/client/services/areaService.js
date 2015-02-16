@@ -4,15 +4,19 @@ var $ = require('jquery');
 var Area = require('model/Area');
 var utils = require('common/utils');
 var constants = require('client/config/constants');
+var latLngBounds = require('leaflet').latLngBounds;
+var latLng = require('leaflet').latLng;
 
 var extractArea = function(a) {
-    return new Area(a.name, a.center, a.boundingBox);
+    var center = latLng(a.center.lat, a.center.lng);
+    var bbox = latLngBounds(latLng(a.bbox.minLat, a.bbox.minLng), latLng(a.bbox.maxLat, a.bbox.maxLng));
+    return new Area(a.name, center, bbox);
 };
 
 var extractAreas = function(areasResponse) {
     var areas = [];
-    areasResponse.forEach(function(areaResponse) {
-        areas.push(extractArea(areaResponse));
+    areasResponse.forEach(function(area) {
+        areas.push(extractArea(area));
     });
     return areas;
 };

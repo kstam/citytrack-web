@@ -16,13 +16,13 @@ var Area = function Area(name, center, boundingBox) {
             throw new Error('center should be LatLng object');
         }
         if(!utils.isNotNullOrUndefined(boundingBox)) {
-            throw new Error('boundingBox should be a LatLngBounds object');
+            throw new Error('bbox should be a LatLngBounds object');
         }
     };
 
     this.name = name;
     this.center = center;
-    this.boundingBox = boundingBox;
+    this.bbox = boundingBox;
 
     this.getName = function() {
         return this.name;
@@ -33,7 +33,7 @@ var Area = function Area(name, center, boundingBox) {
     };
 
     this.getBoundingBox = function() {
-        return this.boundingBox;
+        return this.bbox;
     };
 
     this.equals = function(that) {
