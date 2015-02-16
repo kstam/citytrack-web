@@ -12,3 +12,6 @@ public/img/vendor/
 ## IntelliJ
 .idea
 *.iml
+
+##File System
+.DS_Store
