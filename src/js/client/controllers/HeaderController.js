@@ -9,7 +9,7 @@ var appState = require('client/appState');
 var eventBus = require('client/eventBus');
 
 
-var HeaderWidget = function(theHeaderElement) {
+var HeaderController = function(theHeaderElement) {
     var headerElement = utils.getElement(theHeaderElement);
     var $headerElement = $(headerElement);
 
@@ -49,4 +49,4 @@ var HeaderWidget = function(theHeaderElement) {
     };
 };
 
-module.exports = HeaderWidget;
+module.exports = HeaderController;
