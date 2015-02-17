@@ -8,26 +8,30 @@ Setup Environment and run the project
 
 First you will need to install #node#.
 
-Then run the following command
+The best way to install NodeJs is by using [nvm](https://github.com/creationix/nvm)
 
-    ~> npm install -g bower gulp karma
+Then you will need to install Karma(Testing), Bower(Dependency Management) and Gulp(Build Tool). To do that, run the
+following command
+
+    $ npm install -g bower gulp karma
 
 Checkout the code and cd to the directory. There, run the following commands:
 
-    ~> npm install
-    ~> gulp
+    $ npm install
+    $ gulp
 
-You are ready to start the server. Run:
+You are ready to start the server.
 
-    ~> gulp server:dev
-    
-or
+For **Production**
 
     ~> node app.js
 
-The first way of running the server is preferred when in development mode. 
-This way all the files are being monitored for changes and compiled automatically. Also, the server
-restarts if the backend code is changed. This way the development cycle is much faster.
+For **Development**
+
+    ~> gulp server:dev
+
+This way of running the server is preferred when in development mode because all the files are being monitored for changes and compiled automatically.
+Also, the server restarts if the backend code is changed. This way the development cycle is much faster.
 
 Finally, open your browser and go to:
 
