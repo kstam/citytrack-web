@@ -1,20 +1,14 @@
 'use strict';
 
 require('es5-shim');
-var $ = require('jquery');
-var MapWidget = require('client/widgets/MapWidget');
-var HeaderController = require('client/controllers/HeaderController');
-var eventBus = require('client/eventBus');
-var appState = require('client/appState');
+require('jquery');
+var angular = require('./shims/angular');
+require('angular-route');
 
-// elements
-var headerSection = $('.headerSection:first')[0];
-var mainMapSection = $('.mainMapSection:first')[0];
+var citytrackApp = angular.module('citytrack', [
+    'ngRoute',
+    require('./controllers/controllers').name,
+    require('./directives/directives').name
+]);
 
-// widgets
-var headerWidget = new HeaderController(headerSection);
-var mainMapWidget = new MapWidget(mainMapSection);
-
-eventBus.on(appState.AREA_CHANGED_EVT, function(newArea) {
-    mainMapWidget.setView(newArea);
-});
+citytrackApp.config(['$routeProvider', require('./routes')]);

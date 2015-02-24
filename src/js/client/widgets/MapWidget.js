@@ -6,7 +6,7 @@ var leafletConfig = require('client/config/leafletConfig');
 var deepExtend = require('deep-extend');
 var domify = require('domify');
 var $ = require('jquery');
-var template = require('widgets/map-widget.hbs');
+var template = require('./map-widget.hbs');
 
 L.Icon.Default.imagePath = leafletConfig.imagePath;
 

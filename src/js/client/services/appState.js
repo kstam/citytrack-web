@@ -1,20 +1,18 @@
 'use strict';
 
-
 var APP_STATE_CHANGED_EVT = 'AppState:Changed';
 var AREA_CHANGED_EVT = 'AppState:AreaChanged';
-var eventBus = require('client/eventBus');
 var utils = require('common/utils');
 var Area = require('model/Area');
 
-var AppState = function() {
+var AppState = function(eventBus) {
 
     var area;
 
     var fireChangeEvent = function(eventName) {
         var args = Array.prototype.splice.call(arguments, 1);
-        eventBus.emitEvent(eventName, args);
-        eventBus.emitEvent(APP_STATE_CHANGED_EVT, args);
+        eventBus.broadcastEvent(eventName, args);
+        eventBus.broadcastEvent(APP_STATE_CHANGED_EVT, args);
     };
 
     var setArea = function(newArea) {
@@ -39,6 +37,4 @@ var AppState = function() {
     };
 };
 
-var appState = new AppState();
-
-module.exports = appState;
+module.exports = AppState;

@@ -1,11 +1,12 @@
 <div class = "headerSection">
     <div class = "logo">
-        <h1>{{title}}</h1>
+        <h1>CityTrack</h1>
     </div>
     <div class = "search">
         <div class="keywordLabel">I am looking for</div>
         <div class="keywordBox"></div>
-        <div class="areaLabel">around</div>
-        <div class="areaDropdown"></div>
+        <div class="areaSelect" ng-controller="AreaSelectController">
+            <selectize options='areas' ng-model="model" config="config"></selectize>
+        </div>
     </div>
 </div>

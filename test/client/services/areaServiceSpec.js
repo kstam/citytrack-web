@@ -2,14 +2,14 @@
 
 var expect = require('../../testCommons/chaiExpect');
 var sinon = require('sinon');
-var areaService = require('client/services/areaService');
+var AreaService = require('client/services/AreaService');
 var utils = require('client/services/areaService');
 var testUtils = require('../../testCommons/testUtils');
 var Area = require('model/Area');
 var constants = require('client/config/constants');
 
-describe('areaService', function() {
-    var server;
+describe('AreaService', function() {
+    var server, areaService;
 
     function respondJsonToRequest(data, requestNumber) {
         requestNumber = requestNumber || 0;
@@ -18,6 +18,10 @@ describe('areaService', function() {
             {"Content-Type": "application/json"},
             JSON.stringify(data));
     }
+
+    beforeEach(function() {
+        areaService = new AreaService();
+    });
 
     it('should be properly defined', function() {
         expect(areaService).to.not.be.null();
@@ -95,7 +99,8 @@ describe('areaService', function() {
             savedNavigator = window.navigator;
             window.navigator = {
                 geolocation: {
-                    getCurrentPosition: function() {}
+                    getCurrentPosition: function() {
+                    }
                 }
             };
         });

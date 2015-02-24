@@ -1,14 +1,22 @@
 'use strict';
 
 var sinon = require('sinon');
-var expect = require('../testCommons/chaiExpect');
-
-var eventBus = require('client/eventBus');
-var testUtils = require('../testCommons/testUtils');
-
-var appState = require('client/appState');
+var expect = require('../../testCommons/chaiExpect');
+var testUtils = require('../../testCommons/testUtils');
+var AppState = require('client/services/AppState');
+var NgEventService = require('client/services/NgEventService');
 
 describe('appState', function() {
+
+    var appState, mockedEventService;
+
+    beforeEach(function() {
+        mockedEventService = {
+            on: sinon.spy(),
+            broadcastEvent: sinon.spy()
+        };
+        appState = new AppState(mockedEventService);
+    });
 
     describe('default state', function() {
         it('should set area to undefined by default', function() {
@@ -39,31 +47,21 @@ describe('appState', function() {
         });
 
         it('should allow setting the area and should emit the corresponding events', function() {
-            eventBus.once(appState.APP_STATE_CHANGED_EVT, appStateChangedListener);
-            eventBus.once(appState.AREA_CHANGED_EVT, areaChangedListener);
-
             var area = testUtils.createRandomArea('Athens');
             appState.setArea(area);
 
             expect(appState.getArea()).to.equal(area);
-            expect(appStateChangedListener).to.have.been.calledWithExactly(area);
-            expect(areaChangedListener).to.have.been.calledWithExactly(area);
+            expect(mockedEventService.broadcastEvent).to.have.callCount(2);
         });
 
         it('should not emit an event twice if the setter is called with an existing value', function() {
             var area = testUtils.createRandomArea('Athens');
             appState.setArea(area);
-
-            eventBus.once(appState.APP_STATE_CHANGED_EVT, appStateChangedListener);
-            eventBus.once(appState.AREA_CHANGED_EVT, areaChangedListener);
-
             appState.setArea(area);
-            expect(appStateChangedListener).to.have.callCount(0);
-            expect(areaChangedListener).to.have.callCount(0);
+            expect(mockedEventService.broadcastEvent).to.have.callCount(2);
 
             appState.setArea(testUtils.cloneArea(area));
-            expect(appStateChangedListener).to.have.callCount(0);
-            expect(areaChangedListener).to.have.callCount(0);
+            expect(mockedEventService.broadcastEvent).to.have.callCount(2);
         });
     });
 });

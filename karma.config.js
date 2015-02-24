@@ -17,7 +17,9 @@ module.exports = function(config) {
         files: [
             'bower_components/es5-shim/es5-shim.js',
             //test files
-            'test/**/*Spec.js'
+            'test/**/*Spec.js',
+            //template files
+            '*.html'
         ],
 
 
@@ -32,11 +34,13 @@ module.exports = function(config) {
         preprocessors: {
             'test/client/**/*.js': [ 'browserify' ],
             'test/common/*.js': [ 'browserify' ],
-            'test/model/*.js': [ 'browserify' ]
+            'test/model/*.js': [ 'browserify' ],
+            '**/*.html': ['html2js']
         },
 
         browserify: {
             debug: true,
+            //bundleDelay: 2000,
             transform: ['debowerify'],
             paths: ['./node_modules', './src/js', './views']
         },
