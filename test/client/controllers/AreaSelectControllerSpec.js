@@ -27,6 +27,11 @@ describe('AreaSelectController', function() {
         expect(scope.currentArea).to.equal(undefined);
     });
 
+    it('should initialize the selectedArea and selectedAreaId to undefined', function() {
+        expect(scope.selectedAreaId).to.equal(undefined);
+        expect(scope.selectedArea).to.equal(undefined);
+    });
+
     describe('initializes areas by querying the area service and', function() {
         it('should load the areas from the server and create a map for them', function() {
             mockServiceForSuccess();
@@ -49,6 +54,16 @@ describe('AreaSelectController', function() {
         scope.$digest();
         expect(scope.areas.length).to.equal(1);
         expect(scope.areas[0].getName()).to.equal('Berlin');
+    });
+
+    it('should update the selectedArea when the selectedAreaId changes', function() {
+        scope.areaMap.Berlin = testUtils.createRandomArea('Berlin');
+        scope.$digest();
+
+        scope.selectedAreaId = 'Berlin';
+        scope.$digest();
+
+        expect(scope.selectedArea).to.equal(scope.areaMap.Berlin);
     });
 
     //Test helpers

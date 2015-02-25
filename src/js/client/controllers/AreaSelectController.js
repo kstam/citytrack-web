@@ -54,6 +54,13 @@ module.exports = function($scope, areaService) {
         });
     }, true);
 
+    $scope.$watch('selectedAreaId', function(current, old) {
+        if (angular.equals(current, old)) {
+            return;
+        }
+        $scope.selectedArea = $scope.areaMap[current];
+    });
+
     var initialize = function() {
         initConfig();
         initAreas();
