@@ -33,48 +33,49 @@ describe('AreaService', function() {
 
         describe('on success', function() {
 
-            it('should return undefined in the first parameter', function() {
-                var callback = sinon.spy();
-                areaService.getAreas(callback);
+            it('should return undefined in the first parameter', function(done) {
+                areaService.getAreas(function(err) {
+                    expect(err).to.equal(undefined);
+                    done();
+                });
                 respondJsonToRequest([]);
-                expect(callback.firstCall.args[0]).to.equal(undefined);
             });
 
-            it('should correctly map the areas returned by the server for empty array', function() {
-                var callback = sinon.spy();
-                areaService.getAreas(callback);
+            it('should correctly map the areas returned by the server for empty array', function(done) {
+                areaService.getAreas(function(err, response) {
+                    expect(response).to.deep.equal([]);
+                    done();
+                });
                 respondJsonToRequest([]);
-                expect(callback.firstCall.args[1]).to.deep.equal([]);
             });
 
-            it('should correctly map the areas returned by the server for non empty array', function() {
-                var callback = sinon.spy();
-                areaService.getAreas(callback);
+            it('should correctly map the areas returned by the server for non empty array', function(done) {
                 var data = [
                     testUtils.createRandomAreaServerResult('Athens')
                 ];
+                areaService.getAreas(function(err, response) {
+                    expect(response[0] instanceof Area).to.be.true();
+                    expect(response[0].getName()).to.equal(data[0].name);
+                    expect(response[0].getCenter().lng).to.equal(data[0].center.lng);
+                    expect(response[0].getCenter().lat).to.equal(data[0].center.lat);
+                    expect(response[0].getBoundingBox().getWest()).to.equal(data[0].bbox.minLng);
+                    expect(response[0].getBoundingBox().getEast()).to.equal(data[0].bbox.maxLng);
+                    expect(response[0].getBoundingBox().getNorth()).to.equal(data[0].bbox.maxLat);
+                    expect(response[0].getBoundingBox().getSouth()).to.equal(data[0].bbox.minLat);
+                    done();
+                });
                 respondJsonToRequest(data);
-
-                var response = callback.firstCall.args[1];
-
-                expect(response[0] instanceof Area).to.be.true();
-                expect(response[0].getName()).to.equal(data[0].name);
-                expect(response[0].getCenter().lng).to.equal(data[0].center.lng);
-                expect(response[0].getCenter().lat).to.equal(data[0].center.lat);
-                expect(response[0].getBoundingBox().getWest()).to.equal(data[0].bbox.minLng);
-                expect(response[0].getBoundingBox().getEast()).to.equal(data[0].bbox.maxLng);
-                expect(response[0].getBoundingBox().getNorth()).to.equal(data[0].bbox.maxLat);
-                expect(response[0].getBoundingBox().getSouth()).to.equal(data[0].bbox.minLat);
             });
         });
 
         describe('on error', function() {
-            it('should return an error in the first parameter', function() {
-                var callback = sinon.spy();
-                areaService.getAreas(callback);
+            it('should return an error in the first parameter', function(done) {
+                areaService.getAreas(function(err) {
+                    expect(err instanceof Error).to.equal(true);
+                    expect(err.message).to.contain("400");
+                    done();
+                });
                 respondWithError(400);
-                expect(callback.firstCall.args[0] instanceof Error).to.equal(true);
-                expect(callback.firstCall.args[0].message).to.contain("400");
             });
         });
     });
