@@ -11,20 +11,8 @@ var constants = require('client/config/constants');
 describe('AreaService', function() {
     var server, areaService;
 
-    function respondJsonToRequest(data, requestNumber) {
-        requestNumber = requestNumber || 0;
-        server.requests[requestNumber].respond(
-            200,
-            {"Content-Type": "application/json"},
-            JSON.stringify(data));
-    }
-
     beforeEach(function() {
         areaService = new AreaService();
-    });
-
-    it('should be properly defined', function() {
-        expect(areaService).to.not.be.null();
     });
 
     describe('getAreas', function() {
@@ -43,43 +31,51 @@ describe('AreaService', function() {
             expect(server.requests[0].url).to.equal('/api/areas');
         });
 
-        it('should correctly map the areas returned by the server', function() {
-            var callback = sinon.spy();
-            areaService.getAreas(callback);
+        describe('on success', function() {
 
-            server.requests[0].respond(
-                200,
-                {"Content-Type": "application/json"},
-                JSON.stringify([]));
+            it('should return undefined in the first parameter', function() {
+                var callback = sinon.spy();
+                areaService.getAreas(callback);
+                respondJsonToRequest([]);
+                expect(callback.firstCall.args[0]).to.equal(undefined);
+            });
 
-            expect(callback.firstCall.args[0]).to.deep.equal([]);
+            it('should correctly map the areas returned by the server for empty array', function() {
+                var callback = sinon.spy();
+                areaService.getAreas(callback);
+                respondJsonToRequest([]);
+                expect(callback.firstCall.args[1]).to.deep.equal([]);
+            });
+
+            it('should correctly map the areas returned by the server for non empty array', function() {
+                var callback = sinon.spy();
+                areaService.getAreas(callback);
+                var data = [
+                    testUtils.createRandomAreaServerResult('Athens')
+                ];
+                respondJsonToRequest(data);
+
+                var response = callback.firstCall.args[1];
+
+                expect(response[0] instanceof Area).to.be.true();
+                expect(response[0].getName()).to.equal(data[0].name);
+                expect(response[0].getCenter().lng).to.equal(data[0].center.lng);
+                expect(response[0].getCenter().lat).to.equal(data[0].center.lat);
+                expect(response[0].getBoundingBox().getWest()).to.equal(data[0].bbox.minLng);
+                expect(response[0].getBoundingBox().getEast()).to.equal(data[0].bbox.maxLng);
+                expect(response[0].getBoundingBox().getNorth()).to.equal(data[0].bbox.maxLat);
+                expect(response[0].getBoundingBox().getSouth()).to.equal(data[0].bbox.minLat);
+            });
         });
 
-        it('should correctly map the areas returned by the server for empty array', function() {
-            var callback = sinon.spy();
-            areaService.getAreas(callback);
-            respondJsonToRequest([]);
-            expect(callback.firstCall.args[0]).to.deep.equal([]);
-        });
-
-        it('should correctly map the areas returned by the server for non empty array', function() {
-            var callback = sinon.spy();
-            areaService.getAreas(callback);
-            var data = [
-                testUtils.createRandomAreaServerResult('Athens')
-            ];
-            respondJsonToRequest(data);
-
-            var response = callback.firstCall.args[0];
-
-            expect(response[0] instanceof Area).to.be.true();
-            expect(response[0].getName()).to.equal(data[0].name);
-            expect(response[0].getCenter().lng).to.equal(data[0].center.lng);
-            expect(response[0].getCenter().lat).to.equal(data[0].center.lat);
-            expect(response[0].getBoundingBox().getWest()).to.equal(data[0].bbox.minLng);
-            expect(response[0].getBoundingBox().getEast()).to.equal(data[0].bbox.maxLng);
-            expect(response[0].getBoundingBox().getNorth()).to.equal(data[0].bbox.maxLat);
-            expect(response[0].getBoundingBox().getSouth()).to.equal(data[0].bbox.minLat);
+        describe('on error', function() {
+            it('should return an error in the first parameter', function() {
+                var callback = sinon.spy();
+                areaService.getAreas(callback);
+                respondWithError(400);
+                expect(callback.firstCall.args[0] instanceof Error).to.equal(true);
+                expect(callback.firstCall.args[0].message).to.contain("400");
+            });
         });
     });
 
@@ -178,4 +174,21 @@ describe('AreaService', function() {
             });
         });
     });
+
+
+    function respondJsonToRequest(data, requestNumber) {
+        requestNumber = requestNumber || 0;
+        server.requests[requestNumber].respond(
+            200,
+            {"Content-Type": "application/json"},
+            JSON.stringify(data));
+    }
+
+    function respondWithError(errorNumber, requestNumber) {
+        errorNumber = errorNumber || 400;
+        requestNumber = requestNumber || 0;
+        server.requests[requestNumber].respond(
+            errorNumber,
+            {"Content-Type": "application/json"}, "");
+    }
 });

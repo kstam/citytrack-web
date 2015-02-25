@@ -26,10 +26,12 @@ var AreaService = function() {
     var getAreas = function getAreas(callback) {
         $.get('/api/areas')
             .done(function(data) {
-                callback(extractAreas(data));
+                callback(undefined, extractAreas(data));
+            })
+            .fail(function(jqXHR) {
+                callback(new Error(jqXHR.statusText + "(" + jqXHR.status + "): " + jqXHR.responseText));
             });
     };
-
 
     var getCurrentArea = function(callback) {
         utils.verify(utils.isFunction(callback), callback + ' is not a valid function');
