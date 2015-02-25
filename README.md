@@ -36,3 +36,11 @@ Also, the server restarts if the backend code is changed. This way the developme
 Finally, open your browser and go to:
 
     ~> http://localhost:3000
+
+
+###FAQ
+
+####Why is leaflet both in Bower and in NPM dependencies?
+
+
+
