@@ -4,16 +4,23 @@
 .headerSection {
     .clearfix();
     padding: @gutter-size;
-    background: #333;
+    background: #525252;
     color: #EEE;
 
     .logo {
         float: left;
         margin-left: 30px;
+        padding-top: 5px;
+
+        .logo-icon {
+            height: 30px;
+        }
 
         h1 {
-            margin: 8px 0;
-            font-size: 26px;
+            display: inline;
+            color: #FFF;
+            margin: 8px 10px;
+            font-size: 30px;
         }
     }
 
@@ -21,7 +28,7 @@
         margin: 4px 0 0 4* @gutter-size;
         float: left;
         font-size: 16px;
-        color: #AAA;
+        color: #333;
         .clearfix();
 
         > div {
@@ -30,12 +37,12 @@
             margin-right: 8px;
         }
 
-        .keywordLabel {
+        .keyword-label {
             margin-top: 10px;
         }
 
-        .keywordBox {
-            .searchDropdown {
+        .keyword-box {
+            .search-dropdown {
                 .selectize-input {
                     cursor: text;
 
@@ -48,12 +55,12 @@
             }
         }
 
-        .areaLabel {
+        .area-label {
             margin-top: 10px;
         }
 
-        .areaDropdown {
-            .searchDropdown {
+        .area-dropdown {
+            .search-dropdown {
                 float:left;
                 width: 150px;
             }
