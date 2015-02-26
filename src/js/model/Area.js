@@ -54,17 +54,12 @@ var Area = function Area(name, center, boundingBox) {
 };
 
 function equalPoints(p1, p2) {
-    return p1.lng === p2.lng &&
-        p1.lat === p2.lat;
+    return p1.equals(p2);
 }
 
 function equalBoundingBoxes(bb1, bb2) {
-    if (bb1.length !== bb2.length) {
-        return false;
-    }
-    return bb1.reduce(function(resultSoFar, point, index) {
-        return resultSoFar && equalPoints(point, bb2[index]);
-    }, true);
+    return bb1.equals(bb2);
 }
+
 
 module.exports = Area;
