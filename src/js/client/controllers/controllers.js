@@ -13,4 +13,8 @@ citytrackControllers.controller('AreaSelectController', ['$scope', 'AreaService'
     require('./AreaSelectController')($scope, areaService);
 }]);
 
+citytrackControllers.controller('MapController', ['$scope', function($scope) {
+    require('./MapController')($scope);
+}]);
+
 module.exports = citytrackControllers;

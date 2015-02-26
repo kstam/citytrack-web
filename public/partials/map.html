@@ -1,2 +1,4 @@
-<div class = "mainMapSection">
+<div ng-controller="MapController">
+    <leaflet id="main-map" maxbounds="maxbounds" defaults="defaults" tiles="tiles" center="center"></leaflet>
+    <div>center: {{center.lat}} -- {{center.lng}}</div>
 </div>
