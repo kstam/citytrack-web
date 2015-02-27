@@ -21,7 +21,6 @@ module.exports = function($scope, appState, eventService) {
     // WATCHERS
 
     var boundsWatcher = function(newBounds, oldBounds) {
-        console.log('boundsWatcher: ', newBounds);
         if (angular.equals(newBounds, oldBounds)) {
             return;
         }
@@ -41,7 +40,6 @@ module.exports = function($scope, appState, eventService) {
         if (newArea && (!newArea.equals($scope.currentView))) {
             var newBbox = newArea.getBoundingBox();
 
-            console.log(newArea.getName(), newArea.getBoundingBox());
             $scope.currentView = newArea;
 
             angular.extend($scope.bounds, {
