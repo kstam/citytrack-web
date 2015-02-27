@@ -16,11 +16,9 @@ config.maxbounds = {
 
 // Start at the center of the world
 config.center = {
-    center: {
-        lat: 0,
-        lng: 0,
-        zoom: 1
-    }
+    lat: 0,
+    lng: 0,
+    zoom: 1
 };
 
 // Configure where leaflet should get the tiles from
@@ -37,5 +35,7 @@ config.tiles = {
 config.defaults = {
     minZoom: 1
 };
+
+config.bounds = {};
 
 module.exports = config;
