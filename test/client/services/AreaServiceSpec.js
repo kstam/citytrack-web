@@ -2,6 +2,7 @@
 
 var expect = require('../../testCommons/chaiExpect');
 var sinon = require('sinon');
+var L = require('leaflet');
 var AreaService = require('client/services/AreaService');
 var utils = require('client/services/areaService');
 var testUtils = require('../../testCommons/testUtils');
@@ -56,8 +57,6 @@ describe('AreaService', function() {
                 areaService.getAreas(function(err, response) {
                     expect(response[0] instanceof Area).to.be.true();
                     expect(response[0].getName()).to.equal(data[0].name);
-                    expect(response[0].getCenter().lng).to.equal(data[0].center.lng);
-                    expect(response[0].getCenter().lat).to.equal(data[0].center.lat);
                     expect(response[0].getBoundingBox().getWest()).to.equal(data[0].bbox.minLng);
                     expect(response[0].getBoundingBox().getEast()).to.equal(data[0].bbox.maxLng);
                     expect(response[0].getBoundingBox().getNorth()).to.equal(data[0].bbox.maxLat);
@@ -143,13 +142,13 @@ describe('AreaService', function() {
                 window.navigator.geolocation.getCurrentPosition.restore();
             });
 
-            it('returns an area with center the same as the position', function(done) {
+            it('returns an area with a bounding box that contains the position', function(done) {
                 areaService.getCurrentArea(function(err, area) {
                     expect(err).to.be.undefined();
-                    var center = area.getCenter();
+                    var bbox = area.getBoundingBox();
                     expect(area.getName()).to.equal(constants.CURRENT_AREA_ID);
-                    expect(center.lat).to.equal(mockedPosition.coords.latitude);
-                    expect(center.lng).to.equal(mockedPosition.coords.longitude);
+                    expect(bbox.contains(L.latLng(mockedPosition.coords.latitude, mockedPosition.coords.longitude)))
+                        .to.equal(true);
                     done();
                 });
             });

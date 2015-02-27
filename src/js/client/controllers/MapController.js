@@ -9,9 +9,8 @@ var L = require('leaflet');
 module.exports = function($scope, appState, eventService) {
 
     var initCurrentView = function() {
-        var center = L.latLng(config.center);
         var bounds = L.latLngBounds(config.maxbounds.southWest, config.maxbounds.northEast);
-        $scope.currentView = new Area(constants.CURRENT_VIEW_ID, center, bounds);
+        $scope.currentView = new Area(constants.CURRENT_VIEW_ID, bounds);
         appState.setArea($scope.currentView);
     };
 
@@ -21,16 +20,6 @@ module.exports = function($scope, appState, eventService) {
 
     // WATCHERS
 
-    var centerWatcher = function(newCenter, oldCenter) {
-        console.log('centerWatcher: ', newCenter);
-        if (angular.equals(newCenter, oldCenter)) {
-            return;
-        }
-        var cv = $scope.currentView;
-        $scope.currentView = new Area(cv.getName(), L.latLng(newCenter), cv.getBoundingBox());
-        appState.setArea($scope.currentView);
-    };
-
     var boundsWatcher = function(newBounds, oldBounds) {
         console.log('boundsWatcher: ', newBounds);
         if (angular.equals(newBounds, oldBounds)) {
@@ -38,22 +27,20 @@ module.exports = function($scope, appState, eventService) {
         }
         var cv = $scope.currentView;
         var newBbox = L.latLngBounds($scope.bounds.southWest, $scope.bounds.northEast);
-        $scope.currentView = new Area(cv.getName(), cv.getCenter(), newBbox);
+        $scope.currentView = new Area(cv.getName(), newBbox);
         appState.setArea($scope.currentView);
     };
 
     var initWatchers = function() {
-        $scope.$watch('center', centerWatcher, true);
         $scope.$watch('bounds', boundsWatcher, true);
     };
 
     // LISTENERS
 
     var areaChangedListener = function(event, newArea) {
-        var newCenter = newArea.getCenter();
         var newBbox = newArea.getBoundingBox();
 
-        console.log(newArea.getName(), newArea.getCenter(), newArea.getBoundingBox());
+        console.log(newArea.getName(), newArea.getBoundingBox());
         $scope.currentView = newArea;
 
         angular.extend($scope.bounds, {

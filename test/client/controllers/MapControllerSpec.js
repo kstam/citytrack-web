@@ -45,22 +45,12 @@ describe('MapController', function() {
         it('should define the initial view based on the default values', function() {
             expect(scope.currentView).not.to.equal(undefined);
             expect(scope.currentView.getName()).to.equal(constants.CURRENT_VIEW_ID);
-            expect(scope.currentView.getCenter().equals(L.latLng(config.center))).to.equal(true);
             expect(scope.currentView.getBoundingBox()
                 .equals(L.latLngBounds(config.maxbounds.southWest, config.maxbounds.northEast))).to.equal(true);
         });
     });
 
-    describe('listens for changes in center and bounds and', function() {
-        it('should update the center', function() {
-            scope.$digest();
-            scope.center = {lat: 15, lng: 10};
-            scope.$digest();
-
-            expect(scope.currentView.getCenter().lat).to.equal(scope.center.lat);
-            expect(scope.currentView.getCenter().lng).to.equal(scope.center.lng);
-        });
-
+    describe('listens for changes in bounds and', function() {
         it('should update the bounding box', function() {
             scope.$digest();
             scope.bounds = {southWest: {lat: 10, lng: 11}, northEast: {lat: 15, lng: 16}};
@@ -75,10 +65,6 @@ describe('MapController', function() {
         it('should update the appState with the new current view', function() {
             scope.$digest();
             expect(appState.getArea().equals(scope.currentView)).to.equal(true);
-            scope.center.lat = 20;
-            scope.center.lng = 30;
-            scope.$digest();
-            expect(appState.getArea().equals(scope.currentView)).to.equal(true);
 
             scope.bounds = {southWest: {lat: 10, lng: 11}, northEast: {lat: 15, lng: 16}};
             scope.$digest();
@@ -87,15 +73,12 @@ describe('MapController', function() {
     });
 
     describe('listens for changes in the AppState and', function() {
-        it('should update the currentView, center and bounds variables', function() {
+        it('should update the currentView and bounds variables', function() {
             scope.$digest();
             appState.setArea(testUtils.createRandomArea('Athens'));
             scope.$digest();
 
             expect(scope.currentView.equals(appState.getArea())).to.equal(true);
-
-            expect(scope.center.lng).to.equal(scope.currentView.getCenter().lng);
-            expect(scope.center.lat).to.equal(scope.currentView.getCenter().lat);
 
             expect(scope.bounds.southWest.lat).to.equal(scope.currentView.getBoundingBox().getSouth());
             expect(scope.bounds.southWest.lng).to.equal(scope.currentView.getBoundingBox().getWest());

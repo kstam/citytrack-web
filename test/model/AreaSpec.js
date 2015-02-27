@@ -14,38 +14,31 @@ describe('Area', function() {
 
         it('should not allow invocation without the new keyword', function() {
             expect(function() {
-                Area(name, center, boundingBox);
+                Area(name, boundingBox);
             }).to.throw(TypeError);
         });
 
-        it('should accept a name, center and bounding box arguments', function() {
-            var area = new Area(name, center, boundingBox);
+        it('should accept name and bounding box arguments', function() {
+            var area = new Area(name, boundingBox);
             expect(area.getName()).to.be.equal(name);
-            expect(area.getCenter()).to.be.equal(center);
             expect(area.getBoundingBox()).to.be.equal(boundingBox);
         });
 
         it('should not a accept a non string name', function() {
             expect(function() {
-                new Area({}, center, boundingBox);
+                new Area({}, boundingBox);
             }).to.throw(Error);
         });
 
         it('should not a accept an empty string name', function() {
             expect(function() {
-                new Area('', center, boundingBox);
-            }).to.throw(Error);
-        });
-
-        it('should not a accept null center', function() {
-            expect(function() {
-                new Area(name, null, boundingBox);
+                new Area('', boundingBox);
             }).to.throw(Error);
         });
 
         it('should not a accept null bounding box', function() {
             expect(function() {
-                new Area(name, center, null);
+                new Area(name, null);
             }).to.throw(Error);
         });
     });

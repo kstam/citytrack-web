@@ -9,8 +9,7 @@ testUtils.createRandomArea = function(name) {
     var lat = Math.floor(Math.random() * 161 * 1024) / 1024 - 80;
     var lng = Math.floor(Math.random() * 341 * 1024) / 1024 - 170;
 
-    return new Area(name, L.latLng(lat, lng),
-        L.latLngBounds(L.latLng(lat - 10, lng - 10), L.latLng(lat + 10, lng + 10)));
+    return new Area(name, L.latLngBounds(L.latLng(lat - 10, lng - 10), L.latLng(lat + 10, lng + 10)));
 };
 
 testUtils.createRandomAreaServerResult = function(name) {
@@ -27,7 +26,7 @@ testUtils.createRandomAreaServerResult = function(name) {
 
 
 testUtils.cloneArea = function(area) {
-    return new Area(area.getName(), area.getCenter(), area.getBoundingBox());
+    return new Area(area.getName(), area.getBoundingBox());
 };
 
 module.exports = testUtils;
