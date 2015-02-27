@@ -2,7 +2,7 @@
 
 var angular = require('../shims/angular');
 
-module.exports = function($scope, areaService) {
+module.exports = function($scope, areaService, appState, eventService) {
 
     var initConfig = function() {
         $scope.config = {
@@ -44,7 +44,9 @@ module.exports = function($scope, areaService) {
         });
     };
 
-    $scope.$watch('areaMap', function(current, old) {
+    // WATCHERS
+
+    var areaMapWatcher = function(current, old) {
         if (angular.equals(current, old)) {
             return;
         }
@@ -52,19 +54,43 @@ module.exports = function($scope, areaService) {
         angular.forEach(current, function(value) {
             $scope.areas.push(value);
         });
-    }, true);
+    };
 
-    $scope.$watch('selectedAreaId', function(current, old) {
+    var selectedAreaIdWathcer = function(current, old) {
         if (angular.equals(current, old)) {
             return;
         }
         $scope.selectedArea = $scope.areaMap[current];
-    });
+        appState.setArea($scope.selectedArea);
+    };
+
+    var initWatchers = function() {
+        $scope.$watch('areaMap', areaMapWatcher, true);
+        $scope.$watch('selectedAreaId', selectedAreaIdWathcer);
+    };
+
+    // EVENT LISTENERS
+
+    var areaChangedListener = function(event, newArea) {
+        if (!newArea.equals($scope.selectedArea)) {
+            $scope.selectedAreaId = newArea.getName();
+            var mapEntry = $scope.areaMap[newArea.getName()];
+            if (typeof mapEntry !== 'undefined' && (!mapEntry.equals(newArea))) {
+                $scope.areaMap[newArea.getName()] = newArea; //update the map entry if it got updated
+            }
+        }
+    };
+
+    var initListeners = function() {
+        eventService.on(appState.AREA_CHANGED_EVT, areaChangedListener);
+    };
 
     var initialize = function() {
         initConfig();
         initAreas();
         initCurrentArea();
+        initWatchers();
+        initListeners();
     };
 
     initialize();

@@ -10,9 +10,9 @@ citytrackControllers.controller('CitytrackMainController', ['$scope',
         require('./CitytrackMainController')($scope);
     }]);
 
-citytrackControllers.controller('AreaSelectController', ['$scope', 'AreaService',
-    function($scope, areaService) {
-        require('./AreaSelectController')($scope, areaService);
+citytrackControllers.controller('AreaSelectController', ['$scope', 'AreaService', 'AppState', 'NgEventService',
+    function($scope, areaService, appState, eventService) {
+        require('./AreaSelectController')($scope, areaService, appState, eventService);
     }]);
 
 citytrackControllers.controller('MapController', ['$scope', 'AppState', 'NgEventService',
