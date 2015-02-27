@@ -38,21 +38,23 @@ module.exports = function($scope, appState, eventService) {
     // LISTENERS
 
     var areaChangedListener = function(event, newArea) {
-        var newBbox = newArea.getBoundingBox();
+        if (newArea && (!newArea.equals($scope.currentView))) {
+            var newBbox = newArea.getBoundingBox();
 
-        console.log(newArea.getName(), newArea.getBoundingBox());
-        $scope.currentView = newArea;
+            console.log(newArea.getName(), newArea.getBoundingBox());
+            $scope.currentView = newArea;
 
-        angular.extend($scope.bounds, {
-            northEast: {
-                lat: newBbox.getNorth(),
-                lng: newBbox.getEast()
-            },
-            southWest: {
-                lat:newBbox.getSouth(),
-                lng:newBbox.getWest()
-            }
-        });
+            angular.extend($scope.bounds, {
+                northEast: {
+                    lat: newBbox.getNorth(),
+                    lng: newBbox.getEast()
+                },
+                southWest: {
+                    lat:newBbox.getSouth(),
+                    lng:newBbox.getWest()
+                }
+            });
+        }
     };
 
     var initEventListeners = function() {

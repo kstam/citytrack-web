@@ -72,7 +72,7 @@ module.exports = function($scope, areaService, appState, eventService) {
     // EVENT LISTENERS
 
     var areaChangedListener = function(event, newArea) {
-        if (!newArea.equals($scope.selectedArea)) {
+        if (newArea && (!newArea.equals($scope.selectedArea))) {
             $scope.selectedAreaId = newArea.getName();
             var mapEntry = $scope.areaMap[newArea.getName()];
             if (typeof mapEntry !== 'undefined' && (!mapEntry.equals(newArea))) {
