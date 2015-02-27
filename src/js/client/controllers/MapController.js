@@ -19,7 +19,10 @@ module.exports = function($scope, appState, eventService) {
         angular.extend($scope, config);
     };
 
+    // WATCHERS
+
     var centerWatcher = function(newCenter, oldCenter) {
+        console.log('centerWatcher: ', newCenter);
         if (angular.equals(newCenter, oldCenter)) {
             return;
         }
@@ -29,6 +32,7 @@ module.exports = function($scope, appState, eventService) {
     };
 
     var boundsWatcher = function(newBounds, oldBounds) {
+        console.log('boundsWatcher: ', newBounds);
         if (angular.equals(newBounds, oldBounds)) {
             return;
         }
@@ -43,29 +47,29 @@ module.exports = function($scope, appState, eventService) {
         $scope.$watch('bounds', boundsWatcher, true);
     };
 
-    var initEventListeners = function() {
-        eventService.on(appState.AREA_CHANGED_EVT, function(event, newArea) {
-            var newCenter = newArea.getCenter();
-            var newBbox = newArea.getBoundingBox();
+    // LISTENERS
 
-            $scope.currentView = newArea;
+    var areaChangedListener = function(event, newArea) {
+        var newCenter = newArea.getCenter();
+        var newBbox = newArea.getBoundingBox();
 
-            angular.extend($scope.center, {
-                lat: newCenter.lat,
-                lng: newCenter.lng
-            });
+        console.log(newArea.getName(), newArea.getCenter(), newArea.getBoundingBox());
+        $scope.currentView = newArea;
 
-            angular.extend($scope.bounds, {
-                northEast: {
-                    lat: newBbox.getNorth(),
-                    lng: newBbox.getEast()
-                },
-                southWest: {
-                    lat:newBbox.getSouth(),
-                    lng:newBbox.getWest()
-                }
-            });
+        angular.extend($scope.bounds, {
+            northEast: {
+                lat: newBbox.getNorth(),
+                lng: newBbox.getEast()
+            },
+            southWest: {
+                lat:newBbox.getSouth(),
+                lng:newBbox.getWest()
+            }
         });
+    };
+
+    var initEventListeners = function() {
+        eventService.on(appState.AREA_CHANGED_EVT, areaChangedListener);
     };
 
     var initialize = function() {
