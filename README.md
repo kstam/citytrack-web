@@ -24,7 +24,7 @@ You are ready to start the server.
 
 For **Production**
 
-    ~> node app.js
+    ~> node bin/www
 
 For **Development**
 
