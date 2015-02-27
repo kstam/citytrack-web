@@ -8,6 +8,7 @@ bower_components
 public/js
 public/css
 public/img/vendor/
+build
 
 ## IntelliJ
 .idea

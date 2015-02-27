@@ -7,3 +7,10 @@ gulp.task('test:client', function(done) {
         singleRun: true
     }, done);
 });
+
+gulp.task('test:jenkins', function(done) {
+   karma.start({
+       configFile: __dirname + '/../karma.config.jenkins.js',
+       singleRun: true
+   }, done);
+});
