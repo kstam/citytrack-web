@@ -12,10 +12,10 @@ var Area = function Area(name, center, boundingBox) {
         if(!utils.hasText(name)) {
             throw new TypeError('name should be a string');
         }
-        if(!utils.isNotNullOrUndefined(center)) {
+        if(!isValidPoint(center)) {
             throw new Error('center should be LatLng object');
         }
-        if(!utils.isNotNullOrUndefined(boundingBox)) {
+        if(!isValidBbox(boundingBox)) {
             throw new Error('bbox should be a LatLngBounds object');
         }
     };
@@ -52,6 +52,20 @@ var Area = function Area(name, center, boundingBox) {
 
     validateArguments();
 };
+
+function isValidPoint(p) {
+    return utils.isNotNullOrUndefined(p) &&
+            utils.isNotNullOrUndefined(p.lng) &&
+            utils.isNotNullOrUndefined(p.lat) &&
+            utils.isFunction(p.equals);
+}
+
+function isValidBbox(bb) {
+    return  utils.isNotNullOrUndefined(bb) &&
+            utils.isFunction(bb.getNorthEast) &&
+            utils.isFunction(bb.getSouthWest) &&
+            utils.isFunction(bb.equals)
+}
 
 function equalPoints(p1, p2) {
     return p1.equals(p2);
