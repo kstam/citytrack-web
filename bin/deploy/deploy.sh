@@ -14,15 +14,12 @@ echo "Connecting to server to deploy"
 ssh  kstam@83.212.114.165 -p 10000 << EOF
 echo "Unzipping content"
 cd deployment
-mkdir -p web
+mkdir -p citytrack-web
 gunzip web.tar.gz
-tar -xf web.tar -C web/
+tar -xf web.tar -C /var/www/citytrack-web/
 
 echo "Installing and building"
-cd web
+cd /var/www/citytrack-web
 npm install
 gulp
-
-echo "Launching..."
-node bin/www
 EOF
