@@ -42,6 +42,7 @@
     "gulp-util": "^3.0.1",
     "handlebars": "^2.0.0",
     "hbsfy": "^2.2.1",
+    "jshint-checkstyle-file-reporter": "0.0.1",
     "jshint-stylish": "^1.0.0",
     "karma": "^0.12.28",
     "karma-browserify": "^3.0.3",
