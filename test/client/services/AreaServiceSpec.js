@@ -4,7 +4,6 @@ var expect = require('../../testCommons/chaiExpect');
 var sinon = require('sinon');
 var L = require('leaflet');
 var AreaService = require('client/services/AreaService');
-var utils = require('client/services/areaService');
 var testUtils = require('../../testCommons/testUtils');
 var Area = require('model/Area');
 var constants = require('client/config/constants');

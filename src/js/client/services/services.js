@@ -15,7 +15,7 @@ services.factory('AppState', ['NgEventService', function(eventService) {
 }]);
 
 services.factory('AreaService', function() {
-    var AreaService = require('./TheAreaService');
+    var AreaService = require('./AreaService');
     return new AreaService();
 });
 
