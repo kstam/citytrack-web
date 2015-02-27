@@ -20,7 +20,7 @@ module.exports = function($scope, areaService, appState, eventService) {
         $scope.areas = [];
         areaService.getAreas(function(err, areas) {
             if (err instanceof Error) {
-                //TODO
+                //TODO -
                 return;
             }
             $scope.$apply(function() {
@@ -34,7 +34,7 @@ module.exports = function($scope, areaService, appState, eventService) {
     var initCurrentArea = function() {
         areaService.getCurrentArea(function(err, currentArea) {
             if (err instanceof Error) {
-                //TODO;
+                //TODO -;
                 return;
             }
             $scope.$apply(function() {
