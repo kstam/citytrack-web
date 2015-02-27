@@ -41,7 +41,7 @@ var AreaService = function() {
         }
 
         function onSuccess(position) {
-            var center = latLng(position.coords.latitude, position.coords.longitude)
+            var center = latLng(position.coords.latitude, position.coords.longitude);
             var boundingBox = latLngBounds(center, center);
             callback(undefined, new Area(constants.CURRENT_AREA_ID, boundingBox));
         }

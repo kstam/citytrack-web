@@ -48,7 +48,7 @@ function isValidBbox(bb) {
     return  utils.isNotNullOrUndefined(bb) &&
             utils.isFunction(bb.getNorthEast) &&
             utils.isFunction(bb.getSouthWest) &&
-            utils.isFunction(bb.equals)
+            utils.isFunction(bb.equals);
 }
 
 function equalBoundingBoxes(bb1, bb2) {
