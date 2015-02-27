@@ -10,9 +10,10 @@ var AppState = function(eventBus) {
     var area;
 
     var fireChangeEvent = function(eventName) {
-        var args = Array.prototype.splice.call(arguments, 1);
-        eventBus.broadcastEvent(eventName, args);
-        eventBus.broadcastEvent(APP_STATE_CHANGED_EVT, args);
+        var args = Array.prototype.splice.call(arguments, 0);
+        eventBus.broadcastEvent.apply(eventBus, args);
+        args[0] = APP_STATE_CHANGED_EVT;
+        eventBus.broadcastEvent.apply(eventBus, args);
     };
 
     var setArea = function(newArea) {
