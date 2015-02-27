@@ -10,7 +10,7 @@ services.factory('NgEventService', ['$rootScope', function($rootScope) {
 }]);
 
 services.factory('AppState', ['NgEventService', function(eventService) {
-    var AppState = require('./TheAppState');
+    var AppState = require('./AppState');
     return new AppState(eventService);
 }]);
 
