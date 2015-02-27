@@ -27,7 +27,7 @@ module.exports = function($scope, appState, eventService) {
         }
         var cv = $scope.currentView;
         var newBbox = L.latLngBounds($scope.bounds.southWest, $scope.bounds.northEast);
-        $scope.currentView = new Area(cv.getName(), newBbox);
+        $scope.currentView = new Area(constants.CURRENT_VIEW_ID, newBbox);
         appState.setArea($scope.currentView);
     };
 

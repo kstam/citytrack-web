@@ -62,6 +62,15 @@ describe('MapController', function() {
             expect(scope.currentView.getBoundingBox().getSouth()).to.equal(scope.bounds.southWest.lat);
         });
 
+        it('should update the name back to current view', function() {
+            appState.setArea(testUtils.createRandomArea('Athens'));
+            scope.$digest();
+            scope.bounds = {southWest: {lat: 10, lng: 11}, northEast: {lat: 15, lng: 16}};
+            scope.$digest();
+
+            expect(scope.currentView.getName()).to.equal(constants.CURRENT_VIEW_ID);
+        });
+
         it('should update the appState with the new current view', function() {
             scope.$digest();
             expect(appState.getArea().equals(scope.currentView)).to.equal(true);
