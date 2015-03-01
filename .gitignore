@@ -4,6 +4,12 @@ node_modules
 ## Bower
 bower_components
 
+## log fiels and forever files
+logs/forever.err
+logs/forever.out
+logs/node.log
+pids/app.pid
+
 ## Project Built Files
 public/js
 public/css
