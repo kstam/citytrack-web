@@ -15,7 +15,7 @@ ssh  kstam@83.212.114.165 -p 10000 << EOF
 echo "Unzipping content"
 cd deployment
 mkdir -p citytrack-web
-gunzip web.tar.gz
+gunzip -f web.tar.gz
 tar -xf web.tar -C /var/www/citytrack-web/
 
 echo "Installing and building"

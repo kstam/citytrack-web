@@ -3,8 +3,11 @@
  */
 'use strict';
 
+// Set the port where the app will listen
+process.env.PORT = 8090;
+
 var forever = require('forever'),
-    child = new(forever.Monitor)('app.js', {
+    child = new(forever.Monitor)('bin/start.js', {
         'silent': false,
         'pidFile': 'pids/app.pid',
         'watch': true,
