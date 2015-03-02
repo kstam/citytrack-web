@@ -25,4 +25,10 @@ citytrackControllers.controller('KeywordController', ['$scope', 'AppState', 'NgE
         require('./KeywordController')($scope, appState, eventService);
     }]);
 
+
+citytrackControllers.controller('SearchButtonController', ['$scope', 'AppState', 'NgEventService', 'PoiService',
+    function($scope, appState, eventService, poiService) {
+        require('./SearchButtonController')($scope, appState, eventService, poiService);
+    }]);
+
 module.exports = citytrackControllers;

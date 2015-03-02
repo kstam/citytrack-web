@@ -47,37 +47,43 @@
             }
         }
 
-        .selectize-input {
-
-            min-width: 200px;
-
-            input {
-                color: #fff;
-            }
-        }
-
-        .keyword-box {
-            .search-dropdown {
-                .selectize-input {
-                    cursor: text;
-
-                    &:after, &::after {
-                        display: none;
-                    }
+        .area-select {
+            .selectize-input {
+                min-width: 200px;
+                input {
+                    color: #fff;
                 }
-                float:left;
-                width: 150px;
+            }
+
+            .area-label {
+                margin-top: 10px;
+            }
+
+            .area-dropdown {
+                .search-dropdown {
+                    float:left;
+                    width: 150px;
+                }
             }
         }
 
-        .area-label {
-            margin-top: 10px;
-        }
+        .search-button {
+            a.active {
+                cursor: pointer;
+                color: #0e0e0e;
+            }
+            a.inactive {
+                cursor: default;
+                color: #727272;
+            }
 
-        .area-dropdown {
-            .search-dropdown {
-                float:left;
-                width: 150px;
+            i {
+                font-size: 25px;
+                padding: 6px;
+
+                &.fa-spin {
+                    color: #0e0e0e;
+                }
             }
         }
     }
