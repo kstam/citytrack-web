@@ -56,6 +56,7 @@ describe('AreaService', function() {
                 areaService.getAreas(function(err, response) {
                     expect(response[0] instanceof Area).to.be.true();
                     expect(response[0].getName()).to.equal(data[0].name);
+                    expect(response[0].getType()).to.equal(Area.STATIC_TYPE);
                     expect(response[0].getBoundingBox().getWest()).to.equal(data[0].bbox.minLng);
                     expect(response[0].getBoundingBox().getEast()).to.equal(data[0].bbox.maxLng);
                     expect(response[0].getBoundingBox().getNorth()).to.equal(data[0].bbox.maxLat);
@@ -146,6 +147,7 @@ describe('AreaService', function() {
                     expect(err).to.be.undefined();
                     var bbox = area.getBoundingBox();
                     expect(area.getName()).to.equal(constants.CURRENT_AREA_ID);
+                    expect(area.getType()).to.equal(Area.INTERACTIVE_TYPE);
                     expect(bbox.contains(L.latLng(mockedPosition.coords.latitude, mockedPosition.coords.longitude)))
                         .to.equal(true);
                     done();

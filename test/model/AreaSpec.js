@@ -11,34 +11,41 @@ describe('Area', function() {
     describe('constructor', function() {
         var name = 'Athens';
         var boundingBox = latLngBounds(latLng(10, 40), latLng(30, 60));
+        var type = latLngBounds(latLng(10, 40), latLng(30, 60));
 
         it('should not allow invocation without the new keyword', function() {
             expect(function() {
-                Area(name, boundingBox);
+                Area(name, boundingBox, Area.STATIC_TYPE);
             }).to.throw(TypeError);
         });
 
         it('should accept name and bounding box arguments', function() {
-            var area = new Area(name, boundingBox);
+            var area = new Area(name, boundingBox, Area.INTERACTIVE_TYPE);
             expect(area.getName()).to.be.equal(name);
             expect(area.getBoundingBox()).to.be.equal(boundingBox);
         });
 
-        it('should not a accept a non string name', function() {
+        it('should not accept a non string name', function() {
             expect(function() {
                 new Area({}, boundingBox);
             }).to.throw(Error);
         });
 
-        it('should not a accept an empty string name', function() {
+        it('should not accept an empty string name', function() {
             expect(function() {
                 new Area('', boundingBox);
             }).to.throw(Error);
         });
 
-        it('should not a accept null bounding box', function() {
+        it('should not accept null bounding box', function() {
             expect(function() {
                 new Area(name, null);
+            }).to.throw(Error);
+        });
+
+        it('should not accept an invalid type', function() {
+            expect(function() {
+                new Area(name, boundingBox, 'wrong')
             }).to.throw(Error);
         });
     });

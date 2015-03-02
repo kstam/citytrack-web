@@ -11,7 +11,7 @@ var AreaService = function() {
 
     var extractArea = function(a) {
         var bbox = latLngBounds(latLng(a.bbox.minLat, a.bbox.minLng), latLng(a.bbox.maxLat, a.bbox.maxLng));
-        return new Area(a.name, bbox);
+        return new Area(a.name, bbox, Area.STATIC_TYPE);
     };
 
     var extractAreas = function(areasResponse) {
@@ -43,7 +43,7 @@ var AreaService = function() {
         function onSuccess(position) {
             var center = latLng(position.coords.latitude, position.coords.longitude);
             var boundingBox = latLngBounds(center, center);
-            callback(undefined, new Area(constants.CURRENT_AREA_ID, boundingBox));
+            callback(undefined, new Area(constants.CURRENT_AREA_ID, boundingBox, Area.INTERACTIVE_TYPE));
         }
 
         function onError(error) {

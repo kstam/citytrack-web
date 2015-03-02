@@ -6,6 +6,7 @@ var constants = require('client/config/constants');
 var config = require('client/config/leafletConfig');
 var controllers = require('client/controllers/controllers');
 var AppState = require('client/services/AppState');
+var Area = require('model/Area');
 var NgEventService = require('client/services/NgEventService');
 var L = require('leaflet');
 var testUtils = require('../../testCommons/testUtils');
@@ -47,6 +48,7 @@ describe('MapController', function() {
             expect(scope.currentView.getName()).to.equal(constants.CURRENT_VIEW_ID);
             expect(scope.currentView.getBoundingBox()
                 .equals(L.latLngBounds(config.maxbounds.southWest, config.maxbounds.northEast))).to.equal(true);
+            expect(scope.currentView.getType()).to.equal(Area.INTERACTIVE_TYPE);
         });
     });
 
@@ -69,6 +71,15 @@ describe('MapController', function() {
             scope.$digest();
 
             expect(scope.currentView.getName()).to.equal(constants.CURRENT_VIEW_ID);
+        });
+
+        it('should set the new area type to INTERACTIVE', function() {
+            appState.setArea(testUtils.createRandomArea('Athens'));
+            scope.$digest();
+            scope.bounds = {southWest: {lat: 10, lng: 11}, northEast: {lat: 15, lng: 16}};
+            scope.$digest();
+
+            expect(scope.currentView.getType()).to.equal(Area.INTERACTIVE_TYPE);
         });
 
         it('should update the appState with the new current view', function() {

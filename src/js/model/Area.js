@@ -2,7 +2,7 @@
 
 var utils = require('../common/utils');
 
-var Area = function Area(name, boundingBox) {
+var Area = function Area(name, boundingBox, type) {
 
     if (! (this instanceof Area)) {
         throw new TypeError('Invalid constructor invocation. Did you forget the new keyword?');
@@ -15,10 +15,14 @@ var Area = function Area(name, boundingBox) {
         if(!isValidBbox(boundingBox)) {
             throw new Error('bbox should be a LatLngBounds object');
         }
+        if(!(type === Area.INTERACTIVE_TYPE || type === Area.STATIC_TYPE)) {
+            throw new Error('type should be a non-empty string');
+        }
     };
 
     this.name = name;
     this.bbox = boundingBox;
+    this.type = type;
 
     this.getName = function() {
         return this.name;
@@ -26,6 +30,10 @@ var Area = function Area(name, boundingBox) {
 
     this.getBoundingBox = function() {
         return this.bbox;
+    };
+
+    this.getType = function() {
+        return this.type;
     };
 
     this.equals = function(that) {
@@ -63,5 +71,8 @@ function isValidBbox(bb) {
 function equalBoundingBoxes(bb1, bb2) {
     return bb1.equals(bb2);
 }
+
+Area.STATIC_TYPE = 'static';
+Area.INTERACTIVE_TYPE = 'interactive';
 
 module.exports = Area;

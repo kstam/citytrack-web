@@ -10,7 +10,7 @@ module.exports = function($scope, appState, eventService) {
 
     var initCurrentView = function() {
         var bounds = L.latLngBounds(config.maxbounds.southWest, config.maxbounds.northEast);
-        $scope.currentView = new Area(constants.CURRENT_VIEW_ID, bounds);
+        $scope.currentView = new Area(constants.CURRENT_VIEW_ID, bounds, Area.INTERACTIVE_TYPE);
         appState.setArea($scope.currentView);
     };
 
@@ -25,7 +25,7 @@ module.exports = function($scope, appState, eventService) {
             return;
         }
         var newBbox = L.latLngBounds($scope.bounds.southWest, $scope.bounds.northEast);
-        $scope.currentView = new Area(constants.CURRENT_VIEW_ID, newBbox);
+        $scope.currentView = new Area(constants.CURRENT_VIEW_ID, newBbox, Area.INTERACTIVE_TYPE);
         appState.setArea($scope.currentView);
     };
 
