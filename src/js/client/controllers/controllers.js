@@ -20,4 +20,9 @@ citytrackControllers.controller('MapController', ['$scope', 'AppState', 'NgEvent
         require('./MapController')($scope, appState, eventService);
     }]);
 
+citytrackControllers.controller('KeywordController', ['$scope', 'AppState', 'NgEventService',
+    function($scope, appState, eventService) {
+        require('./KeywordController')($scope, appState, eventService);
+    }]);
+
 module.exports = citytrackControllers;
