@@ -5,6 +5,7 @@ var AREA_CHANGED_EVT = 'AppState:AreaChanged';
 var KEYWORD_CHANGED_EVT = 'AppState:KeywordChanged';
 var utils = require('common/utils');
 var Area = require('model/Area');
+var Params = require('model/Params');
 
 var AppState = function(eventBus) {
 
@@ -54,11 +55,19 @@ var AppState = function(eventBus) {
         return keyword;
     };
 
+    var getParams = function() {
+        return new Params.Builder()
+            .withKeyword(keyword)
+            .withArea(area)
+            .build();
+    };
+
     return {
         setArea: setArea,
         getArea: getArea,
         setKeyword: setKeyword,
         getKeyword: getKeyword,
+        getParams: getParams,
         APP_STATE_CHANGED_EVT: APP_STATE_CHANGED_EVT,
         AREA_CHANGED_EVT: AREA_CHANGED_EVT,
         KEYWORD_CHANGED_EVT: KEYWORD_CHANGED_EVT

@@ -5,6 +5,7 @@ var expect = require('../../testCommons/chaiExpect');
 var testUtils = require('../../testCommons/testUtils');
 var AppState = require('client/services/AppState');
 var NgEventService = require('client/services/NgEventService');
+var Params = require('model/Params');
 
 describe('appState', function() {
 
@@ -83,6 +84,16 @@ describe('appState', function() {
             expect(function() {
                 appState.setKeyword(undefined);
             }).to.throw(Error);
+        });
+    });
+
+    describe('getParams', function() {
+        it('should return a params object representing the current appState', function() {
+            expect(appState.getParams().equals(new Params(''))).to.be.true();
+
+            var area = testUtils.createRandomArea('Athens');
+            appState.setArea(area);
+            expect(appState.getParams().equals(new Params('', area))).to.be.true();
         });
     });
 });
