@@ -13,27 +13,8 @@ module.exports = function($resource) {
     });
 
     var validateParams = function(params) {
-        if (!(utils.isString(params.keyword) && params.keyword !== '')) {
-            throw new Error('[' + params.keyword + '] is not a valid keyword');
-        }
-        if (!(params.area instanceof Area)) {
-            throw new Error('[' + params.area + '] is not a valid area');
-        }
-
-        if (!utils.optional(params.page)(utils.isInteger)) {
-            throw new Error('[' + params.page + '] is not a valid page');
-        }
-
-        if (!utils.optional(params.pageSize)(utils.isInteger)) {
-            throw new Error('[' + params.pageSize + '] is not a valid pageSize');
-        }
-
-        if (!utils.optional(params.sources)(utils.isArray)) {
-            throw new Error('[' + params.sources + '] is not a valid sources list');
-        }
-
-        if (!utils.optional(params.categories)(utils.isArray)) {
-            throw new Error('[' + params.categories + '] is not a valid sources list');
+        if(!params.isValid()) {
+            throw new Error('Attempted to call the PoiService with invalid parameters');
         }
     };
 

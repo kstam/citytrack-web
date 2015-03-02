@@ -6,6 +6,7 @@ var ngResource = require('angular-resource');
 var testUtils = require('../../testCommons/testUtils');
 var PoiService = require('client/services/PoiService');
 var mockedData = require('../../data/poiResponse');
+var Params = require('model/Params');
 
 describe('PoiService', function() {
     var httpBackend, poiService;
@@ -26,30 +27,18 @@ describe('PoiService', function() {
     describe('getPois', function() {
         it('should call the "pois" rest endpoint', function() {
             httpBackend.expectGET(/api\/pois?.*/);
-            poiService.getPois({keyword: 'keyword', area: testUtils.createRandomArea('Athens')});
+            poiService.getPois(Params('keyword', testUtils.createRandomArea('Athens')));
             httpBackend.flush();
         });
 
-        it('should throw an error if called without keyword', function() {
+        it('should throw an error if called invalid params', function() {
             expect(function() {
-                poiService.getPois({area: testUtils.createRandomArea('Athens')});
-            }).to.throw(Error);
-        });
-
-        it('should throw an error if called with empty keyword', function() {
-            expect(function() {
-                poiService.getPois({keyword: '', area: testUtils.createRandomArea('Athens')});
-            }).to.throw(Error);
-        });
-
-        it('should throw an error if called with invalid area', function() {
-            expect(function() {
-                poiService.getPois({keyword: 'keyword'});
+                poiService.getPois(Params(''));
             }).to.throw(Error);
         });
 
         it('should return a promise', function(done) {
-            poiService.getPois({keyword: 'keyword', area: testUtils.createRandomArea('Athens')})
+            poiService.getPois(Params('keyword', testUtils.createRandomArea('Athens')))
                 .then(function(data) {
                     expect(data).not.to.equal(undefined);
                     expect(data.rows).to.equal(20);
@@ -62,7 +51,7 @@ describe('PoiService', function() {
             httpBackend.expectGET(function(url) {
                 return url.indexOf('q=some') !== -1;
             });
-            poiService.getPois({keyword: 'some', area: testUtils.createRandomArea('Athens')});
+            poiService.getPois(Params('some', testUtils.createRandomArea('Athens')));
             httpBackend.flush();
         });
 
@@ -71,7 +60,7 @@ describe('PoiService', function() {
             httpBackend.expectGET(function(url) {
                 return url.indexOf('box=' + area.getBoundingBoxAsList().join(',')) !== -1;
             });
-            poiService.getPois({keyword: 'some', area: area});
+            poiService.getPois(Params('some', area));
             httpBackend.flush();
         });
 
@@ -79,28 +68,22 @@ describe('PoiService', function() {
             httpBackend.expectGET(function(url) {
                 return url.indexOf('pg=2') !== -1;
             });
-            poiService.getPois({keyword: 'some', area: testUtils.createRandomArea('Athens'), page: 2});
+            var params = new Params.Builder().withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
+                .withPage(2)
+                .build();
+            poiService.getPois(params);
             httpBackend.flush();
-        });
-
-        it('should throw an error if page was set to a non integer', function() {
-            expect(function() {
-                poiService.getPois({keyword: 'some', area: testUtils.createRandomArea('Athens'), page: 'wrong'});
-            }).to.throw(Error);
         });
 
         it('should set the pageSize in the request', function() {
             httpBackend.expectGET(function(url) {
                 return url.indexOf('pgsize=40') !== -1;
             });
-            poiService.getPois({keyword: 'some', area: testUtils.createRandomArea('Athens'), pageSize: 40});
+            var params = new Params.Builder().withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
+                .withPageSize(40)
+                .build();
+            poiService.getPois(params);
             httpBackend.flush();
-        });
-
-        it('should throw an error if the pageSize is not a valid int', function() {
-            expect(function() {
-                poiService.getPois({keyword: 'some', area: testUtils.createRandomArea('Athens'), pageSize: {}});
-            }).to.throw(Error);
         });
 
         it('should set the src in the request', function() {
@@ -108,14 +91,11 @@ describe('PoiService', function() {
             httpBackend.expectGET(function(url) {
                 return url.indexOf('src=' + sources.join(',')) !== -1;
             });
-            poiService.getPois({keyword: 'some', area: testUtils.createRandomArea('Athens'), sources: sources});
+            var params = new Params.Builder().withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
+                .withSources(sources)
+                .build();
+            poiService.getPois(params);
             httpBackend.flush();
-        });
-
-        it('should throw an error if the sources is not a valid array', function() {
-            expect(function() {
-                poiService.getPois({keyword: 'some', area: testUtils.createRandomArea('Athens'), sources: 'source'});
-            }).to.throw(Error);
         });
 
         it('should set the cat in the request', function() {
@@ -123,16 +103,11 @@ describe('PoiService', function() {
             httpBackend.expectGET(function(url) {
                 return url.indexOf('cat=' + categories.join(',')) !== -1;
             });
-            poiService.getPois({keyword: 'some', area: testUtils.createRandomArea('Athens'), categories: categories});
+            var params = new Params.Builder().withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
+                .withCategories(categories)
+                .build();
+            poiService.getPois(params);
             httpBackend.flush();
         });
-
-        it('should throw an error if the categories is not a valid array', function() {
-            expect(function() {
-                poiService.getPois({keyword: 'some', area: testUtils.createRandomArea('Athens'), categories: 'wrong'});
-            }).to.throw(Error);
-        });
-
     });
-
 });
