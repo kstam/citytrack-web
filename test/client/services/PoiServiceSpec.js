@@ -36,6 +36,12 @@ describe('PoiService', function() {
             }).to.throw(Error);
         });
 
+        it('should throw an error if called with empty keyword', function() {
+            expect(function() {
+                poiService.getPois({keyword: '', area: testUtils.createRandomArea('Athens')});
+            }).to.throw(Error);
+        });
+
         it('should throw an error if called with invalid area', function() {
             expect(function() {
                 poiService.getPois({keyword: 'keyword'});

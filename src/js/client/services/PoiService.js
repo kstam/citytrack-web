@@ -13,7 +13,7 @@ module.exports = function($resource) {
     });
 
     var validateParams = function(params) {
-        if (!utils.isString(params.keyword)) {
+        if (!(utils.isString(params.keyword) && params.keyword !== '')) {
             throw new Error('[' + params.keyword + '] is not a valid keyword');
         }
         if (!(params.area instanceof Area)) {
