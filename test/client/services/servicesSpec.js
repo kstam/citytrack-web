@@ -22,4 +22,8 @@ describe('services', function() {
         expect(areaService.getAreas).not.to.be.undefined;
         expect(areaService.getCurrentArea).not.to.be.undefined;
     }]));
+
+    it('correctly defines PoiService', inject(['PoiService', function(poiService) {
+        expect(poiService.getPois).not.to.be.undefined;
+    }]));
 });
