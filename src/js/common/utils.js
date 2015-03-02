@@ -59,4 +59,22 @@ utils.getElement = function(element) {
     }
 };
 
+/**
+ * Returns false only if the argument is set and the verifier returns false for the argument.
+ * The verifier is invoked only if the argument is set
+ * @param arg
+ * @returns {Function} Accepts a verifier which it applies on the argument if the argument is set
+ */
+utils.optional = function(arg) {
+    if (utils.isNotNullOrUndefined(arg)) {
+        return function(verifier) {
+            return verifier(arg);
+        };
+    } else {
+        return function() {
+            return true;
+        };
+    }
+};
+
 module.exports = utils;

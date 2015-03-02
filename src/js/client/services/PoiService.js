@@ -12,24 +12,6 @@ module.exports = function($resource) {
         }
     });
 
-    /**
-     * Returns true only if the argument is set and the verifier returns false for the argument.
-     * The verifier is invoked only if the argument is set
-     * @param arg
-     * @returns {Function}
-     */
-    var optional = function(arg) {
-        if (utils.isNotNullOrUndefined(arg)) {
-            return function(verifier) {
-                return verifier(arg);
-            }
-        } else {
-            return function() {
-                return true;
-            }
-        }
-    };
-
     var validateParams = function(params) {
         if (!utils.isString(params.keyword)) {
             throw new Error('[' + params.keyword + '] is not a valid keyword');
@@ -38,19 +20,19 @@ module.exports = function($resource) {
             throw new Error('[' + params.area + '] is not a valid area');
         }
 
-        if (!optional(params.page)(utils.isInteger)) {
+        if (!utils.optional(params.page)(utils.isInteger)) {
             throw new Error('[' + params.page + '] is not a valid page');
         }
 
-        if (!optional(params.pageSize)(utils.isInteger)) {
+        if (!utils.optional(params.pageSize)(utils.isInteger)) {
             throw new Error('[' + params.pageSize + '] is not a valid pageSize');
         }
 
-        if (!optional(params.sources)(utils.isArray)) {
+        if (!utils.optional(params.sources)(utils.isArray)) {
             throw new Error('[' + params.sources + '] is not a valid sources list');
         }
 
-        if (!optional(params.categories)(utils.isArray)) {
+        if (!utils.optional(params.categories)(utils.isArray)) {
             throw new Error('[' + params.categories + '] is not a valid sources list');
         }
     };
