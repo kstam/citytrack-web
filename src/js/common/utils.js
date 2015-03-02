@@ -10,6 +10,10 @@ utils.isNotNullOrUndefined = function(obj) {
     return (typeof obj !== 'undefined') && obj !== null;
 };
 
+utils.isNullOrUndefined = function(obj) {
+    return (typeof obj === 'undefined') || obj === null;
+};
+
 utils.isType = function(obj, theType) {
     return utils.isNotNullOrUndefined(obj) &&
             getType(obj) === '[object ' + theType + ']';
@@ -66,7 +70,7 @@ utils.getElement = function(element) {
  * @returns {Function} Accepts a verifier which it applies on the argument if the argument is set
  */
 utils.optional = function(arg) {
-    if (utils.isNotNullOrUndefined(arg)) {
+    if (typeof arg !== 'undefined') {
         return function(verifier) {
             return verifier(arg);
         };

@@ -22,22 +22,20 @@ describe('appState', function() {
         it('should set area to undefined by default', function() {
             expect(appState.getArea()).to.be.undefined();
         });
+
+        it('should set keyword to empty string by default', function() {
+            expect(appState.getKeyword()).to.equal('');
+        });
     });
 
     describe('setters', function() {
-        var appStateChangedListener, areaChangedListener;
-
-        beforeEach(function() {
-            appStateChangedListener = sinon.spy();
-            areaChangedListener = sinon.spy();
-        });
 
         it('should not allow setting invalid area', function() {
             expect(function() {
-                appState.set({});
+                appState.setArea({});
             }).to.throw(Error);
             expect(function() {
-                appState.set(null);
+                appState.setArea(null);
             }).to.throw(Error);
         });
 
@@ -62,6 +60,29 @@ describe('appState', function() {
 
             appState.setArea(testUtils.cloneArea(area));
             expect(mockedEventService.broadcastEvent).to.have.callCount(2);
+        });
+
+        it('should emit proper events when setting the keyword', function() {
+            appState.setKeyword('newKeyword1');
+            expect(mockedEventService.broadcastEvent).to.have.callCount(2);
+
+            appState.setKeyword('newKeyword2');
+            expect(mockedEventService.broadcastEvent).to.have.callCount(4);
+
+            appState.setKeyword('newKeyword2');
+            expect(mockedEventService.broadcastEvent).to.have.callCount(4);
+        });
+
+        it('should not allow setting invalid keyword', function() {
+            expect(function() {
+                appState.setKeyword({});
+            }).to.throw(Error);
+            expect(function() {
+                appState.setKeyword(null);
+            }).to.throw(Error);
+            expect(function() {
+                appState.setKeyword(undefined);
+            }).to.throw(Error);
         });
     });
 });
