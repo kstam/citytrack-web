@@ -18,7 +18,7 @@ gulp.task('bower:install', function () {
         .pipe(gulp.dest('./bower_components'));
 });
 
-gulp.task('bower:move', ['bower:css', 'bower:img']);
+gulp.task('bower:move', ['bower:css', 'bower:img', 'bower:fonts']);
 
 gulp.task('bower:css', function() {
     return gulp.src(bowerCssFiles())
@@ -32,6 +32,22 @@ gulp.task('bower:img', function() {
     return gulp.src(bowerImgFiles())
         .pipe(gulp.dest('./public/img/vendor/'));
 });
+
+gulp.task('bower:fonts', function() {
+   return gulp.src(bowerFontFiles())
+       .pipe(gulp.dest('./public/fonts/'));
+});
+
+function bowerFontFiles() {
+    return mainBowerFiles({
+        paths: {
+            bowerDirectory: './bower_components',
+            bowerrc: './.bowerrc',
+            bowerJson: './bower.json'
+        },
+        filter: /.*\.(otf|eot|svg|ttf|woff|woff2)$/
+    });
+}
 
 function bowerImgFiles() {
     return mainBowerFiles({
