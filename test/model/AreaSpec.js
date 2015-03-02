@@ -4,12 +4,12 @@ var latLngBounds = require('leaflet').latLngBounds;
 var latLng = require('leaflet').latLng;
 var Area = require('model/Area');
 var testUtils = require('../testCommons/testUtils');
+var utils = require('common/utils');
 
 describe('Area', function() {
 
     describe('constructor', function() {
         var name = 'Athens';
-        var center = latLng(20, 50);
         var boundingBox = latLngBounds(latLng(10, 40), latLng(30, 60));
 
         it('should not allow invocation without the new keyword', function() {
@@ -61,5 +61,18 @@ describe('Area', function() {
             expect(area1.equals()).to.be.false();
             expect(area1.equals(area2)).to.be.false();
         });
+    });
+
+    describe('getBoundingBoxAsList', function() {
+       it('should return an appropriate list of numbers', function() {
+           var area = testUtils.createRandomArea('Athens');
+           var bbox = area.getBoundingBox();
+           var list = area.getBoundingBoxAsList();
+           expect(utils.isArray(list)).to.equal(true);
+           expect(list[0]).to.equal(bbox.getSouth());
+           expect(list[1]).to.equal(bbox.getWest());
+           expect(list[2]).to.equal(bbox.getNorth());
+           expect(list[3]).to.equal(bbox.getEast());
+       });
     });
 });

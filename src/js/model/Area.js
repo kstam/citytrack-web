@@ -41,6 +41,15 @@ var Area = function Area(name, boundingBox) {
             equalBoundingBoxes(this.getBoundingBox(), that.getBoundingBox());
     };
 
+    this.getBoundingBoxAsList = function() {
+        return [
+            this.bbox.getSouth(),
+            this.bbox.getWest(),
+            this.bbox.getNorth(),
+            this.bbox.getEast()
+        ];
+    };
+
     validateArguments();
 };
 
