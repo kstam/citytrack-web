@@ -8,14 +8,23 @@ var L = require('leaflet');
 
 module.exports = function($scope, appState, eventService) {
 
+    $scope.applyCurrentView = function() {
+        appState.setArea($scope.currentView);
+        $scope.displayUpdateCurrentView = false;
+    };
+
     var initCurrentView = function() {
         var bounds = L.latLngBounds(config.maxbounds.southWest, config.maxbounds.northEast);
+        $scope.displayUpdateCurrentView = false;
         $scope.currentView = new Area(constants.CURRENT_VIEW_ID, bounds, Area.INTERACTIVE_TYPE);
-        appState.setArea($scope.currentView);
     };
 
     var setDefaults = function() {
         angular.extend($scope, config);
+    };
+
+    var updateDisplayUpdateCurrentView = function() {
+        $scope.displayUpdateCurrentView = $scope.currentView && !$scope.currentView.equals(appState.getArea());
     };
 
     // WATCHERS
@@ -24,9 +33,9 @@ module.exports = function($scope, appState, eventService) {
         if (angular.equals(newBounds, oldBounds)) {
             return;
         }
-        var newBbox = L.latLngBounds($scope.bounds.southWest, $scope.bounds.northEast);
-        $scope.currentView = new Area(constants.CURRENT_VIEW_ID, newBbox, Area.INTERACTIVE_TYPE);
-        appState.setArea($scope.currentView);
+        var newBox = L.latLngBounds($scope.bounds.southWest, $scope.bounds.northEast);
+        $scope.currentView = new Area(constants.CURRENT_VIEW_ID, newBox, Area.INTERACTIVE_TYPE);
+        updateDisplayUpdateCurrentView();
     };
 
     var initWatchers = function() {
@@ -51,6 +60,7 @@ module.exports = function($scope, appState, eventService) {
                     lng:newBbox.getWest()
                 }
             });
+            updateDisplayUpdateCurrentView();
         }
     };
 

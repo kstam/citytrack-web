@@ -4,7 +4,7 @@ var constants = {};
 
 // IDS
 constants.CURRENT_AREA_ID = 'Around Me';
-constants.CURRENT_VIEW_ID = 'Current Map View';
+constants.CURRENT_VIEW_ID = 'Current View';
 
 // EVENTS
 constants.MAIN_QUERY_STARTED = 'MainQuery:Started';

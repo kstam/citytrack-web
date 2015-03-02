@@ -1,15 +1,34 @@
 'use strict';
 
 var angular = require('../shims/angular');
+var Area = require('../../model/Area');
+var constants = require('../config/constants');
 
 module.exports = function($scope, areaService, appState, eventService) {
 
+    var addAreaToMap = function (area) {
+        $scope.areaMap[area.getName()] = area;
+    };
+
+    var removeFromMap = function (id) {
+       delete $scope.areaMap[id];
+    };
+
     var initConfig = function() {
         $scope.config = {
+            optgroups: [
+                {$order: 2, id: Area.STATIC_TYPE, name: 'From the server'},
+                {$order: 1, id: Area.INTERACTIVE_TYPE, name: 'Interactive'}
+            ],
             create: false,
             maxItems: 1,
             valueField: 'name',
             labelField: 'name',
+            searchField: 'name',
+            optgroupField: 'type',
+            optgroupLabelField: 'name',
+            optgroupValueField: 'id',
+            lockOptgroupOrder: true,
             openOnFocus: true,
             placeholder: 'Where...'
         };
@@ -24,8 +43,8 @@ module.exports = function($scope, areaService, appState, eventService) {
                 return;
             }
             $scope.$apply(function() {
-                angular.forEach(areas, function(value) {
-                    $scope.areaMap[value.getName()] = value;
+                angular.forEach(areas, function(area) {
+                    addAreaToMap(area);
                 });
             });
         });
@@ -38,8 +57,7 @@ module.exports = function($scope, areaService, appState, eventService) {
                 return;
             }
             $scope.$apply(function() {
-                $scope.areaMap[currentArea.getName()] = currentArea;
-                $scope.currentArea = currentArea;
+                addAreaToMap(currentArea);
             });
         });
     };
@@ -62,6 +80,9 @@ module.exports = function($scope, areaService, appState, eventService) {
         }
         $scope.selectedArea = $scope.areaMap[current];
         appState.setArea($scope.selectedArea);
+        if (current !== constants.CURRENT_VIEW_ID) {
+            removeFromMap(constants.CURRENT_VIEW_ID);
+        }
     };
 
     var initWatchers = function() {
@@ -71,13 +92,11 @@ module.exports = function($scope, areaService, appState, eventService) {
 
     // EVENT LISTENERS
 
-    var areaChangedListener = function(event, newArea) {
+    var areaChangedListener = function() {
+        var newArea = appState.getArea();
         if (newArea && (!newArea.equals($scope.selectedArea))) {
             $scope.selectedAreaId = newArea.getName();
-            var mapEntry = $scope.areaMap[newArea.getName()];
-            if (typeof mapEntry !== 'undefined' && (!mapEntry.equals(newArea))) {
-                $scope.areaMap[newArea.getName()] = newArea; //update the map entry if it got updated
-            }
+            addAreaToMap(newArea);
         }
     };
 

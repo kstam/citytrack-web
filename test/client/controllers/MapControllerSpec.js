@@ -42,6 +42,9 @@ describe('MapController', function() {
         it('should define the maxbounds object', function() {
             expect(scope.maxbounds).not.to.equal(undefined);
         });
+        it('should define the displayUpdateCurrentView to false', function() {
+            expect(scope.displayUpdateCurrentView).to.be.false();
+        });
 
         it('should define the initial view based on the default values', function() {
             expect(scope.currentView).not.to.equal(undefined);
@@ -82,22 +85,42 @@ describe('MapController', function() {
             expect(scope.currentView.getType()).to.equal(Area.INTERACTIVE_TYPE);
         });
 
-        it('should update the appState with the new current view', function() {
+        it('should update the value of "displayUpdateCurrentView"', function() {
+            var area = testUtils.createRandomArea(constants.CURRENT_VIEW_ID);
+            var bbox = area.getBoundingBox();
+            appState.setArea(area);
             scope.$digest();
-            expect(appState.getArea().equals(scope.currentView)).to.equal(true);
-
             scope.bounds = {southWest: {lat: 10, lng: 11}, northEast: {lat: 15, lng: 16}};
             scope.$digest();
+            expect(scope.displayUpdateCurrentView).to.be.true();
+
+            scope.bounds = {southWest: {lat: bbox.getSouth(), lng: bbox.getWest()},
+                northEast: {lat: bbox.getNorth(), lng: bbox.getEast()}};
+            scope.$digest();
+            expect(scope.displayUpdateCurrentView).to.be.false();
+        });
+    });
+
+    describe('exposes applyCurrentView function that', function() {
+        it('should update the appState with the current view', function() {
+            scope.currentView = testUtils.createRandomArea('Athens');
+            scope.applyCurrentView();
+            scope.$digest();
             expect(appState.getArea().equals(scope.currentView)).to.equal(true);
+        });
+
+        it('should set the displayUpdateCurrentView back to false', function() {
+            scope.currentView = testUtils.createRandomArea(constants.CURRENT_VIEW_ID);
+            scope.displayUpdateCurrentView = true;
+            scope.applyCurrentView();
+            scope.$digest();
+            expect(scope.displayUpdateCurrentView).to.be.false();
         });
     });
 
     describe('listens for changes in the AppState and', function() {
         it('should update the currentView and bounds variables', function() {
-            scope.$digest();
             appState.setArea(testUtils.createRandomArea('Athens'));
-            scope.$digest();
-
             expect(scope.currentView.equals(appState.getArea())).to.equal(true);
 
             expect(scope.bounds.southWest.lat).to.equal(scope.currentView.getBoundingBox().getSouth());

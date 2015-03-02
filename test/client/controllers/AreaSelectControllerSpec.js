@@ -50,7 +50,6 @@ describe('AreaSelectController', function() {
         it('should configure the current user address', function() {
             mockServiceForSuccess();
             initController();
-            expect(scope.currentArea).not.to.equal(undefined);
             expect(scope.areaMap[constants.CURRENT_AREA_ID]).not.to.equal(undefined);
         });
     });
@@ -74,6 +73,20 @@ describe('AreaSelectController', function() {
             scope.selectedAreaId = 'Berlin';
             scope.$digest();
             expect(scope.areaMap.Berlin.equals(appState.getArea())).to.equal(true);
+        });
+
+        it('should remove the "Current View" from the map if the new id is not CURRENT_VIEW_ID', function() {
+            scope.$digest();
+            scope.areaMap.Berlin = testUtils.createRandomArea('Berlin');
+            scope.areaMap[constants.CURRENT_VIEW_ID] = testUtils.createRandomArea(constants.CURRENT_VIEW_ID);
+            scope.selectedAreaId = constants.CURRENT_VIEW_ID;
+            scope.$digest();
+            expect(scope.selectedArea.equals(scope.areaMap[constants.CURRENT_VIEW_ID])).to.be.true();
+
+            scope.selectedAreaId = 'Berlin';
+            scope.$digest();
+            expect(scope.selectedArea.equals(scope.areaMap.Berlin)).to.be.true();
+            expect(scope.areaMap[constants.CURRENT_VIEW_ID]).to.equal(undefined);
         });
     });
 
