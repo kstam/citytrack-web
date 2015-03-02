@@ -4,12 +4,11 @@ require('angular');
 require('angular-mocks');
 var controllers = require('client/controllers/controllers');
 var constants = require('client/config/constants');
-var testUtils = require('../../testCommons/testUtils');
 var AppState = require('client/services/AppState');
 var NgEventService = require('client/services/NgEventService');
 
 describe('AreaSelectController', function() {
-    var scope, mockedAreaService, appState, eventService, $$controller;
+    var scope, appState, eventService, $$controller;
 
     beforeEach(angular.mock.module(controllers.name));
 
@@ -20,8 +19,6 @@ describe('AreaSelectController', function() {
         appState = new AppState(eventService);
         initController();
     }));
-
-    //Helper functions
 
     it('should initialize the keyword to an empty string', function() {
         expect(scope.keyword).to.equal('');
