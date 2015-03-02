@@ -5,9 +5,9 @@ var services = require('../services/services');
 
 var citytrackControllers = angular.module('citytrack.controllers', [services.name]);
 
-citytrackControllers.controller('CitytrackMainController', ['$scope',
-    function($scope) {
-        require('./CitytrackMainController')($scope);
+citytrackControllers.controller('CitytrackMainController', ['$scope', 'NgEventService',
+    function($scope, eventService) {
+        require('./CitytrackMainController')($scope, eventService);
     }]);
 
 citytrackControllers.controller('AreaSelectController', ['$scope', 'AreaService', 'AppState', 'NgEventService',

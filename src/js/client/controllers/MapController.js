@@ -24,7 +24,6 @@ module.exports = function($scope, appState, eventService) {
         if (angular.equals(newBounds, oldBounds)) {
             return;
         }
-        var cv = $scope.currentView;
         var newBbox = L.latLngBounds($scope.bounds.southWest, $scope.bounds.northEast);
         $scope.currentView = new Area(constants.CURRENT_VIEW_ID, newBbox);
         appState.setArea($scope.currentView);
