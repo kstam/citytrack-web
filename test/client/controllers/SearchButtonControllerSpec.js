@@ -61,6 +61,14 @@ describe('SearchButtonController', function() {
         });
     });
 
+    describe('listens to KEYWORD_ENTER_PRESSED event and', function() {
+        it('should invoke the search method', function() {
+            scope.search = sinon.spy();
+            eventService.broadcastEvent(constants.KEYWORD_ENTER_PRESSED);
+            expect(scope.search).to.have.callCount(1);
+        });
+    });
+
     describe('exposes "search" method to the scope that', function() {
         it('should do nothing if active is false"', function() {
             poiService.getPois = sinon.spy();

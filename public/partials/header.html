@@ -4,7 +4,7 @@
 </div>
 <div class = "search">
     <div class="keyword-box" ng-controller="KeywordController">
-        <input type="text" ng-model="keyword"/>
+        <input type="text" ng-model="keyword" ng-keypress="processKeyPress($event)"/>
     </div>
     <div class="area-select" ng-controller="AreaSelectController">
         <selectize options='areas' ng-model="selectedAreaId" config="config"></selectize>

@@ -11,5 +11,7 @@ constants.MAIN_QUERY_STARTED = 'MainQuery:Started';
 constants.MAIN_QUERY_SUCCESS = 'MainQuery:Success';
 constants.MAIN_QUERY_FAILURE = 'MainQuery:Failure';
 
+constants.KEYWORD_ENTER_PRESSED = 'Keyword:EnterPressed';
+
 
 module.exports = constants;
