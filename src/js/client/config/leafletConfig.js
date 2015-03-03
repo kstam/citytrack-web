@@ -1,4 +1,7 @@
 'use strict';
+var L = require('leaflet');
+
+L.Icon.Default.imagePath = 'img/vendor/';
 
 var config = {};
 
