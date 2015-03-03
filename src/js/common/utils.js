@@ -81,4 +81,15 @@ utils.optional = function(arg) {
     }
 };
 
+utils.getArrayFromString = function(stringArray) {
+    var result = [];
+    stringArray.replace('[', '').replace(']', '').split(',').forEach(function(value) {
+        value = value.trim();
+        if (value !== '') {
+            result.push(value.trim());
+        }
+    });
+    return result;
+};
+
 module.exports = utils;

@@ -1,0 +1,35 @@
+@import "../mixins";
+
+.leaflet-popup-content {
+    margin: 15px;
+    .popup {
+        .header {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .categories {
+            margin-bottom: 5px;
+            .category {
+                background: #EEE;
+                padding: 2px;
+                margin-right: 2px;
+            }
+        }
+
+        .description {
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .photos {
+            .clearfix();
+            .photo {
+                float: left;
+                height: 40px;
+                margin-right: 5px;
+                margin-bottom: 5px;
+            }
+        }
+    }
+}

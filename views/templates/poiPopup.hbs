@@ -1,0 +1,18 @@
+<div class="popup poi">
+    <div class="header">
+        {{label}}
+    </div>
+    <div class="categories">
+        {{#each categories}}
+            <span class="category">{{ this }}</span>
+        {{/each}}
+    </div>
+    <div class="description">
+        {{description}}
+    </div>
+    <div class="photos">
+        {{#each photos}}
+            <img src="{{ this }}" class="photo"/>
+        {{/each}}
+    </div>
+</div>

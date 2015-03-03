@@ -10,6 +10,7 @@ var Area = require('model/Area');
 var NgEventService = require('client/services/NgEventService');
 var L = require('leaflet');
 var testUtils = require('../../testCommons/testUtils');
+var mockedData = require('../../data/poiResponse');
 
 describe('MapController', function() {
     var scope, controller, appState, eventService;
@@ -127,6 +128,13 @@ describe('MapController', function() {
             expect(scope.bounds.southWest.lng).to.equal(scope.currentView.getBoundingBox().getWest());
             expect(scope.bounds.northEast.lat).to.equal(scope.currentView.getBoundingBox().getNorth());
             expect(scope.bounds.northEast.lng).to.equal(scope.currentView.getBoundingBox().getEast());
+        });
+    });
+
+    describe('listens to MAIN_QUERY_SUCCESS event and', function() {
+        it('should set the "geojson.data" from the data', function() {
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
+            expect(scope.geojson.data).to.equal(mockedData.collection);
         });
     });
 });

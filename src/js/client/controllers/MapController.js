@@ -5,6 +5,7 @@ var config = require('../config/leafletConfig');
 var Area = require('../../model/Area');
 var constants = require('../config/constants');
 var L = require('leaflet');
+var popupFactory = require('../map/popupFactory');
 
 module.exports = function($scope, appState, eventService) {
 
@@ -44,6 +45,22 @@ module.exports = function($scope, appState, eventService) {
 
     // LISTENERS
 
+    var mainQuerySuccessListener = function(event, data) {
+        var geojsonMarkerOptions = {
+
+        };
+
+        $scope.geojson = {
+            data: data.collection,
+            pointToLayer: function (feature, latlng) {
+                return L.marker(latlng, geojsonMarkerOptions);
+            },
+            onEachFeature: function(feature, layer) {
+                layer.bindPopup(popupFactory.getPopupHtml(feature));
+            }
+        };
+    };
+
     var areaChangedListener = function(event, newArea) {
         if (newArea && (!newArea.equals($scope.currentView))) {
             var newBbox = newArea.getBoundingBox();
@@ -66,6 +83,7 @@ module.exports = function($scope, appState, eventService) {
 
     var initEventListeners = function() {
         eventService.on(appState.AREA_CHANGED_EVT, areaChangedListener);
+        eventService.on(constants.MAIN_QUERY_SUCCESS, mainQuerySuccessListener);
     };
 
     var initialize = function() {
