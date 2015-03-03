@@ -7,7 +7,7 @@ var constants = require('../config/constants');
 var L = require('leaflet');
 var popupFactory = require('../map/popupFactory');
 
-module.exports = function($scope, appState, eventService) {
+module.exports = function($scope, appState, eventService, leafletData) {
 
     $scope.applyCurrentView = function() {
         appState.setArea($scope.currentView);
@@ -46,9 +46,14 @@ module.exports = function($scope, appState, eventService) {
     // LISTENERS
 
     var mainQuerySuccessListener = function(event, data) {
-        var geojsonMarkerOptions = {
 
-        };
+        var geojsonMarkerOptions = {};
+
+        $scope.$applyAsync(function() {
+            leafletData.getMap().then(function(map) {
+                map.invalidateSize();
+            });
+        });
 
         $scope.geojson = {
             data: data.collection,

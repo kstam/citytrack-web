@@ -2,17 +2,28 @@
     <div class="header">
         {{label}}
     </div>
-    <div class="categories">
-        {{#each categories}}
-            <span class="category">{{ this }}</span>
-        {{/each}}
-    </div>
-    <div class="description">
-        {{description}}
-    </div>
-    <div class="photos">
-        {{#each photos}}
-            <img src="{{ this }}" class="photo"/>
-        {{/each}}
-    </div>
+    {{#if categories.[0]}}
+        <div class="categories">
+            {{#each categories}}
+                <span class="category">{{ this }}</span>
+            {{/each}}
+        </div>
+    {{/if}}
+    {{#if description}}
+        <div class="description">
+            <img src="{{mainPhoto}}" class = "mainPhoto"/>
+            {{description}}
+        </div>
+    {{/if}}
+
+    {{#if photos.[0]}}
+        <div class="photos">
+            <div class="header">
+                Photos
+            </div>
+            {{#each photos}}
+                <a href="{{ this }}" target="_blank"><img src="{{ this }}" class="photo"/></a>
+            {{/each}}
+        </div>
+    {{/if}}
 </div>

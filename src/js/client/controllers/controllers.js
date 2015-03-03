@@ -2,8 +2,9 @@
 
 var angular = require('../shims/angular');
 var services = require('../services/services');
+var directives = require('../directives/directives');
 
-var citytrackControllers = angular.module('citytrack.controllers', [services.name]);
+var citytrackControllers = angular.module('citytrack.controllers', [services.name, directives.name]);
 
 citytrackControllers.controller('CitytrackMainController', ['$scope', 'NgEventService',
     function($scope, eventService) {
@@ -15,9 +16,9 @@ citytrackControllers.controller('AreaSelectController', ['$scope', 'AreaService'
         require('./AreaSelectController')($scope, areaService, appState, eventService);
     }]);
 
-citytrackControllers.controller('MapController', ['$scope', 'AppState', 'NgEventService',
-    function($scope, appState, eventService) {
-        require('./MapController')($scope, appState, eventService);
+citytrackControllers.controller('MapController', ['$scope', 'AppState', 'NgEventService', 'leafletData',
+    function($scope, appState, eventService, leafletData) {
+        require('./MapController')($scope, appState, eventService, leafletData);
     }]);
 
 citytrackControllers.controller('KeywordController', ['$scope', 'AppState', 'NgEventService',

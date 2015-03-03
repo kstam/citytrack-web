@@ -17,11 +17,12 @@ describe('MapController', function() {
 
     beforeEach(angular.mock.module(controllers.name));
 
-    beforeEach(inject(function($controller, $rootScope) {
+    beforeEach(inject(function($controller, $rootScope, leafletData) {
         scope = $rootScope.$new();
         eventService = new NgEventService($rootScope);
         appState = new AppState(eventService);
-        controller = $controller('MapController', {$scope: scope, AppState: appState, NgEventService: eventService});
+        controller = $controller('MapController', {$scope: scope, AppState: appState, NgEventService: eventService,
+            leafletData: leafletData});
     }));
 
     describe('configures an initial state and', function() {
