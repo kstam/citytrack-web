@@ -24,7 +24,7 @@ module.exports = {
             "type": "Feature",
             "properties": {
                 "id": "wikimapia_11031652",
-                "category": "[Culture]",
+                "category": "[]",
                 "thumbnail": "",
                 "source": "wikimapia",
                 "address": "",

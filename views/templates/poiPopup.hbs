@@ -11,7 +11,7 @@
     {{/if}}
     {{#if description}}
         <div class="description">
-            <img src="{{mainPhoto}}" class = "mainPhoto"/>
+            <img src="{{mainPhoto}}" class="mainPhoto"/>
             {{description}}
         </div>
     {{/if}}
@@ -26,4 +26,11 @@
             {{/each}}
         </div>
     {{/if}}
+
+    <div class="source">
+        <div class="header">
+            Source
+        </div>
+        <a href="{{url}}" target="_blank">{{ source }}</a>
+    </div>
 </div>
