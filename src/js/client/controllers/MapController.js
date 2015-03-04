@@ -28,6 +28,14 @@ module.exports = function($scope, appState, eventService, leafletData) {
         $scope.displayUpdateCurrentView = $scope.currentView && !$scope.currentView.equals(appState.getArea());
     };
 
+    var fixMapSize = function() {
+        $scope.$applyAsync(function() {
+            leafletData.getMap().then(function(map) {
+                map.invalidateSize();
+            });
+        });
+    };
+
     // WATCHERS
 
     var boundsWatcher = function(newBounds, oldBounds) {
@@ -46,14 +54,7 @@ module.exports = function($scope, appState, eventService, leafletData) {
     // LISTENERS
 
     var mainQuerySuccessListener = function(event, data) {
-
         var geojsonMarkerOptions = {};
-
-        $scope.$applyAsync(function() {
-            leafletData.getMap().then(function(map) {
-                map.invalidateSize();
-            });
-        });
 
         $scope.geojson = {
             data: data.collection,
@@ -64,6 +65,8 @@ module.exports = function($scope, appState, eventService, leafletData) {
                 layer.bindPopup(popupFactory.getPopupHtml(feature));
             }
         };
+
+        fixMapSize();
     };
 
     var areaChangedListener = function(event, newArea) {
@@ -96,6 +99,7 @@ module.exports = function($scope, appState, eventService, leafletData) {
         initCurrentView();
         initWatchers();
         initEventListeners();
+        fixMapSize();
     };
 
     initialize();
