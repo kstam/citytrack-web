@@ -19,9 +19,8 @@ module.exports = function(config) {
             //test files
             'test/**/*Spec.js',
             //template files
-            '*.html'
+            'public/**/*.html'
         ],
-
 
         // list of files to exclude
         exclude: [
@@ -35,7 +34,11 @@ module.exports = function(config) {
             'test/client/**/*.js': [ 'browserify' ],
             'test/common/*.js': [ 'browserify' ],
             'test/model/*.js': [ 'browserify' ],
-            '**/*.html': ['html2js']
+            'public/**/*.html': ['ng-html2js']
+        },
+
+        ngHtml2JsPreprocessor: {
+            stripPrefix: 'public/'
         },
 
         browserify: {
@@ -61,7 +64,7 @@ module.exports = function(config) {
 
         // level of logging
         // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-        logLevel: config.LOG_INFO,
+        logLevel: config.LOG_ERROR,
 
 
         // enable / disable watching file and executing tests whenever any file changes

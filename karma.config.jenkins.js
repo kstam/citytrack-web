@@ -19,7 +19,7 @@ module.exports = function(config) {
             //test files
             'test/**/*Spec.js',
             //template files
-            '*.html'
+            'public/**/*.html'
         ],
 
 
@@ -35,7 +35,11 @@ module.exports = function(config) {
             'test/client/**/*.js': [ 'browserify' ],
             'test/common/*.js': [ 'browserify' ],
             'test/model/*.js': [ 'browserify' ],
-            '**/*.html': ['html2js']
+            'public/**/*.html': ['ng-html2js']
+        },
+
+        ngHtml2JsPreprocessor: {
+            stripPrefix: 'public/'
         },
 
         browserify: {
