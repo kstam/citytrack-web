@@ -13,5 +13,7 @@ constants.MAIN_QUERY_FAILURE = 'MainQuery:Failure';
 
 constants.KEYWORD_ENTER_PRESSED = 'Keyword:EnterPressed';
 
+// URLS
+constants.NO_IMG_URL = 'img/no_image_available.jpg';
 
 module.exports = constants;
