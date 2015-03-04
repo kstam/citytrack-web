@@ -3,9 +3,9 @@
 var utils = require('../common/utils');
 var Area = require('./Area');
 
-var Params = function(keyword, area, page, pageSize, sources, categories) {
+var Params = function(keyword, area, page, pageSize, sources, categories, type) {
     if (!(this instanceof Params)) {
-        return new Params(keyword, area, page, pageSize, sources, categories);
+        return new Params(keyword, area, page, pageSize, sources, categories, type);
     }
 
     this.keyword = keyword;
@@ -14,10 +14,12 @@ var Params = function(keyword, area, page, pageSize, sources, categories) {
     this.pageSize = pageSize;
     this.sources = sources;
     this.categories = categories;
+    this.type = type;
 
     this.isValid = function() {
         return (utils.isString(this.keyword) && this.keyword !== '') &&
             (this.area instanceof Area) &&
+            utils.isNotNullOrUndefined(this.type) && (utils.isString(this.type.id)) && (utils.isString(this.type.iconClass)) &&
             utils.optional(this.page)(utils.isInteger) &&
             utils.optional(this.pageSize)(utils.isInteger) &&
             utils.optional(this.sources)(utils.isArray) &&
@@ -64,7 +66,7 @@ function arraysSameElements(a1, a2) {
 }
 
 Params.Builder = function() {
-    var keyword, area, page, pageSize, sources, categories;
+    var keyword, area, page, pageSize, sources, categories, type;
 
     if (!(this instanceof Params.Builder)) {
         return new Params();
@@ -103,8 +105,13 @@ Params.Builder = function() {
         return this;
     };
 
+    this.withType = function(theType) {
+        type = theType;
+        return this;
+    }
+
     this.build = function() {
-        return new Params(keyword, area, page, pageSize, sources, categories);
+        return new Params(keyword, area, page, pageSize, sources, categories, type);
     };
 };
 

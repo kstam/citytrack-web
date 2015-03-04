@@ -36,4 +36,9 @@ citytrackControllers.controller('ResultsController', ['$scope', 'AppState', 'NgE
         require('./ResultsController')($scope, appState, eventService);
     }]);
 
+citytrackControllers.controller('TypeSelectController', ['$scope', 'AppState', 'NgEventService',
+    function($scope, appState, eventService) {
+        require('./TypeSelectController')($scope, appState, eventService);
+    }]);
+
 module.exports = citytrackControllers;

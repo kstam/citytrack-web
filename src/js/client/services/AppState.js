@@ -3,13 +3,14 @@
 var APP_STATE_CHANGED_EVT = 'AppState:Changed';
 var AREA_CHANGED_EVT = 'AppState:AreaChanged';
 var KEYWORD_CHANGED_EVT = 'AppState:KeywordChanged';
+var TYPE_CHANGED_EVT = 'AppState:TypeChanged';
 var utils = require('common/utils');
 var Area = require('model/Area');
 var Params = require('model/Params');
 
 var AppState = function(eventBus) {
 
-    var area,
+    var area, type,
         keyword = '';
 
     var fireChangeEvent = function(eventName) {
@@ -21,6 +22,10 @@ var AppState = function(eventBus) {
 
     var isValidArea = function(area) {
         return (typeof area === 'undefined') || (area instanceof Area);
+    };
+
+    var isValidType = function(type) {
+        return type && type.id && type.iconClass;
     };
 
     var setArea = function(newArea) {
@@ -37,10 +42,6 @@ var AppState = function(eventBus) {
         }
     };
 
-    var getArea = function() {
-        return area;
-    };
-
     var setKeyword = function(newKeyword) {
         if (!utils.isString(newKeyword)) {
             throw new Error('[' + newKeyword + '] is not a valid keyword');
@@ -51,6 +52,24 @@ var AppState = function(eventBus) {
         }
     };
 
+    var setType = function(newType) {
+        if(!isValidType(newType)) {
+            throw new Error('[' + newType + '] is not a valid type' )
+        }
+        if (!type || newType.id !== type.id) {
+            type = newType;
+            fireChangeEvent(TYPE_CHANGED_EVT, newType);
+        }
+    };
+
+    var getType = function() {
+        return type;
+    };
+
+    var getArea = function() {
+        return area;
+    };
+
     var getKeyword = function() {
         return keyword;
     };
@@ -59,18 +78,22 @@ var AppState = function(eventBus) {
         return new Params.Builder()
             .withKeyword(keyword)
             .withArea(area)
+            .withType(type)
             .build();
     };
 
     return {
         setArea: setArea,
-        getArea: getArea,
         setKeyword: setKeyword,
+        setType: setType,
+        getArea: getArea,
         getKeyword: getKeyword,
+        getType: getType,
         getParams: getParams,
         APP_STATE_CHANGED_EVT: APP_STATE_CHANGED_EVT,
         AREA_CHANGED_EVT: AREA_CHANGED_EVT,
-        KEYWORD_CHANGED_EVT: KEYWORD_CHANGED_EVT
+        KEYWORD_CHANGED_EVT: KEYWORD_CHANGED_EVT,
+        TYPE_CHANGED_EVT: TYPE_CHANGED_EVT
     };
 };
 

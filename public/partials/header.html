@@ -2,6 +2,9 @@
     <h1>CityTrack</h1>
 </div>
 <div class = "search">
+    <div class="type-box" ng-controller="TypeSelectController">
+        <selectize options='types' ng-model="selectedTypeId" config="config"></selectize>
+    </div>
     <div class="keyword-box" ng-controller="KeywordController">
         <input type="text" ng-model="keyword" ng-keypress="processKeyPress($event)"/>
     </div>

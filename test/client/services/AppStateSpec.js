@@ -6,6 +6,7 @@ var testUtils = require('../../testCommons/testUtils');
 var AppState = require('client/services/AppState');
 var NgEventService = require('client/services/NgEventService');
 var Params = require('model/Params');
+var types = require('model/types');
 
 describe('appState', function() {
 
@@ -26,6 +27,10 @@ describe('appState', function() {
 
         it('should set keyword to empty string by default', function() {
             expect(appState.getKeyword()).to.equal('');
+        });
+
+        it('should set the type to undefined', function() {
+            expect(appState.getType()).to.be.undefined();
         });
     });
 
@@ -85,6 +90,31 @@ describe('appState', function() {
                 appState.setKeyword(undefined);
             }).to.throw(Error);
         });
+
+        it('should not allow setting invalid type', function() {
+            expect(function() {
+                appState.setType({});
+            }).to.throw(Error);
+            expect(function() {
+                appState.setType(undefined);
+            }).to.throw(Error);
+        });
+
+        it('should properly set a valid type', function() {
+            appState.setType(types.poi);
+            expect(appState.getType()).to.equal(types.poi);
+        });
+
+        it('should emmit change events when setting a new type', function() {
+            appState.setType(types.poi);
+            expect(mockedEventService.broadcastEvent).to.have.callCount(2);
+
+            appState.setType(types.poi);
+            expect(mockedEventService.broadcastEvent).to.have.callCount(2); //Didn't fire new event
+
+            appState.setType(types.photo);
+            expect(mockedEventService.broadcastEvent).to.have.callCount(4);
+        });
     });
 
     describe('getParams', function() {
@@ -94,6 +124,8 @@ describe('appState', function() {
             var area = testUtils.createRandomArea('Athens');
             appState.setArea(area);
             expect(appState.getParams().equals(new Params('', area))).to.be.true();
+            appState.setType(types.poi);
+            expect(appState.getParams().type).to.equal(types.poi);
         });
     });
 });

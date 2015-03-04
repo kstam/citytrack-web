@@ -9,6 +9,7 @@ var NgEventService = require('client/services/NgEventService');
 var mockedData = require('../../data/poiResponse');
 var testUtils = require('../../testCommons/testUtils');
 var Params = require('model/Params');
+var types = require('model/types');
 var expect = require('../../testCommons/chaiExpect');
 var sinon = require('sinon');
 
@@ -52,6 +53,7 @@ describe('SearchButtonController', function() {
         it('should update the value of the "active" to true if the params are valid', function() {
             appState.setKeyword('hello');
             appState.setArea(testUtils.createRandomArea('Athens'));
+            appState.setType(types.poi);
             expect(scope.active).to.be.true();
         });
 

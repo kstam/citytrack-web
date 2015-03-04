@@ -44,6 +44,58 @@
             margin-right: 8px;
         }
 
+        @type-padding: 6px;
+        @type-width: 36px;
+        @type-symbol-size: 23px;
+        @type-background: @header-background - 10;
+        .type-box {
+            .fa {
+                font-size: @type-symbol-size;
+                &.fa-photo {
+                    color: @photo-color;
+                    padding: 0;
+                }
+                &.fa-map-marker{
+                    color: @map-marker-color;
+                    padding: 0 6px;
+                }
+                &.fa-calendar{
+                    color: @calendar-color;
+                    padding: 0 2px;
+                }
+            }
+            .selectize-input {
+                background: @type-background;
+                border: none;
+                padding: @type-padding;
+                width: @type-width;
+                cursor: pointer;
+
+                // Hides the dropdown arrow
+                &:after {
+                    display: none;
+                }
+            }
+            .selectize-dropdown {
+                background: @type-background;
+                border: none;
+                z-index: 2000;
+
+                .active {
+                    background: @type-background + 20;
+                }
+
+                [data-selectable] {
+                    padding: @type-padding;
+                }
+            }
+            input {
+                visibility: hidden;
+                height: 0;
+                cursor: pointer;
+            }
+        }
+
         .keyword-box {
             input {
                 border: none;
