@@ -13,6 +13,7 @@ module.exports = function($scope, appState, eventService) {
     // LISTENERS
 
     var mainSuccessListener = function(event, data) {
+        $scope.error = false;
         if (data && data.collection && utils.isArray(data.collection.features)) {
             $scope.rows = data.collection.features;
         } else {

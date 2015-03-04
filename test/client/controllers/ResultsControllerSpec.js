@@ -39,6 +39,12 @@ describe('ResultsController', function() {
             expect(scope.rows).to.equal(mockedData.collection.features);
         });
 
+        it('should set the error back to false', function() {
+            scope.error = true;
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
+            expect(scope.error).to.be.false();
+        });
+
         it('should set the "rows" to empty array when collection is empty or doesnt exist', function() {
             eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS);
             expect(scope.rows).to.deep.equal([]);
