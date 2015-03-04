@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="info">
+        <div class="title">{{data.label}}</div>
+        <div class="categories">
+            <span ng-repeat="category in data.categories track by $index" class="category">
+                {{category}}
+            </span>
+        </div>
+        <div class="description">{{data.description}}</div>
+        <div class="source">
+            Origin: <a href="{{data.url}}" target="_blank">{{ data.source }}</a>
+        </div>
+    </div>
+    <div class="image">
+        <img src="{{data.mainPhoto}}"/>
+    </div>
+</div>
