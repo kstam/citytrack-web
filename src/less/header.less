@@ -16,7 +16,6 @@
 
     .logo {
         float: left;
-//        margin-left: 30px;
         padding-top: 5px;
 
         .logo-icon {
@@ -44,10 +43,6 @@
             margin-right: 8px;
         }
 
-        @type-padding: 6px;
-        @type-width: 36px;
-        @type-symbol-size: 23px;
-        @type-background: @header-background - 10;
         .type-box {
             .fa {
                 font-size: @type-symbol-size;
@@ -55,54 +50,40 @@
                     color: @photo-color;
                     padding: 0;
                 }
-                &.fa-map-marker{
+                &.fa-map-marker {
                     color: @map-marker-color;
                     padding: 0 6px;
                 }
-                &.fa-calendar{
+                &.fa-calendar {
                     color: @calendar-color;
                     padding: 0 2px;
                 }
             }
+
             .selectize-input {
-                background: @type-background;
-                border: none;
                 padding: @type-padding;
                 width: @type-width;
                 cursor: pointer;
-
-                // Hides the dropdown arrow
                 &:after {
-                    display: none;
+                    display: none; // Hides the dropdown arrow
                 }
-            }
-            .selectize-dropdown {
-                background: @type-background;
-                border: none;
-                z-index: 2000;
-
-                .active {
-                    background: @type-background + 20;
+                input {
+                    visibility: hidden;
+                    height: 0;
+                    cursor: pointer;
                 }
-
-                [data-selectable] {
-                    padding: @type-padding;
-                }
-            }
-            input {
-                visibility: hidden;
-                height: 0;
-                cursor: pointer;
             }
         }
 
         .keyword-box {
             input {
+                background: @input-background;
                 border: none;
                 border-radius: 3px;
                 padding: 10px;
                 font-size: 13px;
                 color: @input-text-color;
+                outline-color: @input-background + 20;
             }
         }
 
@@ -110,31 +91,58 @@
             .selectize-input {
                 min-width: 200px;
             }
-            .selectize-dropdown {
-                z-index: 2000;
-                .optgroup-header {
-                    background: @optgroup-background-color;
-                    font-size: 12px;
-                }
-            }
         }
 
         .search-button {
-            a.active {
-                cursor: pointer;
-                color: @search-active-color;
+            a {
+                outline-color: @input-background + 20;
+                &.active {
+                    cursor: pointer;
+                    color: @search-active-color;
+                }
+                &.inactive {
+                    cursor: default;
+                    color: @search-inactive-color;
+                }
             }
-            a.inactive {
-                cursor: default;
-                color: @search-inactive-color;
-            }
-
             i {
                 font-size: 25px;
                 padding: 6px;
 
                 &.fa-spin {
                     color: @search-active-color;
+                }
+            }
+        }
+        .selectize-control {
+            .selectize-input {
+                background: @input-background;
+                border: none;
+                color: @input-text-color;
+
+                input {
+                    color: @input-text-color;
+                }
+            }
+            .selectize-dropdown {
+                background: @input-background;
+                border: none;
+                z-index: 2000;
+                color: @input-text-color;
+
+                .active {
+                    background: @input-background + 20;
+                    color: @input-text-color;
+                }
+
+                [data-selectable] {
+                    padding: @type-padding;
+                }
+
+                .optgroup-header {
+                    background: @input-background + 80;
+                    color: @input-background - 80;
+                    font-size: 12px;
                 }
             }
         }
