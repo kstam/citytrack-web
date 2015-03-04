@@ -6,6 +6,8 @@ var controllers = require('client/controllers/controllers');
 var constants = require('client/config/constants');
 var AppState = require('client/services/AppState');
 var NgEventService = require('client/services/NgEventService');
+var expect = require('../../testCommons/chaiExpect');
+var sinon = require('sinon');
 
 describe('CitytrackMainController', function() {
     var scope, eventService, $$controller;
@@ -32,6 +34,20 @@ describe('CitytrackMainController', function() {
         it('should change the displayResults to false on MAIN_QUERY_FAILURE', function() {
             eventService.broadcastEvent(constants.MAIN_QUERY_FAILURE);
             expect(scope.displayResults).to.be.true();
+        });
+    });
+
+    describe('defines processKeyPress that', function() {
+        it('should send a KEYWORD_ENTER_PRESSED event if enter was pressed', function() {
+            eventService.broadcastEvent = sinon.spy();
+            scope.processKeyPress({keyCode: 13});
+            expect(eventService.broadcastEvent).to.have.been.calledWith(constants.KEYWORD_ENTER_PRESSED);
+        });
+
+        it('should not send any event if any other key was pressed', function() {
+            eventService.broadcastEvent = sinon.spy();
+            scope.processKeyPress({keyCode: 14});
+            expect(eventService.broadcastEvent).to.have.callCount(0);
         });
     });
 

@@ -1,8 +1,15 @@
 'use strict';
 
 var constants = require('../config/constants');
+var ENTER_KEY_CODE = 13;
 
 module.exports = function($scope, eventService) {
+
+    $scope.processKeyPress = function($event) {
+        if ($event.keyCode === ENTER_KEY_CODE) {
+            eventService.broadcastEvent(constants.KEYWORD_ENTER_PRESSED);
+        }
+    };
 
     var setDefaults = function() {
         $scope.displayResults = false;
