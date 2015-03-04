@@ -1,1 +1,17 @@
-<div></div>
+<div ng-controller="ResultsController">
+    <div class="rows" ng-hide="error || (rows.length === 0)">
+        <div ng-repeat="row in rows">
+            <result-row model="row"></result-row>
+        </div>
+    </div>
+
+    <div class="no-rows" ng-hide="error || (rows.length > 0)">
+        <i class="fa fa-warning"></i>
+        <p>No data matched your query</p>
+    </div>
+
+    <div class="error" ng-show="error">
+        <i class="fa fa-warning"></i>
+        <p>An unexpected error occurred. Please try again.</p>
+    </div>
+</div>

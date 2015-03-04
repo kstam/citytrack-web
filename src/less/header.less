@@ -3,9 +3,16 @@
 
 .header-section {
     .clearfix();
+    position: fixed;
+    top: 0;
+    width: 100%;
+    min-width: 900px;
+    z-index: 2000;
+    box-sizing: border-box;
     padding: @gutter-size;
-    background: #525252;
-    color: #EEE;
+    background: @header-background;
+    color: @header-color;
+    height: @header-height;
 
     .logo {
         float: left;
@@ -18,7 +25,7 @@
 
         h1 {
             display: inline;
-            color: #FFF;
+            color: @logo-color;
             margin: 0 10px;
             font-size: 28px;
         }
@@ -28,7 +35,7 @@
         margin: 4px 0 0 4* @gutter-size;
         float: left;
         font-size: 16px;
-        color: #333;
+        color: @input-text-color;
         .clearfix();
 
         > div {
@@ -43,7 +50,7 @@
                 border-radius: 3px;
                 padding: 10px;
                 font-size: 13px;
-                color: #333;
+                color: @input-text-color;
             }
         }
 
@@ -54,7 +61,7 @@
             .selectize-dropdown {
                 z-index: 2000;
                 .optgroup-header {
-                    background: #E7E7E7;
+                    background: @optgroup-background-color;
                     font-size: 12px;
                 }
             }
@@ -63,11 +70,11 @@
         .search-button {
             a.active {
                 cursor: pointer;
-                color: #0e0e0e;
+                color: @search-active-color;
             }
             a.inactive {
                 cursor: default;
-                color: #727272;
+                color: @search-inactive-color;
             }
 
             i {
@@ -75,7 +82,7 @@
                 padding: 6px;
 
                 &.fa-spin {
-                    color: #0e0e0e;
+                    color: @search-active-color;
                 }
             }
         }

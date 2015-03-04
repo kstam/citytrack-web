@@ -1,5 +1,7 @@
+@import "variables";
 .content-section {
     position: relative;
+    padding-top: @header-height;
 
     .result-section {
         box-sizing: border-box;
@@ -10,11 +12,18 @@
     .main-map-section {
         box-sizing: border-box;
         &.full {
+            position: fixed;
+            top: @header-height;
+            bottom: 0;
+            right: 0;
             width: 100%;
         }
 
         &.side {
-            float: right;
+            position: fixed;
+            top: @header-height;
+            bottom: 0;
+            right: 0;
             width: 60%;
         }
     }
