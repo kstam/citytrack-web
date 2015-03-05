@@ -7,7 +7,7 @@ var constants = require('client/config/constants');
 var AppState = require('client/services/AppState');
 var NgEventService = require('client/services/NgEventService');
 
-describe('AreaSelectController', function() {
+describe('KeywordController', function() {
     var scope, appState, eventService, $$controller;
 
     beforeEach(angular.mock.module(controllers.name));
