@@ -14,10 +14,15 @@ module.exports = function($scope, appState, eventService) {
 
     var mainSuccessListener = function(event, data) {
         $scope.error = false;
+        $scope.rows = [];
         if (data && data.collection && utils.isArray(data.collection.features)) {
-            $scope.rows = data.collection.features;
-        } else {
-            $scope.rows = [];
+            $scope.rows = $scope.rows.concat(data.collection.features);
+        }
+    };
+
+    var fetchNextPageSuccessListener = function(event, data) {
+        if (data && data.collection && utils.isArray(data.collection.features)) {
+            $scope.rows = $scope.rows.concat(data.collection.features);
         }
     };
 
@@ -29,6 +34,7 @@ module.exports = function($scope, appState, eventService) {
     var initListeners = function() {
         eventService.on(constants.MAIN_QUERY_SUCCESS, mainSuccessListener);
         eventService.on(constants.MAIN_QUERY_FAILURE, mainErrorListener);
+        eventService.on(constants.FETCH_NEXT_PAGE_SUCCESS, fetchNextPageSuccessListener);
     };
 
     // INITIALIZER

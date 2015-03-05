@@ -8,7 +8,8 @@ var AppState = require('client/services/AppState');
 var NgEventService = require('client/services/NgEventService');
 var expect = require('../../testCommons/chaiExpect');
 var sinon = require('sinon');
-var mockedData = require('../../data/poiResponse');
+var mockedData1 = require('../../data/poiResponse');
+var mockedData2 = require('../../data/poiResponse2');
 
 describe('ResultsController', function() {
     var scope, appState, eventService, $$controller;
@@ -35,13 +36,13 @@ describe('ResultsController', function() {
 
     describe('listens to MAIN_QUERY_SUCCESS and', function() {
         it('should set the "rows" to the array contained in the collection', function() {
-            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
-            expect(scope.rows).to.equal(mockedData.collection.features);
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData1);
+            expect(scope.rows).to.deep.equal(mockedData1.collection.features);
         });
 
         it('should set the error back to false', function() {
             scope.error = true;
-            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData1);
             expect(scope.error).to.be.false();
         });
 
@@ -72,6 +73,17 @@ describe('ResultsController', function() {
             scope.rows = ['a'];
             eventService.broadcastEvent(constants.MAIN_QUERY_FAILURE);
             expect(scope.rows).to.deep.equal([]);
+        });
+    });
+
+    describe('listens to FETCH_NEXT_PAGE_SUCCESS and', function() {
+        beforeEach(function() { // set the first page
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData1);
+        });
+
+        it('should add the new results to the rows', function() {
+            eventService.broadcastEvent(constants.FETCH_NEXT_PAGE_SUCCESS, mockedData2);
+            expect(scope.rows).to.deep.equal(mockedData1.collection.features.concat(mockedData2.collection.features));
         });
     });
 
