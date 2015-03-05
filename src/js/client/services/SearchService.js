@@ -2,10 +2,25 @@
 
 var utils = require('../../common/utils');
 var Area = require('../../model/Area');
+var types = require('../../model/types');
 
 module.exports = function($resource) {
 
     var POI = $resource('api/pois', {}, {
+        getPois: {
+            method: 'GET',
+            params: {}
+        }
+    });
+
+    var Photo = $resource('api/photos', {}, {
+        getPois: {
+            method: 'GET',
+            params: {}
+        }
+    });
+
+    var Event = $resource('api/events', {}, {
         getPois: {
             method: 'GET',
             params: {}
@@ -25,14 +40,29 @@ module.exports = function($resource) {
         p.pg = params.page;
         p.pgsize = params.pageSize;
         p.src = params.sources ? params.sources.join(',') : undefined;
-        p.cat = params.categories ? params.categories.join(',') : undefined;
+        if (params.type.id === types.poi.id) {
+            p.cat = params.categories ? params.categories.join(',') : undefined;
+        }
         return p;
+    };
+
+    var getResource = function(params) {
+        switch (params.type.id) {
+            case types.poi.id:
+                return POI;
+            case types.event.id:
+                return Event;
+            case types.photo.id:
+                return Photo;
+            default:
+                break;
+        }
     };
 
     var query = function(params) {
         validateParams(params);
         var apiParams = generateParamsObject(params);
-        return POI.getPois(apiParams).$promise;
+        return getResource(params).getPois(apiParams).$promise;
     };
 
     return {

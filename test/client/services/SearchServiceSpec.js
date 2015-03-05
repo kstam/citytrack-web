@@ -5,7 +5,9 @@ require('angular-mocks');
 var ngResource = require('angular-resource');
 var testUtils = require('../../testCommons/testUtils');
 var SearchService = require('client/services/SearchService');
-var mockedData = require('../../data/poiResponse');
+var poiData = require('../../data/poiResponse');
+var photoData = require('../../data/photoResponse');
+var eventData = require('../../data/eventResponse');
 var Params = require('model/Params');
 var types = require('model/types');
 
@@ -18,7 +20,9 @@ describe('SearchService', function() {
     beforeEach(inject(function($httpBackend, $resource) {
         httpBackend = $httpBackend;
         searchService = new SearchService($resource);
-        httpBackend.whenGET(/api\/pois?.*/).respond(mockedData);
+        httpBackend.whenGET(/api\/pois?.*/).respond(poiData);
+        httpBackend.whenGET(/api\/photos?.*/).respond(photoData);
+        httpBackend.whenGET(/api\/events?.*/).respond(eventData);
         params = new Params.Builder()
             .withKeyword('keyword')
             .withArea(testUtils.createRandomArea('Athens'))
@@ -31,12 +35,6 @@ describe('SearchService', function() {
     });
 
     describe('query', function() {
-        it('should call the "pois" rest endpoint', function() {
-
-            httpBackend.expectGET(/api\/pois?.*/);
-            searchService.query(params);
-            httpBackend.flush();
-        });
 
         it('should throw an error if called invalid params', function() {
             expect(function() {
@@ -109,17 +107,69 @@ describe('SearchService', function() {
             httpBackend.flush();
         });
 
-        it('should set the cat in the request', function() {
-            var categories = ['ACategory', 'AnotherCategory'];
-            httpBackend.expectGET(function(url) {
-                return url.indexOf('cat=' + categories.join(',')) !== -1;
+        describe('when when params.type is "poi"', function() {
+            it('should call the "pois" rest endpoint', function() {
+                httpBackend.expectGET(/api\/pois?.*/);
+                searchService.query(params);
+                httpBackend.flush();
             });
-            var params = new Params.Builder().withType(types.poi)
-                .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
-                .withCategories(categories)
-                .build();
-            searchService.query(params);
-            httpBackend.flush();
+
+            it('should set the cat in the request', function() {
+                var categories = ['ACategory', 'AnotherCategory'];
+                httpBackend.expectGET(function(url) {
+                    return url.indexOf('cat=' + categories.join(',')) !== -1;
+                });
+                var params = new Params.Builder().withType(types.poi)
+                    .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
+                    .withCategories(categories)
+                    .build();
+                searchService.query(params);
+                httpBackend.flush();
+            });
+        });
+
+        describe('when when params.type is "photo"', function() {
+            it('should call the "photos" rest endpoint', function() {
+                params.type = types.photo;
+                httpBackend.expectGET(/api\/photos?.*/);
+                searchService.query(params);
+                httpBackend.flush();
+            });
+
+            it('should ignore the cat in the request even if it is set', function() {
+                var categories = ['ACategory', 'AnotherCategory'];
+                httpBackend.expectGET(function(url) {
+                    return url.indexOf('cat=') === -1;
+                });
+                var params = new Params.Builder().withType(types.photo)
+                    .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
+                    .withCategories(categories)
+                    .build();
+                searchService.query(params);
+                httpBackend.flush();
+            });
+        });
+
+        describe('when when params.type is "event"', function() {
+            it('should call the "events" rest endpoint', function() {
+                params.type = types.event;
+                httpBackend.expectGET(/api\/events?.*/);
+                searchService.query(params);
+                httpBackend.flush();
+            });
+
+            it('should ignore the cat in the request even if it is set', function() {
+                var categories = ['ACategory', 'AnotherCategory'];
+                httpBackend.expectGET(function(url) {
+                    return url.indexOf('cat=') === -1;
+                });
+                var params = new Params.Builder().withType(types.event)
+                    .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
+                    .withCategories(categories)
+                    .build();
+                searchService.query(params);
+                httpBackend.flush();
+            });
         });
     });
 });
