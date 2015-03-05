@@ -54,7 +54,7 @@ var AppState = function(eventBus) {
 
     var setType = function(newType) {
         if(!isValidType(newType)) {
-            throw new Error('[' + newType + '] is not a valid type' )
+            throw new Error('[' + newType + '] is not a valid type' );
         }
         if (!type || newType.id !== type.id) {
             type = newType;

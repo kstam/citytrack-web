@@ -6,7 +6,7 @@
                 {{category}}
             </span>
         </div>
-        <div class="description">{{data.description}}</div>
+        <div class="description" ng-bind-html="data.description"></div>
         <div class="source">
             Origin: <a href="{{data.url}}" target="_blank">{{ data.source }}</a>
         </div>

@@ -108,7 +108,7 @@ Params.Builder = function() {
     this.withType = function(theType) {
         type = theType;
         return this;
-    }
+    };
 
     this.build = function() {
         return new Params(keyword, area, page, pageSize, sources, categories, type);
