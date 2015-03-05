@@ -37,15 +37,17 @@ module.exports = function($scope, appState, eventService, leafletData) {
     };
 
     var setBounds = function(latLngBounds) {
-        angular.extend($scope.bounds, {
-            northEast: {
-                lat: latLngBounds.getNorth(),
-                lng: latLngBounds.getEast()
-            },
-            southWest: {
-                lat:latLngBounds.getSouth(),
-                lng:latLngBounds.getWest()
-            }
+        $scope.$applyAsync(function() {
+            angular.extend($scope.bounds, {
+                northEast: {
+                    lat: latLngBounds.getNorth(),
+                    lng: latLngBounds.getEast()
+                },
+                southWest: {
+                    lat: latLngBounds.getSouth(),
+                    lng: latLngBounds.getWest()
+                }
+            });
         });
     };
 
@@ -69,22 +71,37 @@ module.exports = function($scope, appState, eventService, leafletData) {
     var mainQuerySuccessListener = function(event, data) {
         var geojsonMarkerOptions = {};
 
-        $scope.geojson = {
-            data: data.collection,
-            pointToLayer: function (feature, latlng) {
-                return L.marker(latlng, geojsonMarkerOptions);
-            },
-            onEachFeature: function(feature, layer) {
-                layer.bindPopup(popupFactory.getPopupHtml(feature));
+        // Get the map to add the data
+        leafletData.getMap().then(function(map) {
+            if ($scope.geoJsonLayer) {
+                    map.removeLayer($scope.geoJsonLayer);
             }
-        };
+            $scope.geoJsonLayer = L.geoJson(data.collection, {
+                pointToLayer: function(feature, latlng) {
+                    return L.marker(latlng, geojsonMarkerOptions);
+                },
+                onEachFeature: function(feature, layer) {
+                    layer.bindPopup(popupFactory.getPopupHtml(feature));
+                }
+            });
+            $scope.geoJsonLayer.addTo(map);
 
-        if (data.collection.features.length > 0) {
-            var bounds = L.geoJson(data.collection).getBounds();
-            setBounds(bounds);
-        }
+            // fix the bounds to zoom to selection
+            if (data.collection.features.length > 0) {
+                setBounds($scope.geoJsonLayer.getBounds());
+            }
+        });
 
         fixMapSize();
+    };
+
+    var nextPageSuccessListener = function(event, data) {
+        if ($scope.geoJsonLayer) {
+            $scope.geoJsonLayer.addData(data.collection);
+            if (data.collection.features.length > 0) {
+                setBounds($scope.geoJsonLayer.getBounds());
+            }
+        }
     };
 
     var areaChangedListener = function(event, newArea) {
@@ -101,6 +118,7 @@ module.exports = function($scope, appState, eventService, leafletData) {
     var initEventListeners = function() {
         eventService.on(appState.AREA_CHANGED_EVT, areaChangedListener);
         eventService.on(constants.MAIN_QUERY_SUCCESS, mainQuerySuccessListener);
+        eventService.on(constants.FETCH_NEXT_PAGE_SUCCESS, nextPageSuccessListener);
     };
 
     var initialize = function() {

@@ -11,19 +11,28 @@ var NgEventService = require('client/services/NgEventService');
 var L = require('leaflet');
 var testUtils = require('../../testCommons/testUtils');
 var mockedData = require('../../data/poiResponse');
+var mockedData2 = require('../../data/poiResponse2');
 var emptyResponse = require('../../data/emptyPoiResponse');
+var expect = require('../../testCommons/chaiExpect');
+var sinon = require('sinon');
 
 describe('MapController', function() {
-    var scope, controller, appState, eventService;
+    var scope, $controller, appState, eventService, $rootScope, leafletData,
+        mockedMap;
 
     beforeEach(angular.mock.module(controllers.name));
+    beforeEach(angular.mock.module('ng'));
 
-    beforeEach(inject(function($controller, $rootScope, leafletData) {
+    beforeEach(inject(function(_$controller_, _$rootScope_, $q, _leafletData_) {
+        $controller = _$controller_;
+        $rootScope = _$rootScope_;
         scope = $rootScope.$new();
         eventService = new NgEventService($rootScope);
         appState = new AppState(eventService);
-        controller = $controller('MapController', {$scope: scope, AppState: appState, NgEventService: eventService,
-            leafletData: leafletData});
+        mockedMap = testUtils.getMockMap();
+        leafletData = _leafletData_;
+        sinon.stub(leafletData, 'getMap').returns($q.when(mockedMap));
+        initController();
     }));
 
     describe('configures an initial state and', function() {
@@ -97,8 +106,10 @@ describe('MapController', function() {
             scope.$digest();
             expect(scope.displayUpdateCurrentView).to.be.true();
 
-            scope.bounds = {southWest: {lat: bbox.getSouth(), lng: bbox.getWest()},
-                northEast: {lat: bbox.getNorth(), lng: bbox.getEast()}};
+            scope.bounds = {
+                southWest: {lat: bbox.getSouth(), lng: bbox.getWest()},
+                northEast: {lat: bbox.getNorth(), lng: bbox.getEast()}
+            };
             scope.$digest();
             expect(scope.displayUpdateCurrentView).to.be.false();
         });
@@ -125,6 +136,7 @@ describe('MapController', function() {
         it('should update the currentView and bounds variables', function() {
             appState.setArea(testUtils.createRandomArea('Athens'));
             expect(scope.currentView.equals(appState.getArea())).to.equal(true);
+            $rootScope.$digest();
 
             expect(scope.bounds.southWest.lat).to.equal(scope.currentView.getBoundingBox().getSouth());
             expect(scope.bounds.southWest.lng).to.equal(scope.currentView.getBoundingBox().getWest());
@@ -134,14 +146,19 @@ describe('MapController', function() {
     });
 
     describe('listens to MAIN_QUERY_SUCCESS event and', function() {
-        it('should set the "geojson.data" from the data', function() {
+        it('should pass the GeoJson to the map', function() {
+            mockedMap.addLayer = sinon.spy();
             eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
-            expect(scope.geojson.data).to.equal(mockedData.collection);
+            $rootScope.$digest();
+
+            var addedLayer = mockedMap.addLayer.getCall(0).args[0];
+            expect(addedLayer).to.equal(scope.geoJsonLayer);
         });
 
         it('should set the bounds of the map in order to zoom into the returned data points', function() {
             eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
-
+            $rootScope.$digest(); // resolves promise
+            $rootScope.$digest(); // resolves applyAsync
             var box = L.geoJson(mockedData.collection).getBounds();
             expect(scope.bounds.southWest.lat).to.equal(box.getSouth());
             expect(scope.bounds.southWest.lng).to.equal(box.getWest());
@@ -155,4 +172,22 @@ describe('MapController', function() {
             }).not.to.throw(Error);
         });
     });
+
+    describe('listens to FETCH_NEXT_PAGE_SUCCESS and', function() {
+        it('should add the new data to the map', function() {
+            scope.geoJsonLayer = L.geoJson(mockedData.collection);
+            scope.geoJsonLayer.addData = sinon.spy();
+            eventService.broadcastEvent(constants.FETCH_NEXT_PAGE_SUCCESS, mockedData2);
+            $rootScope.$digest();
+            expect(scope.geoJsonLayer.addData).to.have.been.calledWith(mockedData2.collection);
+        });
+    });
+
+    // HELPER FUNCTIONS
+    function initController() {
+        $controller('MapController', {
+            $scope: scope, AppState: appState, NgEventService: eventService,
+            leafletData: leafletData
+        });
+    }
 });

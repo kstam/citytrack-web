@@ -42,6 +42,14 @@ testUtils.createSearchServiceMock = function (data) {
     };
 };
 
+testUtils.getMockMap = function() {
+    return {
+        invalidateSize: function() {},
+        addLayer: function() {},
+        removeLayer: function() {}
+    };
+};
+
 testUtils.createSearchServiceMockThatFails = function() {
     return {
         query: function() {
