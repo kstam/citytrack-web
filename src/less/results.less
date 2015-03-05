@@ -1,16 +1,26 @@
 @import "mixins";
 
 .result-section {
+
+    @hover-background: #EEE;
+    @result-img-size: 90px;
+    @result-title-red: #d9534f;
+    @category-background: #fce2e2;
+    @description-color: #666;
+    @category-color: #666;
+    @source-color: #999;
+    @source-link-color: #9095d1;
+
     padding: 10px;
     .rows {
         .row {
             .clearfix();
             padding: 2%;
             margin-bottom: 2%;
-            min-height: 90px;
+            min-height: @result-img-size;
 
             &:hover {
-                background: #EEE;
+                background: @hover-background;
                 cursor: pointer;
             }
 
@@ -24,8 +34,8 @@
                 img {
                     position: absolute;
                     right: 0;
-                    height: 90px;
-                    width: 90px;
+                    height: @result-img-size;
+                    width: @result-img-size;
                 }
             }
 
@@ -35,7 +45,7 @@
                 float: left;
                 .title {
                     font-size: 16px;
-                    color: #d9534f;
+                    color: @result-title-red;
                     margin-bottom: 1.5%;
                 }
 
@@ -43,8 +53,8 @@
                     font-size: 12px;
                     margin-bottom: 1.5%;
                     .category {
-                        color: #666;
-                        background: #fce2e2;
+                        color: @category-color;
+                        background: @category-background;
                         border-radius: 3px;
                         padding: 2px;
                         margin-right: 5px;
@@ -55,19 +65,33 @@
                     padding: 1% 0;
                     margin-bottom: 0.5%;
                     font-size: 12px;
-                    color: #666;
+                    color: @description-color;
                 }
 
                 .source {
-                    color: #999;
+                    color: @source-color;
                     padding-top: 1%;
                     font-size: 12px;
                     border-top: 1px solid #DDD;
 
                     a {
-                        color: #9095d1;
+                        color: @source-link-color;
                     }
                 }
+            }
+        }
+
+        .paginator {
+            background: @header-background + 150;
+            text-align: center;
+            padding: 5px;
+            a {
+                text-decoration: none;
+                color: #6061ff;
+            }
+
+            .paginator-end {
+                color: @description-color;
             }
         }
     }
@@ -75,7 +99,7 @@
     .no-rows {
         padding: 10px;
         text-align: center;
-        color: #666;
+        color: @description-color;
         i {
             font-size: 20px;
         }
@@ -84,9 +108,9 @@
     .error {
         padding: 10px;
         text-align: center;
-        color: #666;
+        color: @description-color;
         i {
-            color: #d9534f;
+            color: @result-title-red;
             font-size: 20px;
         }
     }
