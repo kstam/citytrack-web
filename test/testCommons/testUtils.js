@@ -29,4 +29,29 @@ testUtils.cloneArea = function(area) {
     return new Area(area.getName(), area.getBoundingBox(), area.getType());
 };
 
+
+testUtils.createSearchServiceMock = function (data) {
+    return {
+        query: function() {
+            return {
+                then: function(success) {
+                    success(data);
+                }
+            };
+        }
+    };
+};
+
+testUtils.createSearchServiceMockThatFails = function() {
+    return {
+        query: function() {
+            return {
+                then: function(success, failure) {
+                    failure();
+                }
+            };
+        }
+    };
+};
+
 module.exports = testUtils;

@@ -24,7 +24,7 @@ describe('SearchButtonController', function() {
         scope = $rootScope.$new();
         eventService = new NgEventService($rootScope);
         appState = new AppState(eventService);
-        searchService = createSearchServiceMock();
+        searchService = testUtils.createSearchServiceMock(mockedData);
         initController();
     }));
 
@@ -107,7 +107,7 @@ describe('SearchButtonController', function() {
         });
 
         it('should trigger an ERROR event if the service call failse', function() {
-            searchService = createSearchServiceMockThatFails();
+            searchService = testUtils.createSearchServiceMockThatFails();
             initController();
             eventService.broadcastEvent = sinon.spy();
             scope.active = true;
@@ -120,29 +120,5 @@ describe('SearchButtonController', function() {
     function initController() {
         $$controller('SearchButtonController',
             {$scope: scope, AppState: appState, NgEventService: eventService, SearchService: searchService});
-    }
-
-    function createSearchServiceMock() {
-        return {
-            query: function() {
-                return {
-                    then: function(success) {
-                        success(mockedData);
-                    }
-                };
-            }
-        };
-    }
-
-    function createSearchServiceMockThatFails() {
-        return {
-            query: function() {
-                return {
-                    then: function(success, failure) {
-                        failure();
-                    }
-                };
-            }
-        };
     }
 });
