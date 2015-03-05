@@ -40,6 +40,7 @@ module.exports = function($scope, appState, eventService, searchService) {
     var initListeners = function() {
         eventService.on(appState.APP_STATE_CHANGED_EVT, appStateListener);
         eventService.on(constants.KEYWORD_ENTER_PRESSED, enterPressedListener);
+        eventService.on(constants.MAP_VIEW_CHANGED, enterPressedListener);
     };
 
     // INITIALIZER

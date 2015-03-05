@@ -17,6 +17,8 @@ constants.FETCH_NEXT_PAGE_FAILURE= 'FetchNextPage:Failure';
 
 constants.KEYWORD_ENTER_PRESSED = 'Keyword:EnterPressed';
 
+constants.MAP_VIEW_CHANGED = 'Map:ViewChanged';
+
 // URLS
 constants.NO_IMG_URL = 'img/no_image_available.jpg';
 

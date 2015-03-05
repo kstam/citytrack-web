@@ -130,6 +130,13 @@ describe('MapController', function() {
             scope.$digest();
             expect(scope.displayUpdateCurrentView).to.be.false();
         });
+        it('should fire a MAP_VIEW_CHANGED event', function() {
+            eventService.broadcastEvent = sinon.spy();
+            scope.currentView = testUtils.createRandomArea(constants.CURRENT_VIEW_ID);
+            scope.applyCurrentView();
+            scope.$digest();
+            expect(eventService.broadcastEvent).to.have.been.calledWith(constants.MAP_VIEW_CHANGED);
+        });
     });
 
     describe('listens for changes in the AppState and', function() {

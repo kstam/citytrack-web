@@ -11,6 +11,7 @@ module.exports = function($scope, appState, eventService, leafletData) {
 
     $scope.applyCurrentView = function() {
         appState.setArea($scope.currentView);
+        eventService.broadcastEvent(constants.MAP_VIEW_CHANGED);
         $scope.displayUpdateCurrentView = false;
     };
 
