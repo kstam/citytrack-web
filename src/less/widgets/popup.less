@@ -1,10 +1,12 @@
 @import "../mixins";
+@import "../variables";
 
 .leaflet-popup-content {
     margin: 15px;
     font-size: 12px;
     .popup {
         .header {
+            color: @result-title-red;
             font-size: 13px;
             font-weight: bold;
             margin-bottom: 5px;
@@ -13,7 +15,7 @@
         .categories {
             margin-bottom: 7px;
             .category {
-                background: #EEE;
+                background: @category-background;
                 padding: 2px;
                 margin-right: 2px;
             }
@@ -34,6 +36,7 @@
         .photos {
 
             .header {
+                font-weight: normal;
                 font-size: 12px;
             }
 
@@ -47,9 +50,13 @@
         }
 
         .source {
-            .header {
-                font-size: 12px;
-                margin-bottom: 0;
+            border-top: 1px #DDD solid;
+            padding-top: 5px;
+            width: 100%;
+            clear: both;
+            color: @source-color;
+            a {
+                color: @source-link-color;
             }
         }
     }
