@@ -79,8 +79,11 @@ module.exports = function($scope, appState, eventService, leafletData) {
             }
         };
 
-        var bounds = L.geoJson(data.collection).getBounds();
-        setBounds(bounds);
+        if (data.collection.features.length > 0) {
+            var bounds = L.geoJson(data.collection).getBounds();
+            setBounds(bounds);
+        }
+
         fixMapSize();
     };
 

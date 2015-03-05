@@ -11,6 +11,7 @@ var NgEventService = require('client/services/NgEventService');
 var L = require('leaflet');
 var testUtils = require('../../testCommons/testUtils');
 var mockedData = require('../../data/poiResponse');
+var emptyResponse = require('../../data/emptyPoiResponse');
 
 describe('MapController', function() {
     var scope, controller, appState, eventService;
@@ -136,6 +137,22 @@ describe('MapController', function() {
         it('should set the "geojson.data" from the data', function() {
             eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
             expect(scope.geojson.data).to.equal(mockedData.collection);
+        });
+
+        it('should set the bounds of the map in order to zoom into the returned data points', function() {
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
+
+            var box = L.geoJson(mockedData.collection).getBounds();
+            expect(scope.bounds.southWest.lat).to.equal(box.getSouth());
+            expect(scope.bounds.southWest.lng).to.equal(box.getWest());
+            expect(scope.bounds.northEast.lat).to.equal(box.getNorth());
+            expect(scope.bounds.northEast.lng).to.equal(box.getEast());
+        });
+
+        it('should not attempt to set the bounds when response is empty', function() {
+            expect(function() {
+                eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, emptyResponse);
+            }).not.to.throw(Error);
         });
     });
 });
