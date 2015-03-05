@@ -73,4 +73,15 @@ describe('utils', function() {
             }).to.throw(Error);
         });
     });
+
+    describe('getArrayFromString', function() {
+        it('should return empty array if passed non-string', function() {
+            expect(utils.getArrayFromString()).to.deep.equal([]);
+            expect(utils.getArrayFromString(null)).to.deep.equal([]);
+            expect(utils.getArrayFromString({})).to.deep.equal([]);
+        });
+        it('should return correct array if proper string is passed', function() {
+            expect(utils.getArrayFromString('[a,b,c]')).to.deep.equal(['a', 'b', 'c']);
+        })
+    });
 });

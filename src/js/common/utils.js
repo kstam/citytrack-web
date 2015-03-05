@@ -83,6 +83,9 @@ utils.optional = function(arg) {
 
 utils.getArrayFromString = function(stringArray) {
     var result = [];
+    if (!utils.isString(stringArray)) {
+        return result;
+    }
     stringArray.replace('[', '').replace(']', '').split(',').forEach(function(value) {
         value = value.trim();
         if (value !== '') {
