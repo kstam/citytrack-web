@@ -25,6 +25,14 @@ describe('Params', function() {
                 ['Source1', 'Source2'], ['Cat2', 'Cat1'], types.poi);
             expect(params1.equals(params2)).to.be.true();
         });
+
+        it('should return false if types are not equal', function() {
+            var area = testUtils.createRandomArea('Athens');
+            var params1 = new Params('keyword', area, 1, 10, ['Source1', 'Source2'], ['Cat1', 'Cat2'], types.poi);
+            var params2 = new Params('keyword', testUtils.cloneArea(area), 1, 10,
+                ['Source1', 'Source2'], ['Cat2', 'Cat1'], types.event);
+            expect(params1.equals(params2)).to.be.false();
+        });
     });
 
     describe('isValid', function() {
@@ -71,7 +79,6 @@ describe('Params', function() {
             expect(params.isValid()).to.be.false();
         });
 
-
         it('should return false if pageSize is invalid', function() {
             var params = new Params.Builder()
                 .withKeyword('a')
@@ -82,7 +89,6 @@ describe('Params', function() {
             expect(params.isValid()).to.be.false();
         });
 
-
         it('should return false if sources is invalid', function() {
             var params = new Params.Builder()
                 .withKeyword('a')
@@ -92,7 +98,6 @@ describe('Params', function() {
 
             expect(params.isValid()).to.be.false();
         });
-
 
         it('should return false if categories is invalid', function() {
             var params = new Params.Builder()

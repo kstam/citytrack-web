@@ -37,6 +37,7 @@ var Params = function(keyword, area, page, pageSize, sources, categories, type) 
 
         return this.keyword === that.keyword &&
             equalAreas(this.area, that.area) &&
+            (this.type === that.type || (this.type.id === that.type.id && this.type.iconClass === that.type.iconClass)) &&
             this.page === that.page &&
             this.pageSize === that.pageSize &&
             arraysSameElements(this.sources, that.sources) &&
