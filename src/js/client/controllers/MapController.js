@@ -36,6 +36,19 @@ module.exports = function($scope, appState, eventService, leafletData) {
         });
     };
 
+    var setBounds = function(latLngBounds) {
+        angular.extend($scope.bounds, {
+            northEast: {
+                lat: latLngBounds.getNorth(),
+                lng: latLngBounds.getEast()
+            },
+            southWest: {
+                lat:latLngBounds.getSouth(),
+                lng:latLngBounds.getWest()
+            }
+        });
+    };
+
     // WATCHERS
 
     var boundsWatcher = function(newBounds, oldBounds) {
@@ -66,6 +79,8 @@ module.exports = function($scope, appState, eventService, leafletData) {
             }
         };
 
+        var bounds = L.geoJson(data.collection).getBounds();
+        setBounds(bounds);
         fixMapSize();
     };
 
@@ -75,16 +90,7 @@ module.exports = function($scope, appState, eventService, leafletData) {
 
             $scope.currentView = newArea;
 
-            angular.extend($scope.bounds, {
-                northEast: {
-                    lat: newBbox.getNorth(),
-                    lng: newBbox.getEast()
-                },
-                southWest: {
-                    lat:newBbox.getSouth(),
-                    lng:newBbox.getWest()
-                }
-            });
+            setBounds(newBbox);
             updateDisplayUpdateCurrentView();
         }
     };
