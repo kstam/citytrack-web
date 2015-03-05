@@ -36,6 +36,11 @@ citytrackControllers.controller('ResultsController', ['$scope', 'AppState', 'NgE
         require('./ResultsController')($scope, appState, eventService);
     }]);
 
+citytrackControllers.controller('ResultsPaginationController', ['$scope', 'AppState', 'NgEventService', 'SearchService',
+    function($scope, appState, eventService, searchService) {
+        require('./ResultsPaginationController')($scope, appState, eventService, searchService);
+    }]);
+
 citytrackControllers.controller('TypeSelectController', ['$scope', 'AppState', 'NgEventService',
     function($scope, appState, eventService) {
         require('./TypeSelectController')($scope, appState, eventService);

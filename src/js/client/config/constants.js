@@ -11,6 +11,10 @@ constants.MAIN_QUERY_STARTED = 'MainQuery:Started';
 constants.MAIN_QUERY_SUCCESS = 'MainQuery:Success';
 constants.MAIN_QUERY_FAILURE = 'MainQuery:Failure';
 
+constants.FETCH_NEXT_PAGE_STARTED= 'FetchNextPage:Started';
+constants.FETCH_NEXT_PAGE_SUCCESS= 'FetchNextPage:Success';
+constants.FETCH_NEXT_PAGE_FAILURE= 'FetchNextPage:Failure';
+
 constants.KEYWORD_ENTER_PRESSED = 'Keyword:EnterPressed';
 
 // URLS
