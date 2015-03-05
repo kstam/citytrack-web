@@ -29,13 +29,13 @@ module.exports = function($resource) {
         return p;
     };
 
-    var getPois = function(params) {
+    var query = function(params) {
         validateParams(params);
         var apiParams = generateParamsObject(params);
         return POI.getPois(apiParams).$promise;
     };
 
     return {
-        getPois: getPois
+        query: query
     };
 };

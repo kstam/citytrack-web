@@ -9,7 +9,7 @@ module.exports = function($scope, appState, eventService, searchService) {
         if ($scope.active === true) {
             $scope.loading = true;
             eventService.broadcastEvent(constants.MAIN_QUERY_STARTED);
-            searchService.getPois($scope.params)
+            searchService.query($scope.params)
                 .then(function(data) { //success
                     $scope.loading = false;
                     eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, data);

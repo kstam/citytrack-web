@@ -24,6 +24,6 @@ describe('services', function() {
     }]));
 
     it('correctly defines SearchService', inject(['SearchService', function(searchService) {
-        expect(searchService.getPois).not.to.be.undefined;
+        expect(searchService.query).not.to.be.undefined;
     }]));
 });

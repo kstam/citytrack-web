@@ -73,14 +73,14 @@ describe('SearchButtonController', function() {
 
     describe('exposes "search" method to the scope that', function() {
         it('should do nothing if active is false"', function() {
-            searchService.getPois = sinon.spy();
+            searchService.query = sinon.spy();
             scope.search();
-            expect(searchService.getPois).to.have.callCount(0);
+            expect(searchService.query).to.have.callCount(0);
         });
 
         it('should call the searchService if active is set to true and set "loading" to true', function() {
             var spy = sinon.spy();
-            searchService.getPois = function() {
+            searchService.query = function() {
                 return {
                     then: spy
                 };
@@ -124,7 +124,7 @@ describe('SearchButtonController', function() {
 
     function createSearchServiceMock() {
         return {
-            getPois: function() {
+            query: function() {
                 return {
                     then: function(success) {
                         success(mockedData);
@@ -136,7 +136,7 @@ describe('SearchButtonController', function() {
 
     function createSearchServiceMockThatFails() {
         return {
-            getPois: function() {
+            query: function() {
                 return {
                     then: function(success, failure) {
                         failure();

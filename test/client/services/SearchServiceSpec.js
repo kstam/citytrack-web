@@ -30,22 +30,22 @@ describe('SearchService', function() {
         httpBackend.verifyNoOutstandingRequest();
     });
 
-    describe('getPois', function() {
+    describe('query', function() {
         it('should call the "pois" rest endpoint', function() {
 
             httpBackend.expectGET(/api\/pois?.*/);
-            searchService.getPois(params);
+            searchService.query(params);
             httpBackend.flush();
         });
 
         it('should throw an error if called invalid params', function() {
             expect(function() {
-                searchService.getPois(Params(''));
+                searchService.query(Params(''));
             }).to.throw(Error);
         });
 
         it('should return a promise', function(done) {
-            searchService.getPois(params)
+            searchService.query(params)
                 .then(function(data) {
                     expect(data).not.to.equal(undefined);
                     expect(data.rows).to.equal(20);
@@ -58,7 +58,7 @@ describe('SearchService', function() {
             httpBackend.expectGET(function(url) {
                 return url.indexOf('q=keyword') !== -1;
             });
-            searchService.getPois(params);
+            searchService.query(params);
             httpBackend.flush();
         });
 
@@ -68,7 +68,7 @@ describe('SearchService', function() {
                 return url.indexOf('box=' + area.getBoundingBoxAsList().join(',')) !== -1;
             });
             params.area = area;
-            searchService.getPois(params);
+            searchService.query(params);
             httpBackend.flush();
         });
 
@@ -80,7 +80,7 @@ describe('SearchService', function() {
                 .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
                 .withPage(2)
                 .build();
-            searchService.getPois(params);
+            searchService.query(params);
             httpBackend.flush();
         });
 
@@ -92,7 +92,7 @@ describe('SearchService', function() {
                 .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
                 .withPageSize(40)
                 .build();
-            searchService.getPois(params);
+            searchService.query(params);
             httpBackend.flush();
         });
 
@@ -105,7 +105,7 @@ describe('SearchService', function() {
                 .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
                 .withSources(sources)
                 .build();
-            searchService.getPois(params);
+            searchService.query(params);
             httpBackend.flush();
         });
 
@@ -118,7 +118,7 @@ describe('SearchService', function() {
                 .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
                 .withCategories(categories)
                 .build();
-            searchService.getPois(params);
+            searchService.query(params);
             httpBackend.flush();
         });
     });
