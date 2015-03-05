@@ -26,9 +26,9 @@ citytrackControllers.controller('KeywordController', ['$scope', 'AppState', 'NgE
         require('./KeywordController')($scope, appState, eventService);
     }]);
 
-citytrackControllers.controller('SearchButtonController', ['$scope', 'AppState', 'NgEventService', 'PoiService',
-    function($scope, appState, eventService, poiService) {
-        require('./SearchButtonController')($scope, appState, eventService, poiService);
+citytrackControllers.controller('SearchButtonController', ['$scope', 'AppState', 'NgEventService', 'SearchService',
+    function($scope, appState, eventService, searchService) {
+        require('./SearchButtonController')($scope, appState, eventService, searchService);
     }]);
 
 citytrackControllers.controller('ResultsController', ['$scope', 'AppState', 'NgEventService',

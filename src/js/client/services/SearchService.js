@@ -14,7 +14,7 @@ module.exports = function($resource) {
 
     var validateParams = function(params) {
         if(!params.isValid()) {
-            throw new Error('Attempted to call the PoiService with invalid parameters');
+            throw new Error('Attempted to call the SearchService with invalid parameters');
         }
     };
 

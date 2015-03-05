@@ -3,13 +3,13 @@
 var angular = require('../shims/angular');
 var constants = require('../config/constants');
 
-module.exports = function($scope, appState, eventService, poiService) {
+module.exports = function($scope, appState, eventService, searchService) {
 
     $scope.search = function() {
         if ($scope.active === true) {
             $scope.loading = true;
             eventService.broadcastEvent(constants.MAIN_QUERY_STARTED);
-            poiService.getPois($scope.params)
+            searchService.getPois($scope.params)
                 .then(function(data) { //success
                     $scope.loading = false;
                     eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, data);

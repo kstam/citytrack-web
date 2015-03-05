@@ -4,20 +4,20 @@ require('angular');
 require('angular-mocks');
 var ngResource = require('angular-resource');
 var testUtils = require('../../testCommons/testUtils');
-var PoiService = require('client/services/PoiService');
+var SearchService = require('client/services/SearchService');
 var mockedData = require('../../data/poiResponse');
 var Params = require('model/Params');
 var types = require('model/types');
 
-describe('PoiService', function() {
-    var httpBackend, poiService;
+describe('SearchService', function() {
+    var httpBackend, searchService;
     var params;
 
     beforeEach(angular.mock.module('ngResource'));
 
     beforeEach(inject(function($httpBackend, $resource) {
         httpBackend = $httpBackend;
-        poiService = new PoiService($resource);
+        searchService = new SearchService($resource);
         httpBackend.whenGET(/api\/pois?.*/).respond(mockedData);
         params = new Params.Builder()
             .withKeyword('keyword')
@@ -34,18 +34,18 @@ describe('PoiService', function() {
         it('should call the "pois" rest endpoint', function() {
 
             httpBackend.expectGET(/api\/pois?.*/);
-            poiService.getPois(params);
+            searchService.getPois(params);
             httpBackend.flush();
         });
 
         it('should throw an error if called invalid params', function() {
             expect(function() {
-                poiService.getPois(Params(''));
+                searchService.getPois(Params(''));
             }).to.throw(Error);
         });
 
         it('should return a promise', function(done) {
-            poiService.getPois(params)
+            searchService.getPois(params)
                 .then(function(data) {
                     expect(data).not.to.equal(undefined);
                     expect(data.rows).to.equal(20);
@@ -58,7 +58,7 @@ describe('PoiService', function() {
             httpBackend.expectGET(function(url) {
                 return url.indexOf('q=keyword') !== -1;
             });
-            poiService.getPois(params);
+            searchService.getPois(params);
             httpBackend.flush();
         });
 
@@ -68,7 +68,7 @@ describe('PoiService', function() {
                 return url.indexOf('box=' + area.getBoundingBoxAsList().join(',')) !== -1;
             });
             params.area = area;
-            poiService.getPois(params);
+            searchService.getPois(params);
             httpBackend.flush();
         });
 
@@ -80,7 +80,7 @@ describe('PoiService', function() {
                 .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
                 .withPage(2)
                 .build();
-            poiService.getPois(params);
+            searchService.getPois(params);
             httpBackend.flush();
         });
 
@@ -92,7 +92,7 @@ describe('PoiService', function() {
                 .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
                 .withPageSize(40)
                 .build();
-            poiService.getPois(params);
+            searchService.getPois(params);
             httpBackend.flush();
         });
 
@@ -105,7 +105,7 @@ describe('PoiService', function() {
                 .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
                 .withSources(sources)
                 .build();
-            poiService.getPois(params);
+            searchService.getPois(params);
             httpBackend.flush();
         });
 
@@ -118,7 +118,7 @@ describe('PoiService', function() {
                 .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
                 .withCategories(categories)
                 .build();
-            poiService.getPois(params);
+            searchService.getPois(params);
             httpBackend.flush();
         });
     });

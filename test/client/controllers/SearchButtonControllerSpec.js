@@ -15,7 +15,7 @@ var sinon = require('sinon');
 
 
 describe('SearchButtonController', function() {
-    var scope, appState, eventService, $$controller, poiService;
+    var scope, appState, eventService, $$controller, searchService;
 
     beforeEach(angular.mock.module(controllers.name));
 
@@ -24,7 +24,7 @@ describe('SearchButtonController', function() {
         scope = $rootScope.$new();
         eventService = new NgEventService($rootScope);
         appState = new AppState(eventService);
-        poiService = createPoiServiceMock();
+        searchService = createSearchServiceMock();
         initController();
     }));
 
@@ -73,14 +73,14 @@ describe('SearchButtonController', function() {
 
     describe('exposes "search" method to the scope that', function() {
         it('should do nothing if active is false"', function() {
-            poiService.getPois = sinon.spy();
+            searchService.getPois = sinon.spy();
             scope.search();
-            expect(poiService.getPois).to.have.callCount(0);
+            expect(searchService.getPois).to.have.callCount(0);
         });
 
-        it('should call the poiService if active is set to true and set "loading" to true', function() {
+        it('should call the searchService if active is set to true and set "loading" to true', function() {
             var spy = sinon.spy();
-            poiService.getPois = function() {
+            searchService.getPois = function() {
                 return {
                     then: spy
                 };
@@ -107,7 +107,7 @@ describe('SearchButtonController', function() {
         });
 
         it('should trigger an ERROR event if the service call failse', function() {
-            poiService = createPoiServiceMockThatFails();
+            searchService = createSearchServiceMockThatFails();
             initController();
             eventService.broadcastEvent = sinon.spy();
             scope.active = true;
@@ -119,10 +119,10 @@ describe('SearchButtonController', function() {
 
     function initController() {
         $$controller('SearchButtonController',
-            {$scope: scope, AppState: appState, NgEventService: eventService, PoiService: poiService});
+            {$scope: scope, AppState: appState, NgEventService: eventService, SearchService: searchService});
     }
 
-    function createPoiServiceMock() {
+    function createSearchServiceMock() {
         return {
             getPois: function() {
                 return {
@@ -134,7 +134,7 @@ describe('SearchButtonController', function() {
         };
     }
 
-    function createPoiServiceMockThatFails() {
+    function createSearchServiceMockThatFails() {
         return {
             getPois: function() {
                 return {

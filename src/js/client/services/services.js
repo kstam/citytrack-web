@@ -20,9 +20,9 @@ services.factory('AreaService', function() {
     return new AreaService();
 });
 
-services.factory('PoiService', ['$resource', function($resource) {
-    var PoiService = require('./PoiService');
-    return new PoiService($resource);
+services.factory('SearchService', ['$resource', function($resource) {
+    var SearchService = require('./SearchService');
+    return new SearchService($resource);
 }]);
 
 module.exports = services;
