@@ -87,6 +87,8 @@ describe('ResultsController', function() {
         });
     });
 
+    // HELPER FUNCTIONS
+
     function initController() {
         $$controller('ResultsController',
             {$scope: scope, AppState: appState, NgEventService: eventService});
