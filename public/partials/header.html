@@ -6,7 +6,7 @@
         <selectize options='types' ng-model="selectedTypeId" config="config"></selectize>
     </div>
     <div class="keyword-box" ng-controller="KeywordController">
-        <input type="text" ng-model="keyword" ng-keypress="processKeyPress($event)"/>
+        <input type="text" ng-model="keyword" ng-keypress="processKeyPress($event)" placeholder="What..."/>
     </div>
     <div class="area-select" ng-controller="AreaSelectController"  ng-keypress="processKeyPress($event)">
         <selectize options='areas' ng-model="selectedAreaId" config="config"></selectize>
