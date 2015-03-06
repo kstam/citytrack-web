@@ -14,7 +14,7 @@ function startServer() {
         serverStarted = false;
     }
     server = app.listen(app.get('port'), function() {
-        console.log('Express server listening on port ' + server.address().port);
+        console.log('Express server listening on port ' + server.address().port + ' in ' + app.get('env') + ' mode.');
         serverStarted = true;
     });
 }
