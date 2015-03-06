@@ -7,7 +7,7 @@ requireDir('./tasks');
 
 gulp.task('build', function(done) {
     return runSequence(
-        ['bower', 'jshint'/*, 'test:client'*/],
+        ['bower', 'jshint', 'angular-templates'],
         ['browserify', 'less'],
         done);
 });

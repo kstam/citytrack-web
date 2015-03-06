@@ -27,9 +27,13 @@ gulp.task('server:dev', ['build'], function () {
     // watch the less files
     gulp.watch(['src/less/*.less', 'src/less/**/*.less'], ['less']);
 
-    // watch javascript and templates
+    // watch javascript and server templates
     gulp.watch(['src/js/client/*.js', 'src/js/client/**/*.js'], ['browserify:app']);
     gulp.watch(['views/**/*.hbs'], ['browserify:app']);
+
+    // watch angular templates
+    gulp.watch('src/templates/**/*.html', ['angular-templates']);
+    gulp.watch('build/templates.js', ['browserify:app']);
 
     // watch vendor files
     gulp.watch(['node_modules', 'bower_components'], ['browserify:vendor', 'bower:move']);
