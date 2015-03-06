@@ -11,7 +11,7 @@ var constants = require('client/config/constants');
 describe('result-row directive', function() {
     var element, scope, $$compile;
 
-    beforeEach(angular.mock.module('partials/resultRow.html'));
+    beforeEach(angular.mock.module('templates/resultRow.html'));
 
     beforeEach(angular.mock.module(directives.name));
 
