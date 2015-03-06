@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var gulp = require('gulp');
+var gutil = require('gulp-util');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
@@ -9,8 +10,7 @@ var bowerResolve = require('bower-resolve');
 var nodeResolve = require('resolve');
 var browserResolve = require('browser-resolve');
 var mdeps = require('module-deps');
-
-var production = (process.env.NODE_ENV === 'production');
+var uglify = require('gulp-uglify');
 
 gulp.task('browserify', ['browserify:vendor', 'browserify:app']);
 
@@ -52,7 +52,7 @@ gulp.task('browserify:deps', function() {
 gulp.task('browserify:vendor', ['browserify:deps'], function() {
     var b = browserify({
         transform: ['debowerify'],
-        debug: !production
+        debug: gutil.env.type !== 'production'
     });
 
     _.keys(moduleDependencies).forEach(function(id) {
@@ -65,14 +65,14 @@ gulp.task('browserify:vendor', ['browserify:deps'], function() {
     return b.bundle()
         .pipe(source('vendor.js'))
         .pipe(buffer())
-//        .pipe(uglify())
+        .pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
         .pipe(gulp.dest('./public/js'));
 });
 
 gulp.task('browserify:app', ['browserify:deps'], function() {
 
     var b = browserify('./src/js/client/main.js', {
-        debug: !production,
+        debug: gutil.env.type !== 'production',
         paths: ['./node_modules', './src/js', './views']
     });
 
@@ -84,6 +84,8 @@ gulp.task('browserify:app', ['browserify:deps'], function() {
     // store all dependencies for efficient vendors creation
     return b.bundle()
         .pipe(source('main.js'))
+        .pipe(buffer())
+        .pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
         .pipe(gulp.dest('./public/js'));
 });
 

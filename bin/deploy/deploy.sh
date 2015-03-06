@@ -22,5 +22,5 @@ rm -rf web.tar
 
 echo "Installing and building"
 npm install
-gulp
+gulp --type production
 EOF
