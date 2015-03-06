@@ -19,7 +19,7 @@ module.exports = function(config) {
             //test files
             'test/**/*Spec.js',
             //template files
-            'public/**/*.html'
+            'src/**/*.html'
         ],
 
         // list of files to exclude
@@ -34,11 +34,11 @@ module.exports = function(config) {
             'test/client/**/*.js': [ 'browserify' ],
             'test/common/*.js': [ 'browserify' ],
             'test/model/*.js': [ 'browserify' ],
-            'public/**/*.html': ['ng-html2js']
+            'src/**/*.html': ['ng-html2js']
         },
 
         ngHtml2JsPreprocessor: {
-            stripPrefix: 'public/'
+            stripPrefix: 'src/'
         },
 
         browserify: {
