@@ -3,7 +3,7 @@
 module.exports = function($routeProvider) {
     $routeProvider
         .when('/citytrack', {
-            templateUrl: 'partials/citytrack.html',
+            templateUrl: 'templates/citytrack.html',
             controller: 'CitytrackMainController'
         })
         .otherwise({

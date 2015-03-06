@@ -14,7 +14,7 @@ var link = function ($scope) {
 
 module.exports = {
     replace: true,
-    templateUrl: 'partials/resultRow.html',
+    templateUrl: 'templates/resultRow.html',
     restrict: 'E',
     scope: {
         row: '=model'

@@ -1,0 +1,6 @@
+<div ng-include="'templates/header.html'" class="header-section"></div>
+<div class="content-section">
+    <div ng-include="'templates/results.html'" class="result-section" ng-show="displayResults"></div>
+    <div ng-include="'templates/map.html'" class="main-map-section"
+         ng-class="{full: (!displayResults), side: displayResults}"></div>
+</div>
