@@ -87,6 +87,36 @@ describe('ResultsController', function() {
         });
     });
 
+    describe('expose "selectRow" method in the scope that', function() {
+        it('should set the "selectedRow" property to the id of the selectedFeature', function() {
+            scope.selectRow('anyId');
+            expect(scope.selectedRow).to.equal('anyId');
+        });
+
+        it('should fire a RESULTS_ROW_SELECTED event', function() {
+            eventService.broadcastEvent = sinon.spy();
+            scope.selectRow('anyId');
+            expect(eventService.broadcastEvent).to.have.been.calledWith(constants.RESULTS_ROW_SELECTED, 'anyId');
+        });
+    });
+
+    describe('expose "isRowSelected" method in the scope that', function() {
+        it('should return true if the passed id equals the "selectedRow"', function() {
+            scope.selectedRow = 'id1';
+            expect(scope.isRowSelected('id1')).to.be.true();
+            expect(scope.isRowSelected(String('id1'))).to.be.true();
+            expect(scope.isRowSelected('id2')).to.be.false();
+
+        });
+    });
+
+    describe('listens to MAP_POINT_SELECTED event and', function() {
+        it('should update the selectedRow from the event', function() {
+            eventService.broadcastEvent(constants.MAP_POINT_SELECTED, 'someId');
+            expect(scope.selectedRow).to.equal('someId');
+        });
+    });
+
     // HELPER FUNCTIONS
 
     function initController() {

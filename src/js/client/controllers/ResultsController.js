@@ -5,12 +5,25 @@ var utils = require('../../common/utils');
 
 module.exports = function($scope, appState, eventService) {
 
+    $scope.selectRow = function(id) {
+        $scope.selectedRow = id;
+        eventService.broadcastEvent(constants.RESULTS_ROW_SELECTED, id);
+    };
+
+    $scope.isRowSelected = function(id) {
+        return $scope.selectedRow === id;
+    };
+
     var setDefaults = function() {
         $scope.rows = [];
         $scope.error = false;
     };
 
     // LISTENERS
+
+    var mapPointSelectedListener = function(event, pointId) {
+        $scope.selectedRow = pointId;
+    };
 
     var mainSuccessListener = function(event, data) {
         $scope.error = false;
@@ -35,6 +48,7 @@ module.exports = function($scope, appState, eventService) {
         eventService.on(constants.MAIN_QUERY_SUCCESS, mainSuccessListener);
         eventService.on(constants.MAIN_QUERY_FAILURE, mainErrorListener);
         eventService.on(constants.FETCH_NEXT_PAGE_SUCCESS, fetchNextPageSuccessListener);
+        eventService.on(constants.MAP_POINT_SELECTED, mapPointSelectedListener);
     };
 
     // INITIALIZER

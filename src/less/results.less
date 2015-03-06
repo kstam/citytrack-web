@@ -3,7 +3,6 @@
 
 .result-section {
 
-    padding: 10px;
     .rows {
         .row {
             .clearfix();
@@ -14,6 +13,13 @@
             &:hover {
                 background: @hover-background;
                 cursor: pointer;
+            }
+
+            &.selected {
+                background: @selected-background;
+                &:hover {
+                    background: @selected-background;
+                }
             }
 
             .image {
@@ -37,7 +43,7 @@
                 float: left;
                 .title {
                     font-size: 16px;
-                    color: @result-title-red;
+                    color: @result-title-blue;
                     margin-bottom: 1.5%;
                 }
 
@@ -77,6 +83,7 @@
             background: @header-background + 150;
             text-align: center;
             padding: 5px;
+            margin: 10px;
             a {
                 text-decoration: none;
                 color: #6061ff;
@@ -102,7 +109,7 @@
         text-align: center;
         color: @description-color;
         i {
-            color: @result-title-red;
+            color: @error-icon-color;
             font-size: 20px;
         }
     }

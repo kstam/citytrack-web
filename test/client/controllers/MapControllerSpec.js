@@ -65,6 +65,10 @@ describe('MapController', function() {
                 .equals(L.latLngBounds(config.maxbounds.southWest, config.maxbounds.northEast))).to.equal(true);
             expect(scope.currentView.getType()).to.equal(Area.INTERACTIVE_TYPE);
         });
+
+        it('should initialize a "featureMap" as an empty object', function() {
+            expect(scope.featureMap).to.deep.equal({});
+        });
     });
 
     describe('listens for changes in bounds and', function() {
@@ -178,6 +182,15 @@ describe('MapController', function() {
                 eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, emptyResponse);
             }).not.to.throw(Error);
         });
+
+        it('should add all the markers to the feature map hashed on their "id"', function() {
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
+            $rootScope.$digest(); // resolves getMap() promise
+
+            mockedData.collection.features.forEach(function(feature) {
+                expect(scope.featureMap[feature.id]).not.to.be.undefined();
+            });
+        });
     });
 
     describe('listens to FETCH_NEXT_PAGE_SUCCESS and', function() {
@@ -187,6 +200,19 @@ describe('MapController', function() {
             eventService.broadcastEvent(constants.FETCH_NEXT_PAGE_SUCCESS, mockedData2);
             $rootScope.$digest();
             expect(scope.geoJsonLayer.addData).to.have.been.calledWith(mockedData2.collection);
+        });
+    });
+
+    describe('listens to RESULTS_ROW_SELECTED and', function() {
+        it('should open the popup for the marker of the feature that was selected', function() {
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
+            $rootScope.$digest(); // resolves getMap() promise
+
+            var selectedFeatureId =  mockedData.collection.features[1].id;
+            scope.featureMap[selectedFeatureId].marker.openPopup = sinon.spy();
+            eventService.broadcastEvent(constants.RESULTS_ROW_SELECTED, selectedFeatureId);
+
+            expect(scope.featureMap[selectedFeatureId].marker.openPopup).to.have.callCount(1);
         });
     });
 
