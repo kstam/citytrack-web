@@ -6,20 +6,21 @@
 
 mkdir -p build
 echo "Compressing and copying code to server"
+
 tar --exclude='./node_modules' --exclude='./bower_components' --exclude='./build' \
  --exclude='./.git' --exclude='./.idea' -czf build/web.tar.gz .
-scp -P 10000 build/web.tar.gz kstam@83.212.114.165:~/deployment/
+
+scp -P 10000 build/web.tar.gz kstam@83.212.114.165:/var/www/citytrack-web/
 
 echo "Connecting to server to deploy"
 ssh  kstam@83.212.114.165 -p 10000 << EOF
 echo "Unzipping content"
-cd deployment
+cd /var/www/citytrack-web/
 gunzip -f web.tar.gz
-tar -xf web.tar -C /var/www/citytrack-web/
+tar -xf web.tar
 rm -rf web.tar
 
 echo "Installing and building"
-cd /var/www/citytrack-web
 npm install
 gulp
 EOF
