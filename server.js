@@ -5,6 +5,7 @@
 
 // Set the port where the app will listen
 process.env.PORT = 8090;
+process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 
 var forever = require('forever'),
     child = new(forever.Monitor)('bin/start.js', {

@@ -30,7 +30,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // setup livereload
-app.use(liveReload());
+if(app.get('env') === 'development') {
+    app.use(liveReload());
+}
 
 // define application endpoints
 app.use('/', pages);
