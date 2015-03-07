@@ -6,6 +6,7 @@ var Area = require('../../model/Area');
 var constants = require('../config/constants');
 var L = require('leaflet');
 var popupFactory = require('../map/popupFactory');
+var markerFactory = require('../map/markerFactory');
 
 module.exports = function($scope, appState, eventService, leafletData) {
 
@@ -63,11 +64,10 @@ module.exports = function($scope, appState, eventService, leafletData) {
     };
 
     var createGeoJSONLayer = function(data) {
-        var geojsonMarkerOptions = {};
 
         return L.geoJson(data, {
             pointToLayer: function(feature, latlng) {
-                var marker = L.marker(latlng, geojsonMarkerOptions);
+                var marker = markerFactory.forPoint(feature, latlng);
                 addToMap(feature.id, 'marker', marker);
                 return marker;
             },
@@ -115,8 +115,8 @@ module.exports = function($scope, appState, eventService, leafletData) {
             $scope.geoJsonLayer = createGeoJSONLayer(data.collection);
             $scope.geoJsonLayer.addTo(map);
             zoomMapToLayer($scope.geoJsonLayer);
+            map.invalidateSize();
         });
-        fixMapSize();
     };
 
     var resultRowSelectedListener = function(event, id) {
