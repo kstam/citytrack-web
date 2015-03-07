@@ -19,7 +19,10 @@ module.exports = function(config) {
             //test files
             'test/**/*Spec.js',
             //template files
-            'src/**/*.html'
+            'src/**/*.html',
+
+            //image files
+            {pattern: 'public/img/**/*', watched: false, included: false, served: true}
         ],
 
         // list of files to exclude
