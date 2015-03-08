@@ -18,12 +18,15 @@ var sinon = require('sinon');
 
 describe('MapController', function() {
     var scope, $controller, appState, eventService, $rootScope, leafletData,
-        mockedMap;
+        mockedMap, $compile;
+
+    beforeEach(angular.mock.module('templates/resultRow.html'));
 
     beforeEach(angular.mock.module(controllers.name));
+
     beforeEach(angular.mock.module('ng'));
 
-    beforeEach(inject(function(_$controller_, _$rootScope_, $q, _leafletData_) {
+    beforeEach(inject(function(_$controller_, _$rootScope_, $q, _leafletData_, _$compile_) {
         $controller = _$controller_;
         $rootScope = _$rootScope_;
         scope = $rootScope.$new();
@@ -31,6 +34,7 @@ describe('MapController', function() {
         appState = new AppState(eventService);
         mockedMap = testUtils.getMockMap();
         leafletData = _leafletData_;
+        $compile = _$compile_;
         sinon.stub(leafletData, 'getMap').returns($q.when(mockedMap));
         initController();
     }));
@@ -191,6 +195,7 @@ describe('MapController', function() {
                 expect(scope.featureMap[feature.id]).not.to.be.undefined();
             });
         });
+
     });
 
     describe('listens to FETCH_NEXT_PAGE_SUCCESS and', function() {
@@ -220,7 +225,7 @@ describe('MapController', function() {
     function initController() {
         $controller('MapController', {
             $scope: scope, AppState: appState, NgEventService: eventService,
-            leafletData: leafletData
+            leafletData: leafletData, $compile: $compile
         });
     }
 });

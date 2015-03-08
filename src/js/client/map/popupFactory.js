@@ -1,17 +1,17 @@
 'use strict';
 
-
-var poiTemplate = require('templates/poiPopup.hbs');
+var $ = require('jquery');
 var angular = require('../shims/angular');
 var utils = require('../../common/utils');
 var constants = require('../config/constants');
 
+var popupHtml = '<result-row model="row"></result-row>';
+
 module.exports = {
-        getPopupHtml: function(feature) {
-            var featureClone = angular.extend({}, feature);
-            featureClone.properties.categories = utils.getArrayFromString(feature.properties.category);
-            featureClone.properties.photos = utils.getArrayFromString(feature.properties.photo);
-            featureClone.properties.mainPhoto = featureClone.properties.photos[0] || constants.NO_IMG_URL;
-            return poiTemplate(featureClone.properties);
+        getPopupElement: function(feature, $compile, $parentScope) {
+            var scope = $parentScope.$new();
+            scope.row = angular.copy(feature);
+            scope.row.properties.target = 'map';
+            return $compile(popupHtml)(scope);
         }
 };

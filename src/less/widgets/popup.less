@@ -4,8 +4,8 @@
 .leaflet-popup-content {
     margin: 15px;
     font-size: 12px;
-    .popup {
-        .header {
+    .row {
+        .title {
             color: @result-title-color;
             font-size: 13px;
             font-weight: bold;
@@ -17,7 +17,9 @@
             .category {
                 background: @category-background;
                 padding: 2px;
-                margin-right: 2px;
+                margin-right: 5px;
+                .border-radius(3px);
+                .shadow(1px, 1px, 2px, #666);
             }
         }
 
@@ -25,7 +27,7 @@
             margin-bottom: 5px;
             color: #555;
 
-            .mainPhoto {
+            .description-image {
                 float: left;
                 height: 40px;
                 margin-right: 5px;
@@ -35,7 +37,7 @@
 
         .photos {
 
-            .header {
+            .title {
                 font-weight: normal;
                 font-size: 12px;
             }

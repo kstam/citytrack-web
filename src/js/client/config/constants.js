@@ -25,4 +25,7 @@ constants.MAP_POINT_SELECTED = 'Map:PointSelected';
 // URLS
 constants.NO_IMG_URL = 'img/no_image_available.jpg';
 
+// MAP
+constants.TARGET_MAP = 'map';
+
 module.exports = constants;

@@ -16,9 +16,9 @@ citytrackControllers.controller('AreaSelectController', ['$scope', 'AreaService'
         require('./AreaSelectController')($scope, areaService, appState, eventService);
     }]);
 
-citytrackControllers.controller('MapController', ['$scope', 'AppState', 'NgEventService', 'leafletData',
-    function($scope, appState, eventService, leafletData) {
-        require('./MapController')($scope, appState, eventService, leafletData);
+citytrackControllers.controller('MapController', ['$scope', 'AppState', 'NgEventService', 'leafletData', '$compile',
+    function($scope, appState, eventService, leafletData, $compile) {
+        require('./MapController')($scope, appState, eventService, leafletData, $compile);
     }]);
 
 citytrackControllers.controller('KeywordController', ['$scope', 'AppState', 'NgEventService',

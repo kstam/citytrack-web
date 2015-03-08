@@ -8,7 +8,7 @@ var L = require('leaflet');
 var popupFactory = require('../map/popupFactory');
 var markerFactory = require('../map/markerFactory');
 
-module.exports = function($scope, appState, eventService, leafletData) {
+module.exports = function($scope, appState, eventService, leafletData, $compile) {
 
     $scope.applyCurrentView = function() {
         appState.setArea($scope.currentView);
@@ -72,8 +72,11 @@ module.exports = function($scope, appState, eventService, leafletData) {
                 return marker;
             },
             onEachFeature: function(feature, layer) {
-                layer.bindPopup(popupFactory.getPopupHtml(feature));
+                var popupElement = popupFactory.getPopupElement(feature, $compile, $scope);
                 addToMap(feature.id, 'layer', layer);
+                $scope.$applyAsync(function() {
+                    layer.bindPopup(popupElement[0]);
+                });
             }
         });
     };
