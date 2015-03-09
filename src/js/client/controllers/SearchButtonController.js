@@ -41,6 +41,7 @@ module.exports = function($scope, appState, eventService, searchService) {
         eventService.on(appState.APP_STATE_CHANGED_EVT, appStateListener);
         eventService.on(constants.KEYWORD_ENTER_PRESSED, enterPressedListener);
         eventService.on(constants.MAP_VIEW_CHANGED, enterPressedListener);
+        eventService.on(constants.FILTER_CHANGED_EVT, enterPressedListener);
     };
 
     // INITIALIZER

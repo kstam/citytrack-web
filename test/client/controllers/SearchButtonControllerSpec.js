@@ -79,6 +79,14 @@ describe('SearchButtonController', function() {
         });
     });
 
+    describe('listens to FILTER_CHANGED_EVT event and', function() {
+        it('should invoke the search method', function() {
+            scope.search = sinon.spy();
+            eventService.broadcastEvent(constants.FILTER_CHANGED_EVT);
+            expect(scope.search).to.have.callCount(1);
+        });
+    });
+
     describe('exposes "search" method to the scope that', function() {
         it('should do nothing if active is false"', function() {
             searchService.query = sinon.spy();
