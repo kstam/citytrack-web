@@ -83,16 +83,17 @@ utils.optional = function(arg) {
 
 utils.getArrayFromString = function(stringArray) {
     var result = [];
+    var values = {};
     if (!utils.isString(stringArray)) {
         return result;
     }
     stringArray.replace('[', '').replace(']', '').split(',').forEach(function(value) {
         value = value.trim();
         if (value !== '') {
-            result.push(value.trim());
+            values[value] = true;
         }
     });
-    return result;
+    return Object.keys(values);
 };
 
 module.exports = utils;

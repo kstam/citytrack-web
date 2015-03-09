@@ -82,6 +82,9 @@ describe('utils', function() {
         });
         it('should return correct array if proper string is passed', function() {
             expect(utils.getArrayFromString('[a,b,c]')).to.deep.equal(['a', 'b', 'c']);
-        })
+        });
+        it('should not return array with duplicates', function() {
+            expect(utils.getArrayFromString('[a,a,a]')).to.deep.equal(['a']);
+        });
     });
 });
