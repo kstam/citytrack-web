@@ -1,4 +1,15 @@
 <div ng-controller="ResultsController">
+
+    <div class="filters" ng-controller="FilterController" ng-hide="error">
+        <span class="filters-caption">
+            Filter:
+        </span>
+        <facet ng-repeat="facetList in facets"
+               facet-list="facetList"
+               facet-field="facetList[0].facetField"
+               model="selectedFacets[facetList[0].facetField]"></facet>
+    </div>
+
     <div class="rows" ng-hide="error || (rows.length === 0)">
         <result-row ng-repeat="row in rows" model="row" ng-click="selectRow(row.id)"
                     ng-class="{selected: isRowSelected(row.id)}"></result-row>
