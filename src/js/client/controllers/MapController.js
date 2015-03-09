@@ -55,8 +55,6 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
     };
 
     // GEO-JSON LEAFLET HELPERS
-    var layerMap = {};
-
     var addToMap = function(id, key, value) {
         var mapEntry = $scope.featureMap[id] || {};
         mapEntry[key] = value;
