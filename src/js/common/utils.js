@@ -81,6 +81,11 @@ utils.optional = function(arg) {
     }
 };
 
+/**
+ * Returns an array of strings for a given string array
+ * @param stringArray with the format "[a,b,c]"
+ * @returns {*} ['a','b','c']
+ */
 utils.getArrayFromString = function(stringArray) {
     var result = [];
     var values = {};
@@ -94,6 +99,38 @@ utils.getArrayFromString = function(stringArray) {
         }
     });
     return Object.keys(values);
+};
+
+/**
+ * Returns true if the two arrays have the same content irregardles of the order
+ * @param a1
+ * @param a2
+ * @returns {boolean}
+ */
+utils.sameContent = function (a1, a2) {
+    if (utils.isArray(a1) && utils.isArray(a2)) {
+        var i, map1 = {}, map2 = {};
+        a1.forEach(function(elm) {
+            map1[elm] = true;
+        });
+        // check if all elements in a2 are in map1
+        // construct map2
+        for (i=0; i<a2.length; i++) {
+            map2[a2[i]] = true;
+            if (!map1[a2[i]]) {
+                return false;
+            }
+        }
+        //check if all elements in a1 are in map2
+        for (i=0; i<a1.length; i++) {
+            if (!map2[a1[i]]) {
+                return false;
+            }
+        }
+        return true;
+    } else {
+        return a1 === a2;
+    }
 };
 
 module.exports = utils;

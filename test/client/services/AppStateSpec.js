@@ -32,6 +32,14 @@ describe('appState', function() {
         it('should set the type to undefined', function() {
             expect(appState.getType()).to.be.undefined();
         });
+
+        it('should set the categories to an empty array', function() {
+            expect(appState.getCategories()).to.deep.equal([]);
+        });
+
+        it('should set the sources to an empty array', function() {
+            expect(appState.getSources()).to.deep.equal([]);
+        });
     });
 
     describe('setters', function() {
@@ -115,6 +123,72 @@ describe('appState', function() {
             appState.setType(types.photo);
             expect(mockedEventService.broadcastEvent).to.have.callCount(4);
         });
+
+        it('should allow setting a valid array as categories', function() {
+            appState.setCategories(['this', 'that']);
+            expect(appState.getCategories()).to.deep.equal(['this', 'that']);
+            appState.setCategories([]);
+            expect(appState.getCategories()).to.deep.equal([]);
+        });
+
+        it('should throw error when attempting to set invalid categories', function() {
+            expect(function() {
+                appState.setCategories();
+            }).to.throw(Error);
+            expect(function() {
+                appState.setCategories({});
+            }).to.throw(Error);
+            expect(function() {
+                appState.setCategories(null);
+            }).to.throw(Error);
+            expect(function() {
+                appState.setCategories([{}]);
+            }).to.throw(Error);
+        });
+
+        it('should emmit change event when setting the categories array to a new value', function() {
+            appState.setCategories(['this']);
+            expect(mockedEventService.broadcastEvent).to.have.callCount(2);
+
+            appState.setCategories(['this']);
+            expect(mockedEventService.broadcastEvent).to.have.callCount(2); // no new events
+
+            appState.setCategories(['this', 'that']);
+            expect(mockedEventService.broadcastEvent).to.have.callCount(4); // new events
+        });
+
+        it('should allow setting a valid array as sources', function() {
+            appState.setSources(['this', 'that']);
+            expect(appState.getSources()).to.deep.equal(['this', 'that']);
+            appState.setSources([]);
+            expect(appState.getSources()).to.deep.equal([]);
+        });
+
+        it('should throw error when attempting to set invalid sources', function() {
+            expect(function() {
+                appState.setSources();
+            }).to.throw(Error);
+            expect(function() {
+                appState.setSources({});
+            }).to.throw(Error);
+            expect(function() {
+                appState.setSources(null);
+            }).to.throw(Error);
+            expect(function() {
+                appState.setSources([{}]);
+            }).to.throw(Error);
+        });
+
+        it('should emmit change event when setting the categories array to a new value', function() {
+            appState.setSources(['this']);
+            expect(mockedEventService.broadcastEvent).to.have.callCount(2);
+
+            appState.setSources(['this']);
+            expect(mockedEventService.broadcastEvent).to.have.callCount(2); // no new events
+
+            appState.setSources(['this', 'that']);
+            expect(mockedEventService.broadcastEvent).to.have.callCount(4); // new events
+        });
     });
 
     describe('getParams', function() {
@@ -126,6 +200,12 @@ describe('appState', function() {
             expect(appState.getParams().equals(new Params('', area))).to.be.true();
             appState.setType(types.poi);
             expect(appState.getParams().type).to.equal(types.poi);
+
+            appState.setCategories(['this', 'that']);
+            expect(appState.getParams().categories).to.deep.equal(appState.getCategories());
+
+            appState.setSources(['theother']);
+            expect(appState.getParams().sources).to.deep.equal(appState.getSources());
         });
     });
 });

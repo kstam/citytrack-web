@@ -4,6 +4,8 @@ var APP_STATE_CHANGED_EVT = 'AppState:Changed';
 var AREA_CHANGED_EVT = 'AppState:AreaChanged';
 var KEYWORD_CHANGED_EVT = 'AppState:KeywordChanged';
 var TYPE_CHANGED_EVT = 'AppState:TypeChanged';
+var CATEGORIES_CHANGED_EVT = 'AppState:CategoriesChanged';
+var SOURCES_CHANGED_EVT = 'AppState:SourcesChanged';
 var utils = require('common/utils');
 var Area = require('model/Area');
 var Params = require('model/Params');
@@ -11,7 +13,9 @@ var Params = require('model/Params');
 var AppState = function(eventBus) {
 
     var area, type,
-        keyword = '';
+        keyword = '',
+        categories = [],
+        sources = [];
 
     var fireChangeEvent = function(eventName) {
         var args = Array.prototype.splice.call(arguments, 0);
@@ -26,6 +30,12 @@ var AppState = function(eventBus) {
 
     var isValidType = function(type) {
         return type && type.id && type.iconClass;
+    };
+
+    var isValidStringArray = function(categories) {
+        return utils.isArray(categories) && categories.reduce(function(result, value) {
+                return result && utils.isString(value);
+            }, true);
     };
 
     var setArea = function(newArea) {
@@ -54,11 +64,31 @@ var AppState = function(eventBus) {
 
     var setType = function(newType) {
         if(!isValidType(newType)) {
-            throw new Error('[' + newType + '] is not a valid type' );
+            throw new Error('[' + newType + '] is not a valid type');
         }
         if (!type || newType.id !== type.id) {
             type = newType;
             fireChangeEvent(TYPE_CHANGED_EVT, newType);
+        }
+    };
+
+    var setCategories = function(newCategories) {
+        if(!isValidStringArray(newCategories)) {
+            throw new Error('[' + newCategories + '] is not a valid categories array');
+        }
+        if(!utils.sameContent(newCategories, categories)) {
+            categories = newCategories;
+            fireChangeEvent(CATEGORIES_CHANGED_EVT, newCategories);
+        }
+    };
+
+    var setSources = function(newSources) {
+        if(!isValidStringArray(newSources)) {
+            throw new Error('[' + newSources + '] is not a valid sources array');
+        }
+        if(!utils.sameContent(newSources, sources)) {
+            sources = newSources;
+            fireChangeEvent(SOURCES_CHANGED_EVT, newSources);
         }
     };
 
@@ -74,11 +104,21 @@ var AppState = function(eventBus) {
         return keyword;
     };
 
+    var getCategories = function() {
+        return categories;
+    };
+
+    var getSources = function() {
+        return sources;
+    };
+
     var getParams = function() {
         return new Params.Builder()
             .withKeyword(keyword)
             .withArea(area)
             .withType(type)
+            .withCategories(categories)
+            .withSources(sources)
             .build();
     };
 
@@ -86,14 +126,20 @@ var AppState = function(eventBus) {
         setArea: setArea,
         setKeyword: setKeyword,
         setType: setType,
+        setCategories: setCategories,
+        setSources: setSources,
         getArea: getArea,
         getKeyword: getKeyword,
         getType: getType,
+        getCategories: getCategories,
+        getSources: getSources,
         getParams: getParams,
         APP_STATE_CHANGED_EVT: APP_STATE_CHANGED_EVT,
         AREA_CHANGED_EVT: AREA_CHANGED_EVT,
         KEYWORD_CHANGED_EVT: KEYWORD_CHANGED_EVT,
-        TYPE_CHANGED_EVT: TYPE_CHANGED_EVT
+        TYPE_CHANGED_EVT: TYPE_CHANGED_EVT,
+        CATEGORIES_CHANGED_EVT: CATEGORIES_CHANGED_EVT,
+        SOURCES_CHANGED_EVT: SOURCES_CHANGED_EVT
     };
 };
 

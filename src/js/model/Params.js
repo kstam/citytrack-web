@@ -12,8 +12,8 @@ var Params = function(keyword, area, page, pageSize, sources, categories, type) 
     this.area = area;
     this.page = page;
     this.pageSize = pageSize;
-    this.sources = sources;
-    this.categories = categories;
+    this.sources = sources || [];
+    this.categories = categories || [];
     this.type = type;
 
     this.isValid = function() {
@@ -40,8 +40,8 @@ var Params = function(keyword, area, page, pageSize, sources, categories, type) 
             (this.type === that.type || (this.type.id === that.type.id && this.type.iconClass === that.type.iconClass)) &&
             this.page === that.page &&
             this.pageSize === that.pageSize &&
-            arraysSameElements(this.sources, that.sources) &&
-            arraysSameElements(this.categories, that.categories);
+            utils.sameContent(this.sources, that.sources) &&
+            utils.sameContent(this.categories, that.categories);
     };
 };
 
@@ -49,25 +49,9 @@ function equalAreas(a1, a2) {
     return (utils.isNullOrUndefined(a1)) ? (a1 === a2) : a1.equals(a2);
 }
 
-function arraysSameElements(a1, a2) {
-    if (utils.isArray(a1) && utils.isArray(a2)) {
-        var i, map = {};
-        a1.forEach(function(elm) {
-            map[elm] = true;
-        });
-        for (i=0; i<a2.length; i++) {
-            if (!map[a2[i]]) {
-                return false;
-            }
-        }
-        return true;
-    } else {
-        return a1 === a2;
-    }
-}
-
 Params.Builder = function() {
-    var keyword, area, page, pageSize, sources, categories, type;
+    var keyword, area, page, pageSize, type,
+        sources = [], categories = [];
 
     if (!(this instanceof Params.Builder)) {
         return new Params();
