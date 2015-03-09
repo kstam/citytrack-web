@@ -102,6 +102,15 @@ utils.getArrayFromString = function(stringArray) {
 };
 
 /**
+ * Capitalizes each word of a string
+ * @param x tHis iS a WeiRd string
+ * @returns {*} This Is A Weird String
+ */
+utils.capitalizeWords = function(x) {
+    return x.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+};
+
+/**
  * Returns true if the two arrays have the same content irregardles of the order
  * @param a1
  * @param a2

@@ -1,0 +1,64 @@
+@import "../mixins";
+@import "../variables";
+
+.facet-filter {
+    .clearfix();
+
+    .filter-button {
+
+    }
+
+    .popup-grey-out {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2001;
+        background: #000;
+        opacity: 0.5;
+    }
+
+    .filter-popup {
+        padding: 10px;
+        width: 300px;
+        z-index: 2002;
+        background: #EEE;
+        .border-radius(5px);
+
+        .facet {
+            padding: 5px;
+            z-index: 2001;
+            cursor: pointer;
+            &.selected {
+                background: @selected-background;
+            }
+
+            .icon {
+                .fa-check {
+                    color: @calendar-color;
+                }
+            }
+        }
+
+        .buttons {
+            margin-top: 10px;
+            text-align: center;
+            .button {
+                .link-button();
+                &.ok {
+                    color: white;
+                    .gradient(#016c2b, #0f9229);
+
+                    &:hover {
+                        .gradient(#01622a, #0f8829);
+                    }
+
+                    &:active {
+                        .gradient(#015c2b, #0f7428);
+                    }
+                }
+            }
+        }
+    }
+}

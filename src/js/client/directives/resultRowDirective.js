@@ -31,7 +31,7 @@ var link = function($scope) {
 
     $scope.hasMorePhotos = function() {
         return ($scope.data.photos) && $scope.data.photos.length > 1;
-    }
+    };
 };
 
 module.exports = {

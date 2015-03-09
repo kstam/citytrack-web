@@ -17,4 +17,8 @@ citytrackDirectives.directive('errSrc', function() {
     return require('./errSrcDirective');
 });
 
+citytrackDirectives.directive('facet', function() {
+    return require('./facetDirective');
+});
+
 module.exports = citytrackDirectives;

@@ -1,0 +1,20 @@
+<div class="facet-filter">
+    <a class="filter-button" href="" ng-click="showPopup()">{{getFieldLabel()}}</a>
+    <div class="popup-grey-out"></div>
+    <div class="filter-popup">
+        <div class="facet"
+             ng-repeat="filter in facetList"
+             ng-click="toggle(filter.name)"
+             ng-class="{selected: isSelected(filter.name)}">
+                <span class="fa-stack icon">
+                    <i class="fa fa-square-o fa-stack-2x"></i>
+                    <i class="fa fa-check fa-stack-1x" ng-show="isSelected(filter.name)"></i>
+                </span>
+                {{filter.name}} ({{filter.count}})
+        </div>
+        <div class="buttons">
+            <a class="button cancel" href="" ng-click="cancel()">Cancel</a>
+            <a class="button ok" href="" ng-click="ok()">Ok</a>
+        </div>
+    </div>
+</div>

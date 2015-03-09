@@ -23,3 +23,33 @@
     -moz-border-radius: @v;
     border-radius: @v;
 }
+
+.gradient (@startColor: #eee, @endColor: white) {
+    background-color: @startColor;
+    background: -webkit-gradient(linear, left top, left bottom, from(@startColor), to(@endColor));
+    background: -webkit-linear-gradient(top, @startColor, @endColor);
+    background: -moz-linear-gradient(top, @startColor, @endColor);
+    background: -ms-linear-gradient(top, @startColor, @endColor);
+    background: -o-linear-gradient(top, @startColor, @endColor);
+}
+
+.link-button() {
+    color: #333;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 5px 10px;
+    display: inline-block;
+    .gradient(#CCC, #FFF);
+    .shadow(2px, 2px, 2px, #666);
+    .border-radius(5px);
+
+    &:hover {
+        .gradient(#BBB, #EEE);
+    }
+
+    &:active {
+        .gradient(#AAA, #DDD);
+    }
+}
+
+
