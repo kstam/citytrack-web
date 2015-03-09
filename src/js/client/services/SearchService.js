@@ -39,10 +39,8 @@ module.exports = function($resource) {
         p.box = params.area.getBoundingBoxAsList().join(',');
         p.pg = params.page;
         p.pgsize = params.pageSize;
-        p.src = params.sources ? params.sources.join(',') : undefined;
-        if (params.type.id === types.poi.id) {
-            p.cat = params.categories ? params.categories.join(',') : undefined;
-        }
+        p.src = (params.sources && params.sources.length > 0) ? params.sources.join(',') : undefined;
+        p.cat = (params.categories && params.categories.length > 0) ? params.categories.join(',') : undefined;
         return p;
     };
 

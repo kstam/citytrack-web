@@ -135,38 +135,12 @@ describe('SearchService', function() {
                 searchService.query(params);
                 httpBackend.flush();
             });
-
-            it('should ignore the cat in the request even if it is set', function() {
-                var categories = ['ACategory', 'AnotherCategory'];
-                httpBackend.expectGET(function(url) {
-                    return url.indexOf('cat=') === -1;
-                });
-                var params = new Params.Builder().withType(types.photo)
-                    .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
-                    .withCategories(categories)
-                    .build();
-                searchService.query(params);
-                httpBackend.flush();
-            });
         });
 
         describe('when when params.type is "event"', function() {
             it('should call the "events" rest endpoint', function() {
                 params.type = types.event;
                 httpBackend.expectGET(/api\/events?.*/);
-                searchService.query(params);
-                httpBackend.flush();
-            });
-
-            it('should ignore the cat in the request even if it is set', function() {
-                var categories = ['ACategory', 'AnotherCategory'];
-                httpBackend.expectGET(function(url) {
-                    return url.indexOf('cat=') === -1;
-                });
-                var params = new Params.Builder().withType(types.event)
-                    .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
-                    .withCategories(categories)
-                    .build();
                 searchService.query(params);
                 httpBackend.flush();
             });
