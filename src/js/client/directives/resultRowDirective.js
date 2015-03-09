@@ -21,7 +21,6 @@ var link = function($scope) {
     $scope.data.description = $scope.data.description || 'No description available.';
 
     $scope.isMap = function() {
-        //console.log('comparing ' + $scope.data.target + '===' + constants.TARGET_MAP);
         return $scope.data.target === constants.TARGET_MAP;
     };
 
