@@ -28,7 +28,7 @@ gulp.task('server:dev', ['build'], function () {
     gulp.watch(['src/less/*.less', 'src/less/**/*.less'], ['less']);
 
     // watch javascript and server templates
-    gulp.watch(['src/js/client/*.js', 'src/js/client/**/*.js'], ['browserify:app']);
+    gulp.watch(['src/js/*.js', 'src/js/**/*.js'], ['browserify:app']);
     gulp.watch(['views/**/*.hbs'], ['browserify:app']);
 
     // watch angular templates

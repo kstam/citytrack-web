@@ -48,13 +48,17 @@
                 }
 
                 .categories {
+                    .clearfix();
                     font-size: 12px;
                     margin-bottom: 1.5%;
                     .category {
                         color: @category-color;
                         background: @category-background;
                         padding: 2px;
+                        display: block;
+                        float:left;
                         margin-right: 5px;
+                        margin-bottom: 5px;
                         .border-radius(3px);
                         .shadow(1px, 1px, 2px, #666);
                     }

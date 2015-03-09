@@ -103,7 +103,6 @@ describe('result-row directive', function() {
             });
 
             it('should display the photos section if there are more than 1 photos', function() {
-                var isolateScope = element.isolateScope();
                 expect($(element).find('.photos').length).to.equal(1);
                 expect($(element).find('.photos img.photo').length).to.equal(1);
             });
