@@ -113,6 +113,24 @@ describe('facet directive', function() {
 
             expect(scope.selected).to.be.undefined();
         });
+
+        it('should reset any changes made to the popup', function() {
+            compileDirective();
+            var isolateScope = element.isolateScope();
+            isolateScope.toggle('foursquare');
+            scope.$digest();
+
+            isolateScope.ok();
+            scope.$digest();
+
+            isolateScope.toggle('dbpedia');
+            scope.$digest();
+
+            isolateScope.cancel();
+            scope.$digest();
+            expect(isolateScope.modelMap['foursquare']).to.be.true();
+            expect(isolateScope.modelMap['dbpedia']).to.be.undefined();
+        });
     });
 
     describe('exposes "ok" method that', function() {
@@ -131,6 +149,7 @@ describe('facet directive', function() {
             isolateScope.$digest();
             isolateScope.ok();
             scope.$digest();
+            console.log(scope.selected);
             expect(scope.selected).to.deep.equal(isolateScope.modelArray);
         });
     });

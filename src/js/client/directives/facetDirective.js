@@ -53,6 +53,7 @@ var link = function($scope, element) {
     };
 
     $scope.cancel = function() {
+        initDefaults();
         $scope.hidePopup();
     };
 
@@ -63,7 +64,7 @@ var link = function($scope, element) {
     };
 
     var initDefaults = function() {
-        $scope.modelArray = $scope.modelArray ? angular.copy($scope.modelArray) : [];
+        $scope.modelArray = $scope.model ? angular.copy($scope.model) : [];
         $scope.modelMap = arrayToMap($scope.modelArray);
     };
 
