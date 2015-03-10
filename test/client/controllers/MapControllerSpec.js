@@ -6,6 +6,7 @@ var constants = require('client/config/constants');
 var config = require('client/config/leafletConfig');
 var controllers = require('client/controllers/controllers');
 var AppState = require('client/services/AppState');
+var iconFactory = require('client/map/iconFactory');
 var Area = require('model/Area');
 var NgEventService = require('client/services/NgEventService');
 var L = require('leaflet');
@@ -196,6 +197,12 @@ describe('MapController', function() {
             });
         });
 
+        it('should set the "selectedFeatureId" back to undefined', function() {
+            scope.selectedFeatureId = 'asdasd';
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
+            $rootScope.$digest(); // resolves getMap() promise
+            expect(scope.selectedFeatureId).to.be.undefined();
+        });
     });
 
     describe('listens to FETCH_NEXT_PAGE_SUCCESS and', function() {
@@ -208,6 +215,38 @@ describe('MapController', function() {
         });
     });
 
+    describe('listens to RESULTS_ROW_MOUSE_OVER and RESULTS_ROW_MOUSE_OUT evenst and', function() {
+        it('should change the marker icon to the hover version when a marker is hovered', function() {
+            var hoveredMarkerId =  mockedData.collection.features[0].id;
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
+            $rootScope.$digest(); // resolves getMap() promise
+
+            eventService.broadcastEvent(constants.RESULTS_ROW_MOUSE_OVER, hoveredMarkerId);
+            expect(scope.featureMap[hoveredMarkerId].marker.options.icon).to.equal(iconFactory.hoverMarkerIcon());
+        });
+
+        it('should change the marker icon back to the default one on MOUSE_OUT', function() {
+            var hoveredMarkerId =  mockedData.collection.features[0].id;
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
+            $rootScope.$digest(); // resolves getMap() promise
+
+            eventService.broadcastEvent(constants.RESULTS_ROW_MOUSE_OVER, hoveredMarkerId);
+            eventService.broadcastEvent(constants.RESULTS_ROW_MOUSE_OUT, hoveredMarkerId);
+            expect(scope.featureMap[hoveredMarkerId].marker.options.icon).to.equal(iconFactory.defaultMarkerIcon());
+        });
+
+        it('should change the marker icon back to the clickedMarkerIcon on MOUSE_OUT if marker is selected', function() {
+            var hoveredMarkerId =  mockedData.collection.features[0].id;
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
+            $rootScope.$digest(); // resolves getMap() promise
+            scope.selectedFeatureId = hoveredMarkerId;
+
+            eventService.broadcastEvent(constants.RESULTS_ROW_MOUSE_OVER, hoveredMarkerId);
+            eventService.broadcastEvent(constants.RESULTS_ROW_MOUSE_OUT, hoveredMarkerId);
+            expect(scope.featureMap[hoveredMarkerId].marker.options.icon).to.equal(iconFactory.clickedMarkerIcon());
+        });
+    });
+
     describe('listens to RESULTS_ROW_SELECTED and', function() {
         it('should open the popup for the marker of the feature that was selected', function() {
             eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
@@ -217,7 +256,51 @@ describe('MapController', function() {
             scope.featureMap[selectedFeatureId].marker.openPopup = sinon.spy();
             eventService.broadcastEvent(constants.RESULTS_ROW_SELECTED, selectedFeatureId);
 
+            expect(scope.selectedFeatureId).to.equal(selectedFeatureId);
+            expect(scope.featureMap[selectedFeatureId].marker.options.icon).to.equal(iconFactory.clickedMarkerIcon());
             expect(scope.featureMap[selectedFeatureId].marker.openPopup).to.have.callCount(1);
+        });
+
+        it('should update the icon to the clicked icon', function() {
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
+            $rootScope.$digest(); // resolves getMap() promise
+
+            var selectedFeatureId =  mockedData.collection.features[1].id;
+            eventService.broadcastEvent(constants.RESULTS_ROW_SELECTED, selectedFeatureId);
+
+            expect(scope.featureMap[selectedFeatureId].marker.options.icon).to.equal(iconFactory.clickedMarkerIcon());
+        });
+
+
+        it('should update the icon to the previously selected marker back to the default clicked icon', function() {
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
+            $rootScope.$digest(); // resolves getMap() promise
+
+            var selectedFeatureId1 =  mockedData.collection.features[1].id;
+            var selectedFeatureId2 =  mockedData.collection.features[2].id;
+            eventService.broadcastEvent(constants.RESULTS_ROW_SELECTED, selectedFeatureId1);
+            $rootScope.$digest();
+            eventService.broadcastEvent(constants.RESULTS_ROW_SELECTED, selectedFeatureId2);
+            $rootScope.$digest();
+
+            expect(scope.featureMap[selectedFeatureId1].marker.options.icon).to.equal(iconFactory.defaultMarkerIcon());
+            expect(scope.featureMap[selectedFeatureId2].marker.options.icon).to.equal(iconFactory.clickedMarkerIcon());
+        });
+    });
+
+    describe('listens to "click" marker events and', function() {
+        //TODO: test map originated events
+        it('should trigger a MAP_FEATURE_SELECTED event', function() {
+            //var selectedFeatureId =  mockedData.collection.features[1].id;
+            //eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData);
+            //$rootScope.$digest(); // resolves getMap() promise
+            //$rootScope.$digest(); // resolves applyAsync
+            //
+            //eventService.broadcastEvent = sinon.spy();
+            //scope.featureMap[selectedFeatureId].marker.fire('click');
+            //scope.$digest(); // resolves $applyAsync
+            //expect(scope.selectedFeatureId).to.equal(selectedFeatureId);
+            //expect(eventService.broadcastEvent).to.have.been.calledWith(constants.MAP_FEATURE_SELECTED, selectedFeatureId);
         });
     });
 

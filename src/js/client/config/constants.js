@@ -19,8 +19,10 @@ constants.FETCH_NEXT_PAGE_FAILURE = 'FetchNextPage:Failure';
 constants.RESULTS_ROW_SELECTED = 'Results:RowSelected';
 constants.RESULTS_ROW_MOUSE_OVER = 'Results:RowMouseOver';
 constants.RESULTS_ROW_MOUSE_OUT = 'Results:RowMouseOut';
+
 constants.MAP_VIEW_CHANGED = 'Map:ViewChanged';
-constants.MAP_POINT_SELECTED = 'Map:PointSelected';
+constants.MAP_FEATURE_SELECTED = 'Map:FeatureSelected';
+
 constants.FILTER_CHANGED_EVT = 'Filter:Changed';
 
 // URLS

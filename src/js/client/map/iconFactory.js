@@ -17,8 +17,8 @@ var HOVER_ICON_URL = {
 };
 
 var CLICKED_ICON_URL = {
-    iconUrl: 'img/marker-icon.png',
-    iconRetinaUrl: 'img/marker-icon-2x.png'
+    iconUrl: 'img/marker-icon-clicked.png',
+    iconRetinaUrl: 'img/marker-icon-clicked-2x.png'
 };
 
 var defaultIcon, hoverIcon, clickedIcon;
@@ -34,7 +34,7 @@ var hoverMarkerIcon = function() {
 };
 
 var clickedMarkerIcon = function() {
-    clickedIcon = defaultIcon || L.icon(angular.extend({}, DEFAULT_ICON_OPTIONS, CLICKED_ICON_URL));
+    clickedIcon = clickedIcon || L.icon(angular.extend({}, DEFAULT_ICON_OPTIONS, CLICKED_ICON_URL));
     return clickedIcon;
 };
 

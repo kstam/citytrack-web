@@ -62,11 +62,42 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
         $scope.featureMap[id] = mapEntry;
     };
 
-    var createGeoJSONLayer = function(data) {
+    var markerClickListenerWithId = function(id) {
+        return function() {
+            $scope.$applyAsync(function() {
+                if ($scope.selectedFeatureId) {
+                    $scope.featureMap[$scope.selectedFeatureId].marker.setIcon(iconFactory.defaultMarkerIcon());
+                }
+                $scope.selectedFeatureId = id;
+                $scope.featureMap[id].marker.setIcon(iconFactory.clickedMarkerIcon());
+                eventService.broadcastEvent(constants.MAP_FEATURE_SELECTED, id);
+            });
+        };
+    };
 
+    var markerMouseOverListenerWithId = function(id) {
+        return function() {
+            $scope.$applyAsync(function() {
+                resultRowMouseOverListener('', id);
+            });
+        };
+    };
+
+    var markerMouseOutListenerWithId = function(id) {
+        return function() {
+            $scope.$applyAsync(function() {
+                resultRowMouseOutListener('', id);
+            });
+        };
+    };
+
+    var createGeoJSONLayer = function(data) {
         return L.geoJson(data, {
             pointToLayer: function(feature, latlng) {
                 var marker = markerFactory.forPoint(feature, latlng);
+                marker.on('click', markerClickListenerWithId(feature.id));
+                marker.on('mouseover', markerMouseOverListenerWithId(feature.id));
+                marker.on('mouseout', markerMouseOutListenerWithId(feature.id));
                 addToMap(feature.id, 'marker', marker);
                 return marker;
             },
@@ -111,6 +142,7 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
     // LISTENERS
 
     var mainQuerySuccessListener = function(event, data) {
+        $scope.selectedFeatureId = undefined;
         // Get the map to add the data
         leafletData.getMap().then(function(map) {
             removeLayerFromMap($scope.geoJsonLayer, map);
@@ -122,7 +154,12 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
     };
 
     var resultRowSelectedListener = function(event, id) {
+        if ($scope.selectedFeatureId) {
+            $scope.featureMap[$scope.selectedFeatureId].marker.setIcon(iconFactory.defaultMarkerIcon());
+        }
+        $scope.selectedFeatureId = id;
         $scope.featureMap[id].marker.openPopup();
+        $scope.featureMap[id].marker.setIcon(iconFactory.clickedMarkerIcon());
     };
 
     var resultRowMouseOverListener = function(event, id) {
@@ -130,7 +167,8 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
     };
 
     var resultRowMouseOutListener = function(event, id) {
-        $scope.featureMap[id].marker.setIcon(iconFactory.defaultMarkerIcon());
+        var icon = id === $scope.selectedFeatureId ? iconFactory.clickedMarkerIcon() : iconFactory.defaultMarkerIcon();
+        $scope.featureMap[id].marker.setIcon(icon);
     };
 
     var nextPageSuccessListener = function(event, data) {

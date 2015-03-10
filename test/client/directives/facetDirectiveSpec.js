@@ -149,7 +149,6 @@ describe('facet directive', function() {
             isolateScope.$digest();
             isolateScope.ok();
             scope.$digest();
-            console.log(scope.selected);
             expect(scope.selected).to.deep.equal(isolateScope.modelArray);
         });
     });

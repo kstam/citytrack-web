@@ -29,7 +29,7 @@ module.exports = function($scope, appState, eventService) {
 
     // LISTENERS
 
-    var mapPointSelectedListener = function(event, pointId) {
+    var mapFeatureSelectedListener = function(event, pointId) {
         $scope.selectedRow = pointId;
     };
 
@@ -56,7 +56,7 @@ module.exports = function($scope, appState, eventService) {
         eventService.on(constants.MAIN_QUERY_SUCCESS, mainSuccessListener);
         eventService.on(constants.MAIN_QUERY_FAILURE, mainErrorListener);
         eventService.on(constants.FETCH_NEXT_PAGE_SUCCESS, fetchNextPageSuccessListener);
-        eventService.on(constants.MAP_POINT_SELECTED, mapPointSelectedListener);
+        eventService.on(constants.MAP_FEATURE_SELECTED, mapFeatureSelectedListener);
     };
 
     // INITIALIZER

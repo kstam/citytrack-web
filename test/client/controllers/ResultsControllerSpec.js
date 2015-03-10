@@ -126,9 +126,9 @@ describe('ResultsController', function() {
         });
     });
 
-    describe('listens to MAP_POINT_SELECTED event and', function() {
+    describe('listens to MAP_FEATURE_SELECTED event and', function() {
         it('should update the selectedRow from the event', function() {
-            eventService.broadcastEvent(constants.MAP_POINT_SELECTED, 'someId');
+            eventService.broadcastEvent(constants.MAP_FEATURE_SELECTED, 'someId');
             expect(scope.selectedRow).to.equal('someId');
         });
     });
