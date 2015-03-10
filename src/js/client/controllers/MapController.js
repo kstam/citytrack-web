@@ -7,6 +7,7 @@ var constants = require('../config/constants');
 var L = require('leaflet');
 var popupFactory = require('../map/popupFactory');
 var markerFactory = require('../map/markerFactory');
+var iconFactory = require('../map/iconFactory');
 
 module.exports = function($scope, appState, eventService, leafletData, $compile) {
 
@@ -124,6 +125,14 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
         $scope.featureMap[id].marker.openPopup();
     };
 
+    var resultRowMouseOverListener = function(event, id) {
+        $scope.featureMap[id].marker.setIcon(iconFactory.hoverMarkerIcon());
+    };
+
+    var resultRowMouseOutListener = function(event, id) {
+        $scope.featureMap[id].marker.setIcon(iconFactory.defaultMarkerIcon());
+    };
+
     var nextPageSuccessListener = function(event, data) {
         if ($scope.geoJsonLayer) {
             $scope.geoJsonLayer.addData(data.collection);
@@ -147,6 +156,8 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
         eventService.on(constants.MAIN_QUERY_SUCCESS, mainQuerySuccessListener);
         eventService.on(constants.FETCH_NEXT_PAGE_SUCCESS, nextPageSuccessListener);
         eventService.on(constants.RESULTS_ROW_SELECTED, resultRowSelectedListener);
+        eventService.on(constants.RESULTS_ROW_MOUSE_OVER, resultRowMouseOverListener);
+        eventService.on(constants.RESULTS_ROW_MOUSE_OUT, resultRowMouseOutListener);
     };
 
     var initialize = function() {

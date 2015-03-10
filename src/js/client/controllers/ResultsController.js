@@ -14,6 +14,14 @@ module.exports = function($scope, appState, eventService) {
         return $scope.selectedRow === id;
     };
 
+    $scope.rowMouseOver = function(id) {
+        eventService.broadcastEvent(constants.RESULTS_ROW_MOUSE_OVER, id);
+    };
+
+    $scope.rowMouseOut = function(id) {
+        eventService.broadcastEvent(constants.RESULTS_ROW_MOUSE_OUT, id);
+    };
+
     var setDefaults = function() {
         $scope.rows = [];
         $scope.error = false;

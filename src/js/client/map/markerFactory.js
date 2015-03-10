@@ -1,18 +1,13 @@
 'use strict';
 
 var L = require('leaflet');
+var iconFactory = require('./iconFactory');
 var types = require('../../model/types');
 
-var myIcon = L.icon({
-    iconUrl: 'img/marker-icon.png',
-    iconRetinaUrl: 'img/marker-icon-2x.png',
-    iconSize: [25, 41],
-    iconAnchor: [13, 41],
-    popupAnchor: [0, -41]
-});
+var DEFAULT_ICON = iconFactory.defaultMarkerIcon();
 
 var markerOptions = {
-    icon: myIcon
+    icon: DEFAULT_ICON
 };
 
 var forPoint = function(feature, latlng) {

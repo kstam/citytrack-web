@@ -11,8 +11,10 @@
     </div>
 
     <div class="rows" ng-hide="error || (rows.length === 0)">
-        <result-row ng-repeat="row in rows" model="row" ng-click="selectRow(row.id)"
-                    ng-class="{selected: isRowSelected(row.id)}"></result-row>
+        <result-row ng-repeat="row in rows" model="row"
+                    ng-click="selectRow(row.id)"
+                    ng-class="{selected: isRowSelected(row.id)}"
+                    ng-mouseenter="rowMouseOver(row.id)" ng-mouseleave="rowMouseOut(row.id)"></result-row>
         <div class="paginator" ng-controller="ResultsPaginationController">
             <a href="" ng-hide="queryRunning || reachedTheEnd" ng-click="fetchNextPage()">Load more results</a>
             <span class="paginator-end" ng-show="reachedTheEnd">No more results</span>

@@ -110,6 +110,22 @@ describe('ResultsController', function() {
         });
     });
 
+    describe('expose "rowMouseOver" method that', function() {
+        it('should fire a RESULTS_ROW_MOUSE_OVER event', function() {
+            eventService.broadcastEvent = sinon.spy();
+            scope.rowMouseOver('rowId');
+            expect(eventService.broadcastEvent).to.have.been.calledWith(constants.RESULTS_ROW_MOUSE_OVER, 'rowId');
+        });
+    });
+
+    describe('expose "rowMouseOut" method that', function() {
+        it('should fire a RESULTS_ROW_MOUSE_OVER event', function() {
+            eventService.broadcastEvent = sinon.spy();
+            scope.rowMouseOut('rowId');
+            expect(eventService.broadcastEvent).to.have.been.calledWith(constants.RESULTS_ROW_MOUSE_OUT, 'rowId');
+        });
+    });
+
     describe('listens to MAP_POINT_SELECTED event and', function() {
         it('should update the selectedRow from the event', function() {
             eventService.broadcastEvent(constants.MAP_POINT_SELECTED, 'someId');
