@@ -50,6 +50,18 @@ describe('facet directive', function() {
             compileDirective();
             expect($(element).find('.filter-popup').css('display')).to.equal('none');
         });
+
+        it('should append class to the button if it has filters selected', function() {
+            scope.facetList = facets.source;
+            scope.selected = [facets.source[0].name];
+            compileDirective();
+            expect($(element).find('.filter-button').hasClass('activated')).to.be.true();
+
+            scope.selected = [];
+            scope.$digest();
+            expect($(element).find('.filter-button').hasClass('activated')).to.be.false();
+
+        });
     });
 
     describe('exposes isSelected function that', function() {

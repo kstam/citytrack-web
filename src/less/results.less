@@ -6,7 +6,7 @@
     .filters {
         box-sizing: border-box;
         padding: 10px;
-        background: #EEE;
+        background: @filter-area-background;
         border-bottom: 1px solid #CCC;
 
         .filters-caption {
@@ -19,12 +19,16 @@
             margin-right: 10px;
 
             .filter-button {
-                color: black;
+                color: @filter-btn-color;
                 text-decoration: none;
                 padding: 3px 6px;
                 .border-radius(3px);
-                background: #CCC;
-                border: solid thin #BBB;
+                background: @filter-btn-background;
+                border: solid thin @filter-btn-border;
+
+                &.activated {
+                    background: @filter-btn-active-background;
+                }
             }
         }
     }

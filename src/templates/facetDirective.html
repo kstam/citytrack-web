@@ -1,5 +1,7 @@
 <div class="facet-filter">
-    <a class="filter-button" href="" ng-click="showPopup()">{{getFieldLabel()}}</a>
+    <a class="filter-button" href="" ng-click="showPopup()" ng-class="{activated:hasFiltersSelected()}">
+        {{getFieldLabel()}}
+    </a>
     <div class="popup-grey-out" ng-click="cancel()"></div>
     <div class="filter-popup">
         <div class="facet"

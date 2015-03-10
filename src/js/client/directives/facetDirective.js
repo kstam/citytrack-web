@@ -57,6 +57,10 @@ var link = function($scope, element) {
         $scope.hidePopup();
     };
 
+    $scope.hasFiltersSelected = function() {
+        return ($scope.model && $scope.model.length > 0);
+    };
+
     $scope.getFieldLabel = function() {
         var field = fields[$scope.facetField];
         return (field && field.userFriendly) ?
