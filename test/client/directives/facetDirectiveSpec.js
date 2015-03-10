@@ -151,6 +151,19 @@ describe('facet directive', function() {
         });
     });
 
+    describe('watches the "model" for changes and', function() {
+        it('recalulcates the modelArray and modelMap', function() {
+            scope.selected = [];
+            scope.facetList = angular.copy(facets.source);
+            compileDirective();
+
+            scope.selected = [scope.facetList[0].name];
+            scope.$digest();
+            element.isolateScope().$digest();
+            expect($(element).find('.facet:first').hasClass('selected')).to.be.true();
+        });
+    });
+
     function compileDirective() {
         element = $compile(element)(scope);
         scope.$digest();

@@ -5,8 +5,17 @@ var constants = require('../config/constants');
 
 module.exports = function($scope, appState, eventService, searchService) {
 
+    var resetCategoriesAndSourcesIfNecessary = function() {
+        if($scope.topLevelSearchChanged) {
+            appState.setCategories([]);
+            appState.setSources([]);
+            $scope.topLevelSearchChanged = false;
+        }
+    };
+
     $scope.search = function() {
         if ($scope.active === true) {
+            resetCategoriesAndSourcesIfNecessary();
             $scope.loading = true;
             eventService.broadcastEvent(constants.MAIN_QUERY_STARTED);
             searchService.query($scope.params)
@@ -23,6 +32,7 @@ module.exports = function($scope, appState, eventService, searchService) {
     var setDefaults = function() {
         $scope.active = false;
         $scope.loading = false;
+        $scope.topLevelSearchChanged = false;
         $scope.params = appState.getParams();
     };
 
@@ -37,11 +47,19 @@ module.exports = function($scope, appState, eventService, searchService) {
         $scope.search();
     };
 
+    var topLevelSearchChangedListener = function() {
+        $scope.topLevelSearchChanged = true;
+    };
+
     var initListeners = function() {
         eventService.on(appState.APP_STATE_CHANGED_EVT, appStateListener);
         eventService.on(constants.KEYWORD_ENTER_PRESSED, enterPressedListener);
         eventService.on(constants.MAP_VIEW_CHANGED, enterPressedListener);
         eventService.on(constants.FILTER_CHANGED_EVT, enterPressedListener);
+
+        eventService.on(appState.TYPE_CHANGED_EVT, topLevelSearchChangedListener);
+        eventService.on(appState.AREA_CHANGED_EVT, topLevelSearchChangedListener);
+        eventService.on(appState.KEYWORD_CHANGED_EVT, topLevelSearchChangedListener);
     };
 
     // INITIALIZER

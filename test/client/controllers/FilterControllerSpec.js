@@ -76,6 +76,8 @@ describe('ResultsController', function() {
             scope.$digest();
             appState.setCategories(['Religion']);
             expect(scope.selectedFacets[fields.CATEGORY_ID]).to.deep.equal(['Religion']);
+            appState.setCategories([]);
+            expect(scope.selectedFacets[fields.CATEGORY_ID]).to.deep.equal([]);
         });
 
         it('should update the selectedFacets from the appState for sources', function() {

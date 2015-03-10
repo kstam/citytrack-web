@@ -122,7 +122,7 @@ describe('SearchButtonController', function() {
             expect(eventService.broadcastEvent).to.have.been.calledWith(constants.MAIN_QUERY_SUCCESS, mockedData);
         });
 
-        it('should trigger an ERROR event if the service call failse', function() {
+        it('should trigger an ERROR event if the service call false', function() {
             searchService = testUtils.createSearchServiceMockThatFails();
             initController();
             eventService.broadcastEvent = sinon.spy();
@@ -130,6 +130,25 @@ describe('SearchButtonController', function() {
             scope.search();
             expect(scope.loading).to.be.false();
             expect(eventService.broadcastEvent).to.have.been.calledWith(constants.MAIN_QUERY_FAILURE);
+        });
+
+        it('should reset the categories and the sources if a new keyword is selected', function() {
+            appState.setType(types.poi);
+            appState.setKeyword('old');
+            appState.setArea(testUtils.createRandomArea('Athens'));
+            scope.search();
+
+            appState.setCategories(['Technology']);
+            appState.setSources(['foursquare']);
+            scope.search();
+
+            expect(appState.getCategories()).to.deep.equal(['Technology']);
+            expect(appState.getSources()).to.deep.equal(['foursquare']);
+            appState.setKeyword('new');
+            scope.search();
+
+            expect(appState.getCategories()).to.deep.equal([]);
+            expect(appState.getSources()).to.deep.equal([]);
         });
     });
 

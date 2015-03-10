@@ -87,9 +87,17 @@ var link = function($scope, element) {
         }
     };
 
+    var modelWatcher = function(newModel, oldModel) {
+        if (!newModel || angular.equals(newModel, oldModel)) {
+            return;
+        }
+        $scope.modelArray = angular.copy(newModel);
+    };
+
     var initWatchers = function() {
         $scope.$watch('modelArray', modelArrayWatcher, true);
         $scope.$watch('modelMap', modelMapWatcher, true);
+        $scope.$watch('model', modelWatcher, true);
     };
 
     var hidePopup = function() {
