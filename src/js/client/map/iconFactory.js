@@ -30,7 +30,7 @@ var defaultMarkerIcon = function() {
 
 var hoverMarkerIcon = function() {
     hoverIcon = hoverIcon || L.icon(angular.extend({}, DEFAULT_ICON_OPTIONS, HOVER_ICON_URL));
-    return hoverIcon
+    return hoverIcon;
 };
 
 var clickedMarkerIcon = function() {
