@@ -2,10 +2,10 @@ var express = require('express');
 var Area = require('../src/js/model/Area');
 var http = require('http');
 var config = require('./config');
-var proxy = require('express-http-proxy');
+var request = require('request');
 
-module.exports = proxy(config.SERVICES_HOST, {
-    forwardPath: function(req, res) {
-        return config.SERVICES_ENDPOINT + require('url').parse(req.url).path;
-    }
-});
+
+module.exports = function(req, res) {
+    var url = config.SERVICES_HOST + config.SERVICES_ENDPOINT + require('url').parse(req.url).path;
+    req.pipe(request(url)).pipe(res);
+};
