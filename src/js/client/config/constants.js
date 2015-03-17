@@ -5,6 +5,7 @@ var constants = {};
 // IDS
 constants.CURRENT_AREA_ID = 'Around Me';
 constants.CURRENT_VIEW_ID = 'Current View';
+constants.ANY_CATEGORY = 'All Categories';
 
 // EVENTS
 constants.KEYWORD_ENTER_PRESSED = 'Keyword:EnterPressed';

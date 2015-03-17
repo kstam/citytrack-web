@@ -36,77 +36,112 @@ describe('Params', function() {
     });
 
     describe('isValid', function() {
-        it('should return false for empty params', function() {
-            expect(new Params().isValid()).to.be.false();
+        describe('for photo/event/poi type', function() {
+            it('should return false for empty params', function() {
+                expect(new Params().isValid()).to.be.false();
+            });
+
+            it('should return true if keyword, area and type are valid', function() {
+                var params = new Params.Builder()
+                    .withType(types.poi)
+                    .withKeyword('a')
+                    .withArea(testUtils.createRandomArea('Athens')).build();
+
+                expect(params.isValid()).to.be.true();
+            });
+
+            it('should return false if type is missing', function() {
+                var params = new Params.Builder()
+                    .withKeyword('a')
+                    .withArea(testUtils.createRandomArea('Athens')).build();
+
+                expect(params.isValid()).to.be.false();
+            });
+
+            it('should return true if everything is set and valid', function() {
+                var params = new Params.Builder()
+                    .withType(types.event)
+                    .withKeyword('a')
+                    .withArea(testUtils.createRandomArea('Athens'))
+                    .withPage(1).withPageSize(20)
+                    .withCategories([]).withSources([])
+                    .build();
+
+                expect(params.isValid()).to.be.true();
+            });
+
+            it('should return false if page is invalid', function() {
+                var params = new Params.Builder()
+                    .withKeyword('a')
+                    .withType(types.photo)
+                    .withArea(testUtils.createRandomArea('Athens'))
+                    .withPage('a')
+                    .build();
+
+                expect(params.isValid()).to.be.false();
+            });
+
+            it('should return false if pageSize is invalid', function() {
+                var params = new Params.Builder()
+                    .withKeyword('a')
+                    .withType(types.photo)
+                    .withArea(testUtils.createRandomArea('Athens'))
+                    .withPageSize('a')
+                    .build();
+
+                expect(params.isValid()).to.be.false();
+            });
+
+            it('should return false if sources is invalid', function() {
+                var params = new Params.Builder()
+                    .withKeyword('a')
+                    .withType(types.photo)
+                    .withArea(testUtils.createRandomArea('Athens'))
+                    .withSources({})
+                    .build();
+
+                expect(params.isValid()).to.be.false();
+            });
+
+            it('should return false if categories is invalid', function() {
+                var params = new Params.Builder()
+                    .withKeyword('a')
+                    .withType(types.photo)
+                    .withArea(testUtils.createRandomArea('Athens'))
+                    .withCategories({})
+                    .build();
+
+                expect(params.isValid()).to.be.false();
+            });
         });
 
-        it('should return true if keyword, area and type are valid', function() {
-            var params = new Params.Builder()
-                .withType(types.poi)
-                .withKeyword('a')
-                .withArea(testUtils.createRandomArea('Athens')).build();
+        describe('for street of interest', function() {
+            it('should return true when everything is set and valid', function() {
+                var params = new Params.Builder()
+                    .withType(types.streetofinterest)
+                    .withArea(testUtils.createRandomArea('Athens'))
+                    .withCategories(['Food'])
+                    .build();
 
-            expect(params.isValid()).to.be.true();
-        });
+                expect(params.isValid()).to.be.true();
+            });
 
-        it('should return false if type is missing', function() {
-            var params = new Params.Builder()
-                .withKeyword('a')
-                .withArea(testUtils.createRandomArea('Athens')).build();
+            it('should return true when only the type and the area are set', function() {
+                var params = new Params.Builder()
+                    .withType(types.streetofinterest)
+                    .withArea(testUtils.createRandomArea('Athens'))
+                    .build();
 
-            expect(params.isValid()).to.be.false();
-        });
+                expect(params.isValid()).to.be.true();
+            });
 
-        it('should return true if everything is set and valid', function() {
-            var params = new Params.Builder()
-                .withType(types.event)
-                .withKeyword('a')
-                .withArea(testUtils.createRandomArea('Athens'))
-                .withPage(1).withPageSize(20)
-                .withCategories([]).withSources([])
-                .build();
+            it('should return false when the area is not set', function() {
+                var params = new Params.Builder()
+                    .withType(types.streetofinterest)
+                    .build();
 
-            expect(params.isValid()).to.be.true();
-        });
-
-        it('should return false if page is invalid', function() {
-            var params = new Params.Builder()
-                .withKeyword('a')
-                .withArea(testUtils.createRandomArea('Athens'))
-                .withPage('a')
-                .build();
-
-            expect(params.isValid()).to.be.false();
-        });
-
-        it('should return false if pageSize is invalid', function() {
-            var params = new Params.Builder()
-                .withKeyword('a')
-                .withArea(testUtils.createRandomArea('Athens'))
-                .withPageSize('a')
-                .build();
-
-            expect(params.isValid()).to.be.false();
-        });
-
-        it('should return false if sources is invalid', function() {
-            var params = new Params.Builder()
-                .withKeyword('a')
-                .withArea(testUtils.createRandomArea('Athens'))
-                .withSources({})
-                .build();
-
-            expect(params.isValid()).to.be.false();
-        });
-
-        it('should return false if categories is invalid', function() {
-            var params = new Params.Builder()
-                .withKeyword('a')
-                .withArea(testUtils.createRandomArea('Athens'))
-                .withCategories({})
-                .build();
-
-            expect(params.isValid()).to.be.false();
+                expect(params.isValid()).to.be.false();
+            });
         });
     });
 });

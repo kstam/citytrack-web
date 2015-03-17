@@ -58,6 +58,9 @@
                     color: @calendar-color;
                     padding: 0 2px;
                 }
+                &.fa-road {
+                    color: #ddd079;
+                }
             }
 
             .selectize-input {
@@ -80,10 +83,16 @@
                 background: @input-background;
                 border: none;
                 border-radius: 3px;
-                padding: 10px;
+                padding: 9px;
                 font-size: 13px;
                 color: @input-text-color;
                 outline-color: @input-background + 20;
+            }
+        }
+
+        .category-box {
+            .selectize-input {
+                min-width: 158px;
             }
         }
 

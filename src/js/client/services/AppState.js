@@ -1,14 +1,15 @@
 'use strict';
 
+var utils = require('common/utils');
+var Area = require('model/Area');
+var Params = require('model/Params');
+
 var APP_STATE_CHANGED_EVT = 'AppState:Changed';
 var AREA_CHANGED_EVT = 'AppState:AreaChanged';
 var KEYWORD_CHANGED_EVT = 'AppState:KeywordChanged';
 var TYPE_CHANGED_EVT = 'AppState:TypeChanged';
 var CATEGORIES_CHANGED_EVT = 'AppState:CategoriesChanged';
 var SOURCES_CHANGED_EVT = 'AppState:SourcesChanged';
-var utils = require('common/utils');
-var Area = require('model/Area');
-var Params = require('model/Params');
 
 var AppState = function(eventBus) {
 

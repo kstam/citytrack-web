@@ -6,10 +6,18 @@ module.exports = function($scope, appState, eventService) {
 
     var DEFAULT_TYPE = types.poi;
 
+    var getArrayOfSelectableTypes = function() {
+        return Object.keys(types)
+            .filter(function(key) {
+                return types[key].selectable === true;
+            })
+            .map(function(key) {
+                return types[key];
+            });
+    };
+
     var setDefaults = function() {
-        $scope.types = Object.keys(types).map(function(key) {
-            return types[key];
-        });
+        $scope.types = getArrayOfSelectableTypes();
         $scope.selectedTypeId = DEFAULT_TYPE.id;
         $scope.selectedType = DEFAULT_TYPE;
         appState.setType(DEFAULT_TYPE);
@@ -23,14 +31,16 @@ module.exports = function($scope, appState, eventService) {
             labelField: 'id',
             openOnFocus: true,
             readOnly: true,
-            onDelete: function() { return false; },
+            onDelete: function() {
+                return false;
+            },
             render: {
                 item: function(item) {
-                    return '<div><i class="fa '+ item.iconClass + '"></i></div>';
+                    return '<div><i class="fa ' + item.iconClass + '"></i></div>';
                 },
 
                 option: function(item) {
-                    return '<div><i class="fa '+ item.iconClass + '"></i></div>';
+                    return '<div><i class="fa ' + item.iconClass + '"></i></div>';
                 }
             }
         };

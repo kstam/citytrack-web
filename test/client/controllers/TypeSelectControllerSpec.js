@@ -22,8 +22,14 @@ describe('TypeSelectController', function() {
     }));
 
     describe('initializes defaults and', function() {
-        it('should set the "types" from the model', function() {
-            expect(scope.types.length).to.equal(Object.keys(types).length);
+        it('should set the "types" from the model using only the selectable types', function() {
+            var expectedLength = Object.keys(types).filter(function(key) {return types[key].selectable;}).length;
+            expect(scope.types.length).to.equal(expectedLength);
+            scope.types.forEach(function(type) {
+                expect(type.id).not.to.be.undefined();
+                expect(type.iconClass).not.to.be.undefined();
+                expect(type.selectable).to.be.true();
+            });
         });
 
         it('should set a selectize config', function() {

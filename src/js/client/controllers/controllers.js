@@ -6,9 +6,9 @@ var directives = require('../directives/directives');
 
 var citytrackControllers = angular.module('citytrack.controllers', [services.name, directives.name]);
 
-citytrackControllers.controller('CitytrackMainController', ['$scope', 'NgEventService',
-    function($scope, eventService) {
-        require('./CitytrackMainController')($scope, eventService);
+citytrackControllers.controller('CitytrackMainController', ['$scope', 'AppState', 'NgEventService',
+    function($scope, appState, eventService) {
+        require('./CitytrackMainController')($scope, appState, eventService);
     }]);
 
 citytrackControllers.controller('AreaSelectController', ['$scope', 'AreaService', 'AppState', 'NgEventService',
@@ -49,6 +49,11 @@ citytrackControllers.controller('TypeSelectController', ['$scope', 'AppState', '
 citytrackControllers.controller('FilterController', ['$scope', 'AppState', 'NgEventService',
     function($scope, appState, eventService) {
         require('./FilterController')($scope, appState, eventService);
+    }]);
+
+citytrackControllers.controller('CategorySelectController', ['$scope', 'CategoryService', 'AppState', 'NgEventService',
+    function($scope, categoryService, appState, eventService) {
+        require('./CategorySelectController')($scope, categoryService, appState, eventService);
     }]);
 
 module.exports = citytrackControllers;

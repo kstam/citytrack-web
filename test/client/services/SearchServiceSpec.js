@@ -9,13 +9,19 @@ var poiData = require('../../data/poiResponse');
 var photoData = require('../../data/photoResponse');
 var eventData = require('../../data/eventResponse');
 var Params = require('model/Params');
+var AppState = require('client/services/AppState');
 var types = require('model/types');
 
 describe('SearchService', function() {
     var httpBackend, searchService;
-    var params;
+    var params, mockedEventService, appState;
 
     beforeEach(angular.mock.module('ngResource'));
+
+    beforeEach(function() {
+        mockedEventService = {};
+        appState = new AppState(mockedEventService);
+    });
 
     beforeEach(inject(function($httpBackend, $resource) {
         httpBackend = $httpBackend;
@@ -23,6 +29,7 @@ describe('SearchService', function() {
         httpBackend.whenGET(/api\/pois?.*/).respond(poiData);
         httpBackend.whenGET(/api\/photos?.*/).respond(photoData);
         httpBackend.whenGET(/api\/events?.*/).respond(eventData);
+        httpBackend.whenGET(/api\/streets?.*/).respond(eventData);
         params = new Params.Builder()
             .withKeyword('keyword')
             .withArea(testUtils.createRandomArea('Athens'))
@@ -107,7 +114,7 @@ describe('SearchService', function() {
             httpBackend.flush();
         });
 
-        describe('when when params.type is "poi"', function() {
+        describe('when params.type is "poi"', function() {
             it('should call the "pois" rest endpoint', function() {
                 httpBackend.expectGET(/api\/pois?.*/);
                 searchService.query(params);
@@ -128,7 +135,7 @@ describe('SearchService', function() {
             });
         });
 
-        describe('when when params.type is "photo"', function() {
+        describe('when params.type is "photo"', function() {
             it('should call the "photos" rest endpoint', function() {
                 params.type = types.photo;
                 httpBackend.expectGET(/api\/photos?.*/);
@@ -137,13 +144,23 @@ describe('SearchService', function() {
             });
         });
 
-        describe('when when params.type is "event"', function() {
+        describe('when params.type is "event"', function() {
             it('should call the "events" rest endpoint', function() {
                 params.type = types.event;
                 httpBackend.expectGET(/api\/events?.*/);
                 searchService.query(params);
                 httpBackend.flush();
             });
+        });
+
+        describe('when params.type is streetofinterest', function() {
+            it('should call the "streets" rest endpoint', function() {
+                params.type = types.streetofinterest;
+                httpBackend.expectGET(/api\/streets?.*/);
+                searchService.query(params);
+                httpBackend.flush();
+            });
+
         });
     });
 });

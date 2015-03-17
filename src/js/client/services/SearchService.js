@@ -7,21 +7,28 @@ var types = require('../../model/types');
 module.exports = function($resource) {
 
     var POI = $resource('api/pois', {}, {
-        getPois: {
+        query: {
             method: 'GET',
             params: {}
         }
     });
 
     var Photo = $resource('api/photos', {}, {
-        getPois: {
+        query: {
             method: 'GET',
             params: {}
         }
     });
 
     var Event = $resource('api/events', {}, {
-        getPois: {
+        query: {
+            method: 'GET',
+            params: {}
+        }
+    });
+
+    var StreetOfInterest = $resource('api/streets', {}, {
+        query: {
             method: 'GET',
             params: {}
         }
@@ -35,12 +42,25 @@ module.exports = function($resource) {
 
     var generateParamsObject = function(params) {
         var p = {};
-        p.q = params.keyword;
+
         p.box = params.area.getBoundingBoxAsList().join(',');
+        p.cat = (params.categories && params.categories.length > 0) ? params.categories.join(',') : undefined;
         p.pg = params.page;
         p.pgsize = params.pageSize;
-        p.src = (params.sources && params.sources.length > 0) ? params.sources.join(',') : undefined;
-        p.cat = (params.categories && params.categories.length > 0) ? params.categories.join(',') : undefined;
+
+        switch (params.type.id) {
+            case types.poi.id:
+            case types.event.id:
+            case types.photo.id:
+                p.q = params.keyword;
+                p.src = (params.sources && params.sources.length > 0) ? params.sources.join(',') : undefined;
+                break;
+            case types.streetofinterest.id:
+                break;
+            default:
+                break;
+        }
+
         return p;
     };
 
@@ -52,6 +72,8 @@ module.exports = function($resource) {
                 return Event;
             case types.photo.id:
                 return Photo;
+            case types.streetofinterest.id:
+                return StreetOfInterest;
             default:
                 break;
         }
@@ -60,7 +82,7 @@ module.exports = function($resource) {
     var query = function(params) {
         validateParams(params);
         var apiParams = generateParamsObject(params);
-        return getResource(params).getPois(apiParams).$promise;
+        return getResource(params).query(apiParams).$promise;
     };
 
     return {

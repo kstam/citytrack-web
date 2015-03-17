@@ -2,11 +2,12 @@
 
 var angular = require('../shims/angular');
 var constants = require('../config/constants');
+var types = require('../../model/types');
 
 module.exports = function($scope, appState, eventService, searchService) {
 
     var resetCategoriesAndSourcesIfNecessary = function() {
-        if($scope.topLevelSearchChanged) {
+        if($scope.topLevelSearchChanged && appState.getType() !== types.streetofinterest) {
             appState.setCategories([]);
             appState.setSources([]);
             $scope.topLevelSearchChanged = false;

@@ -3,6 +3,7 @@
 var angular = require('../shims/angular');
 var constants = require('client/config/constants');
 var fields = require('../../model/fields');
+var types = require('../../model/types');
 
 module.exports = function($scope, appState, eventService) {
 
@@ -34,7 +35,9 @@ module.exports = function($scope, appState, eventService) {
             if (nSelFacets[fields.SOURCE_ID]) {
                 appState.setSources(nSelFacets[fields.SOURCE_ID]);
             }
-            eventService.broadcastEvent(constants.FILTER_CHANGED_EVT);
+            if (appState.getType() !== types.streetofinterest) {
+                eventService.broadcastEvent(constants.FILTER_CHANGED_EVT);
+            }
         }
     };
 

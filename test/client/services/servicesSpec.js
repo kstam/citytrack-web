@@ -26,4 +26,8 @@ describe('services', function() {
     it('correctly defines SearchService', inject(['SearchService', function(searchService) {
         expect(searchService.query).not.to.be.undefined;
     }]));
+
+    it('correctly defines CategoryService', inject(['CategoryService', function(categoryService) {
+        expect(categoryService.getCategories).not.to.be.undefined;
+    }]));
 });

@@ -25,4 +25,10 @@ services.factory('SearchService', ['$resource', function($resource) {
     return new SearchService($resource);
 }]);
 
+services.factory('CategoryService', ['$resource', function($resource) {
+    var CategoryService = require('./CategoryService');
+    return new CategoryService($resource);
+}]);
+
+
 module.exports = services;

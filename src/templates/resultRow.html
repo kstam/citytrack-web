@@ -2,19 +2,30 @@
     <div class="info">
         <div class="title">{{data.label}}</div>
 
-        <div class="categories">
+        <div class="categories" ng-if="!isStreet()">
             <span ng-repeat="category in data.categories track by $index" class="category">
                 {{category}}
             </span>
         </div>
 
-        <div class="description">
+        <div class="categories" ng-if="isStreet()">
+            <span class="category">
+                {{data.streetType}}
+            </span>
+        </div>
+
+        <div class="description" ng-if="!isStreet()">
             <img class="description-image" ng-if="isMap()" ng-src="{{data.mainPhoto}}" err-src="img/no_image_available.jpg" />
             <span ng-bind-html="data.description"></span>
         </div>
 
+        <div class="description" ng-if="isStreet()">
+            <p>{{data.label}} has <strong>{{data.poiCount}}</strong> POIs around matching the selected criteria.
+                (<strong>{{formattedDensity()}}</strong>/m)</p>
+        </div>
+
         <!-- Display only for map and if there are more than 1 photos for the feature -->
-        <div class="photos" ng-if="isMap() && hasMorePhotos()">
+        <div class="photos" ng-if="isMap() && hasMorePhotos() && !isStreet()">
             <div class="title">
                 More Photos
             </div>
@@ -23,12 +34,12 @@
             </a>
         </div>
 
-        <div class="source">
+        <div class="source" ng-if="!isStreet()">
             Origin: <a href="{{data.url}}" target="_blank">{{ data.source }}</a>
         </div>
     </div>
 
-    <div class="result-image" ng-if="isResult()">
+    <div class="result-image" ng-if="isResult() && !isStreet()">
         <img ng-src="{{data.mainPhoto}}" err-src="img/no_image_available.jpg"/>
     </div>
 </div>

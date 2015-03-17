@@ -10,7 +10,7 @@ var expect = require('../../testCommons/chaiExpect');
 var sinon = require('sinon');
 
 describe('CitytrackMainController', function() {
-    var scope, eventService, $$controller;
+    var scope, eventService, $$controller, appState;
 
     beforeEach(angular.mock.module(controllers.name));
 
@@ -18,6 +18,7 @@ describe('CitytrackMainController', function() {
         $$controller = $controller;
         scope = $rootScope.$new();
         eventService = new NgEventService($rootScope);
+        appState = new AppState(eventService);
         initController();
     }));
 
@@ -53,6 +54,6 @@ describe('CitytrackMainController', function() {
 
     function initController() {
         $$controller('CitytrackMainController',
-            {$scope: scope, NgEventService: eventService});
+            {$scope: scope, AppState: appState, NgEventService: eventService});
     }
 });

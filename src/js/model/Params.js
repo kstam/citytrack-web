@@ -1,9 +1,13 @@
 'use strict';
 
 var utils = require('../common/utils');
+var types = require('./types');
 var Area = require('./Area');
 
 var Params = function(keyword, area, page, pageSize, sources, categories, type) {
+
+    var validator = new Params.Validator();
+
     if (!(this instanceof Params)) {
         return new Params(keyword, area, page, pageSize, sources, categories, type);
     }
@@ -17,13 +21,7 @@ var Params = function(keyword, area, page, pageSize, sources, categories, type) 
     this.type = type;
 
     this.isValid = function() {
-        return (utils.isString(this.keyword) && this.keyword !== '') &&
-            (this.area instanceof Area) &&
-            utils.isNotNullOrUndefined(this.type) && (utils.isString(this.type.id)) && (utils.isString(this.type.iconClass)) &&
-            utils.optional(this.page)(utils.isInteger) &&
-            utils.optional(this.pageSize)(utils.isInteger) &&
-            utils.optional(this.sources)(utils.isArray) &&
-            utils.optional(this.categories)(utils.isArray);
+        return validator.isValid(this);
     };
 
     this.equals = function(that) {
@@ -31,7 +29,7 @@ var Params = function(keyword, area, page, pageSize, sources, categories, type) 
             return true;
         }
 
-        if (! (that  instanceof Params)) {
+        if (!(that  instanceof Params)) {
             return false;
         }
 
@@ -43,6 +41,44 @@ var Params = function(keyword, area, page, pageSize, sources, categories, type) 
             utils.sameContent(this.sources, that.sources) &&
             utils.sameContent(this.categories, that.categories);
     };
+};
+
+Params.Validator = function() {
+
+    var isValidForPoiPhotoOrEvent = function(params) {
+        return (utils.isString(params.keyword) && params.keyword !== '') &&
+            (params.area instanceof Area) &&
+            utils.optional(params.page)(utils.isInteger) &&
+            utils.optional(params.pageSize)(utils.isInteger) &&
+            utils.optional(params.sources)(utils.isArray) &&
+            utils.optional(params.categories)(utils.isArray);
+    };
+
+    var isValidForStreetOfInterest = function(params) {
+        return (params.area instanceof Area) &&
+            utils.optional(params.page)(utils.isInteger) &&
+            utils.optional(params.pageSize)(utils.isInteger) &&
+            utils.optional(params.categories)(utils.isArray);
+    };
+
+    return {
+        isValid: function(params) {
+            var type = params.type;
+            if (utils.isNotNullOrUndefined(type) && (utils.isString(type.id))) {
+                switch (type.id) {
+                    case types.poi.id:
+                    case types.event.id:
+                    case types.photo.id:
+                        return isValidForPoiPhotoOrEvent(params);
+                    case types.streetofinterest.id:
+                        return isValidForStreetOfInterest(params);
+                    default:
+                        break;
+                }
+            }
+            return false;
+        }
+    }
 };
 
 function equalAreas(a1, a2) {
@@ -72,12 +108,10 @@ Params.Builder = function() {
         return this;
     };
 
-
     this.withPageSize = function(thePageSize) {
         pageSize = thePageSize;
         return this;
     };
-
 
     this.withSources = function(theSources) {
         sources = theSources;
