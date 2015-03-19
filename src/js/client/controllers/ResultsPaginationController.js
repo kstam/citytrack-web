@@ -3,8 +3,14 @@
 var constants = require('client/config/constants');
 var utils = require('../../common/utils');
 var angular = require('../shims/angular');
+var types = require('../../model/types');
 
 module.exports = function($scope, appState, eventService, searchService) {
+
+    $scope.isPaginable = function() {
+        return utils.isNotNullOrUndefined($scope.lastSearchParams) &&
+            $scope.lastSearchParams.type !== types.poisforstreet;
+    };
 
     var getParamsForNextPage = function(params) {
         var page = params.page || 1;
@@ -43,8 +49,8 @@ module.exports = function($scope, appState, eventService, searchService) {
 
     // LISTENERS
 
-    var mainQueryStartedListener = function() {
-        $scope.lastSearchParams = appState.getParams();
+    var mainQueryStartedListener = function(event, params) {
+        $scope.lastSearchParams = params;
         $scope.reachedTheEnd = false;
     };
 

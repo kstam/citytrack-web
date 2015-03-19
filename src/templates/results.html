@@ -16,8 +16,11 @@
                     ng-class="{selected: isRowSelected(row.id)}"
                     ng-mouseenter="rowMouseOver(row.id)" ng-mouseleave="rowMouseOut(row.id)"></result-row>
         <div class="paginator" ng-controller="ResultsPaginationController">
-            <a href="" ng-hide="queryRunning || reachedTheEnd" ng-click="fetchNextPage()">Load more results</a>
-            <span class="paginator-end" ng-show="reachedTheEnd">No more results</span>
+            <a href="" ng-hide="queryRunning || reachedTheEnd || !isPaginable()"
+                       ng-click="fetchNextPage()">
+                Load more results
+            </a>
+            <span class="paginator-end" ng-show="reachedTheEnd || !isPaginable()">No more results</span>
             <i class="fa fa-spinner fa-spin" ng-show="queryRunning"></i>
         </div>
     </div>

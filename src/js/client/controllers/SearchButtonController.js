@@ -18,7 +18,7 @@ module.exports = function($scope, appState, eventService, searchService) {
         if ($scope.active === true) {
             resetCategoriesAndSourcesIfNecessary();
             $scope.loading = true;
-            eventService.broadcastEvent(constants.MAIN_QUERY_STARTED);
+            eventService.broadcastEvent(constants.MAIN_QUERY_STARTED, $scope.params);
             searchService.query($scope.params)
                 .then(function(data) { //success
                     $scope.loading = false;

@@ -23,7 +23,7 @@ module.exports = {
     },
     poisforstreet: {
         id: 'poisforstreet',
-        iconClass: 'fa-smt-else',
+        iconClass: '',
         selectable: false
     }
 };

@@ -111,7 +111,7 @@ describe('SearchButtonController', function() {
             eventService.broadcastEvent = sinon.spy();
             scope.active = true;
             scope.search();
-            expect(eventService.broadcastEvent).to.have.been.calledWith(constants.MAIN_QUERY_STARTED);
+            expect(eventService.broadcastEvent).to.have.been.calledWith(constants.MAIN_QUERY_STARTED, scope.params);
         });
 
         it('should trigger an event to notify that the main query finished successfully and unset "loading"', function() {

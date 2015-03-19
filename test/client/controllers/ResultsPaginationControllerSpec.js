@@ -41,7 +41,7 @@ describe('ResultsPaginationController', function() {
             appState.setType(types.poi);
             appState.setArea(testUtils.createRandomArea('Athens'));
             appState.setKeyword('some');
-            eventService.broadcastEvent(constants.MAIN_QUERY_STARTED);
+            eventService.broadcastEvent(constants.MAIN_QUERY_STARTED, appState.getParams());
             expect(scope.lastSearchParams.equals(appState.getParams())).to.be.true();
         });
         it('should set the "reachedTheEnd" parameter to false', function() {
@@ -139,6 +139,20 @@ describe('ResultsPaginationController', function() {
             scope.fetchNextPage();
             expect(scope.reachedTheEnd).to.be.true();
             expect(eventService.broadcastEvent).to.have.callCount(1); // fired only the start event (not the success)
+        });
+    });
+
+    describe('exposes isPaginable method that', function() {
+        it('should return false when result is for "poisforstreet" type', function() {
+            var params = appState.getParams();
+            params.type = types.poisforstreet;
+            params.streetId = 123;
+            eventService.broadcastEvent(constants.MAIN_QUERY_STARTED, params);
+            expect(scope.isPaginable()).to.be.false();
+        });
+
+        it('should return false when no query has been excecuted yet', function() {
+            expect(scope.isPaginable()).to.be.false();
         });
     });
 
