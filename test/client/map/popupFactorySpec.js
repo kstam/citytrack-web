@@ -4,6 +4,7 @@ var $ = require('jquery');
 require('angular');
 require('angular-mocks');
 var directives = require('client/directives/directives');
+var controllers = require('client/controllers/controllers');
 var popupFactory = require('client/map/popupFactory');
 var mockedPois= require('../../data/poiResponse').collection.features;
 var utils = require('common/utils');
@@ -13,6 +14,7 @@ describe('popupFactory', function() {
 
     beforeEach(angular.mock.module('templates/resultRow.html'));
 
+    beforeEach(angular.mock.module(controllers.name));
     beforeEach(angular.mock.module(directives.name));
 
     beforeEach(inject(function(_$compile_, _$rootScope_) {
@@ -28,7 +30,7 @@ describe('popupFactory', function() {
 
             var categories = utils.getArrayFromString(poi.properties.category);
             var $element = $(element);
-            expect($element.find('.title').text()).to.equal(poi.properties.label);
+            expect($element.find('.title:first').text()).to.equal(poi.properties.label);
             expect($element.find('.description > span').text()).to.equal(poi.properties.description);
             expect($element.find('.categories').html()).to.contain(categories[0]);
             expect($element.find('.categories').html()).to.contain(categories[1]);

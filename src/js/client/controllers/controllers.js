@@ -56,4 +56,9 @@ citytrackControllers.controller('CategorySelectController', ['$scope', 'Category
         require('./CategorySelectController')($scope, categoryService, appState, eventService);
     }]);
 
+citytrackControllers.controller('ResultActionController', ['$scope', 'AppState', 'NgEventService', 'SearchService',
+    function($scope, appState, eventService, searchService) {
+        require('./ResultActionController')($scope, appState, eventService, searchService);
+    }]);
+
 module.exports = citytrackControllers;

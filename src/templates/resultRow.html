@@ -37,6 +37,16 @@
         <div class="source" ng-if="!isStreet()">
             Origin: <a href="{{data.url}}" target="_blank">{{ data.source }}</a>
         </div>
+
+        <div class="actions" ng-controller="ResultActionController" ng-if="isMap()">
+            <div class="title">Actions</div>
+            <div class="street-actions" ng-if="isStreet()">
+                <div class="action" ng-click="getPoisForStreet(data.id)">
+                    <i class="fa" ng-class="{'fa-map-marker':!loading, 'fa-spinner':loading, 'fa-spin':loading}"></i>
+                    <span class="label">Get POIs</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="result-image" ng-if="isResult() && !isStreet()">

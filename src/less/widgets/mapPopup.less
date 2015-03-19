@@ -67,5 +67,50 @@
                 color: @source-link-color;
             }
         }
+
+        .actions {
+            .clearfix();
+
+            .title {
+                color: #555;
+            }
+
+            .action {
+                .border-radius(5px);
+                float: left;
+                padding: 5px;
+                background: @category-background;
+                cursor: pointer;
+                text-align: center;
+
+                &:hover {
+                    background: @hover-background;
+                }
+
+                &:active {
+                    background: @click-background;
+                }
+
+                i {
+                    display: block;
+                    font-size: 14px;
+                    &.fa-map-marker {
+                        color: @map-marker-color;
+                    }
+                    &.fa-photo {
+                        color: @calendar-color;
+                    }
+                    &.fa-calendar {
+                        color: @photo-color;
+                    }
+                }
+
+                .label {
+                    .noselect();
+                    display: block;
+                    margin-top: 5px;
+                }
+            }
+        }
     }
 }

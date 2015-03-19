@@ -4,6 +4,7 @@ var $ = require('jquery');
 require('angular');
 require('angular-mocks');
 var directives = require('client/directives/directives');
+var controllers = require('client/controllers/controllers');
 var mockedData = require('../../data/poiResponse');
 var utils = require('common/utils');
 var constants = require('client/config/constants');
@@ -14,6 +15,7 @@ describe('result-row directive', function() {
     beforeEach(angular.mock.module('templates/resultRow.html'));
 
     beforeEach(angular.mock.module(directives.name));
+    beforeEach(angular.mock.module(controllers.name));
 
     beforeEach(inject(function($rootScope, $compile) {
         row = angular.copy(mockedData.collection.features[0]);
@@ -25,7 +27,7 @@ describe('result-row directive', function() {
     it('should compile the element using the "row" in the scope', function() {
         scope.row = row;
         compileDirective();
-        expect($(element).find('.title').text()).to.equal(scope.row.properties.label);
+        expect($(element).find('.title:first').text()).to.equal(scope.row.properties.label);
         expect($(element).find('.description > span').text()).to.equal(scope.row.properties.description);
     });
 

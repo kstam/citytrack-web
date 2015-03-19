@@ -34,6 +34,13 @@ module.exports = function($resource) {
         }
     });
 
+    var PoisForStreet = $resource('api/streets/:streetId/pois', {streetId: '@id'}, {
+        query: {
+            method: 'GET',
+            params: {}
+        }
+    });
+
     var validateParams = function(params) {
         if(!params.isValid()) {
             throw new Error('Attempted to call the SearchService with invalid parameters');
@@ -57,6 +64,9 @@ module.exports = function($resource) {
                 break;
             case types.streetofinterest.id:
                 break;
+            case types.poisforstreet.id:
+                p.streetId = params.streetId;
+                break;
             default:
                 break;
         }
@@ -74,6 +84,8 @@ module.exports = function($resource) {
                 return Photo;
             case types.streetofinterest.id:
                 return StreetOfInterest;
+            case types.poisforstreet.id:
+                return PoisForStreet;
             default:
                 break;
         }

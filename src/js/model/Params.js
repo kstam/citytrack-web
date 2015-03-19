@@ -61,6 +61,12 @@ Params.Validator = function() {
             utils.optional(params.categories)(utils.isArray);
     };
 
+    var isValidForPoisForStreet = function(params) {
+        return (params.area instanceof Area) &&
+            utils.isInteger(params.streetId) &&
+            utils.optional(params.categories)(utils.isArray);
+    };
+
     return {
         isValid: function(params) {
             var type = params.type;
@@ -72,6 +78,8 @@ Params.Validator = function() {
                         return isValidForPoiPhotoOrEvent(params);
                     case types.streetofinterest.id:
                         return isValidForStreetOfInterest(params);
+                    case types.poisforstreet.id:
+                        return isValidForPoisForStreet(params);
                     default:
                         break;
                 }

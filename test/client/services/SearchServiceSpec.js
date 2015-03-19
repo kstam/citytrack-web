@@ -160,7 +160,16 @@ describe('SearchService', function() {
                 searchService.query(params);
                 httpBackend.flush();
             });
+        });
 
+        describe('when params.type is poisforstreet', function() {
+            it('should call the streets/id/pois rest endpoint with the correct streetId', function() {
+                params.type = types.poisforstreet;
+                params.streetId = 12345;
+                httpBackend.expectGET(/api\/streets\/12345\/pois?.*/);
+                searchService.query(params);
+                httpBackend.flush();
+            });
         });
     });
 });
