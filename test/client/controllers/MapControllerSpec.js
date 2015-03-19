@@ -14,6 +14,7 @@ var testUtils = require('../../testCommons/testUtils');
 var mockedData = require('../../data/poiResponse');
 var mockedData2 = require('../../data/poiResponse2');
 var emptyResponse = require('../../data/emptyPoiResponse');
+var streetResponse = require('../../data/streetOfInterestResponse');
 var expect = require('../../testCommons/chaiExpect');
 var sinon = require('sinon');
 
@@ -244,6 +245,20 @@ describe('MapController', function() {
             eventService.broadcastEvent(constants.RESULTS_ROW_MOUSE_OVER, hoveredMarkerId);
             eventService.broadcastEvent(constants.RESULTS_ROW_MOUSE_OUT, hoveredMarkerId);
             expect(scope.featureMap[hoveredMarkerId].marker.options.icon).to.equal(iconFactory.clickedMarkerIcon());
+        });
+
+        it('should properly handle when data is not markers', function() {
+            var hoveredMarkerId =  streetResponse.collection.features[0].id;
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, streetResponse);
+            $rootScope.$digest(); // resolves getMap() promise
+            scope.featureMap[hoveredMarkerId].layer.setStyle = sinon.spy();
+            expect(scope.featureMap[hoveredMarkerId].marker).to.be.undefined();
+
+            scope.selectedFeatureId = hoveredMarkerId;
+
+            eventService.broadcastEvent(constants.RESULTS_ROW_MOUSE_OVER, hoveredMarkerId);
+            eventService.broadcastEvent(constants.RESULTS_ROW_MOUSE_OUT, hoveredMarkerId);
+            expect(scope.featureMap[hoveredMarkerId].layer.setStyle).to.have.callCount(2);
         });
     });
 

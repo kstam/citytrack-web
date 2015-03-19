@@ -8,6 +8,9 @@ var L = require('leaflet');
 var popupFactory = require('../map/popupFactory');
 var markerFactory = require('../map/markerFactory');
 var iconFactory = require('../map/iconFactory');
+var styleFactory = require('../map/styleFactory');
+var types = require('../../model/types');
+var utils = require('../../common/utils');
 
 module.exports = function($scope, appState, eventService, leafletData, $compile) {
 
@@ -64,12 +67,9 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
 
     var markerClickListenerWithId = function(id) {
         return function() {
+            resultRowSelectedListener('', id, true);
             $scope.$applyAsync(function() {
-                if ($scope.selectedFeatureId) {
-                    $scope.featureMap[$scope.selectedFeatureId].marker.setIcon(iconFactory.defaultMarkerIcon());
-                }
                 $scope.selectedFeatureId = id;
-                $scope.featureMap[id].marker.setIcon(iconFactory.clickedMarkerIcon());
                 eventService.broadcastEvent(constants.MAP_FEATURE_SELECTED, id);
             });
         };
@@ -95,18 +95,22 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
         return L.geoJson(data, {
             pointToLayer: function(feature, latlng) {
                 var marker = markerFactory.forPoint(feature, latlng);
-                marker.on('click', markerClickListenerWithId(feature.id));
-                marker.on('mouseover', markerMouseOverListenerWithId(feature.id));
-                marker.on('mouseout', markerMouseOutListenerWithId(feature.id));
                 addToMap(feature.id, 'marker', marker);
                 return marker;
             },
             onEachFeature: function(feature, layer) {
                 var popupElement = popupFactory.getPopupElement(feature, $compile, $scope);
+                addToMap(feature.id, 'feature', feature);
                 addToMap(feature.id, 'layer', layer);
                 $scope.$applyAsync(function() {
                     layer.bindPopup(popupElement[0]);
                 });
+                layer.on('click', markerClickListenerWithId(feature.id));
+                layer.on('mouseover', markerMouseOverListenerWithId(feature.id));
+                layer.on('mouseout', markerMouseOutListenerWithId(feature.id));
+                if (utils.isFunction(layer.setStyle)) {
+                    layer.setStyle(styleFactory.getDefaultStyleForFeature());
+                }
             }
         });
     };
@@ -153,22 +157,49 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
         });
     };
 
-    var resultRowSelectedListener = function(event, id) {
-        if ($scope.selectedFeatureId) {
-            $scope.featureMap[$scope.selectedFeatureId].marker.setIcon(iconFactory.defaultMarkerIcon());
-        }
+    var resultRowSelectedListener = function(event, id, fromClick) {
+        var oldFeatureEntry = ($scope.selectedFeatureId) ? $scope.featureMap[$scope.selectedFeatureId] : undefined;
+        var featureEntry = $scope.featureMap[id];
+
         $scope.selectedFeatureId = id;
-        $scope.featureMap[id].marker.openPopup();
-        $scope.featureMap[id].marker.setIcon(iconFactory.clickedMarkerIcon());
+        if (featureEntry.marker) { //isA marker
+            if (oldFeatureEntry) {
+                oldFeatureEntry.marker.setIcon(iconFactory.defaultMarkerIcon());
+            }
+            if (!fromClick) {
+                featureEntry.marker.openPopup();
+            }
+            featureEntry.marker.setIcon(iconFactory.clickedMarkerIcon());
+        } else if (featureEntry.feature.properties.type === types.streetofinterest.id) { //isA line
+            if (oldFeatureEntry) {
+                oldFeatureEntry.layer.setStyle(styleFactory.getDefaultStyleForFeature());
+            }
+            featureEntry.layer.setStyle(styleFactory.getClickedStyleForFeature());
+            featureEntry.layer.openPopup();
+        }
     };
 
     var resultRowMouseOverListener = function(event, id) {
-        $scope.featureMap[id].marker.setIcon(iconFactory.hoverMarkerIcon());
+        var featureEntry = $scope.featureMap[id];
+        if (featureEntry.marker) { //isA marker
+            featureEntry.marker.setIcon(iconFactory.hoverMarkerIcon());
+        } else if (featureEntry.feature.properties.type === types.streetofinterest.id) { //isA line
+            featureEntry.layer.setStyle(styleFactory.getHoverStyleForFeature());
+            featureEntry.layer.redraw();
+        }
     };
 
     var resultRowMouseOutListener = function(event, id) {
-        var icon = id === $scope.selectedFeatureId ? iconFactory.clickedMarkerIcon() : iconFactory.defaultMarkerIcon();
-        $scope.featureMap[id].marker.setIcon(icon);
+        var featureEntry = $scope.featureMap[id];
+        if (featureEntry.marker) { //isA marker
+            var icon = id === $scope.selectedFeatureId ? iconFactory.clickedMarkerIcon() : iconFactory.defaultMarkerIcon();
+            featureEntry.marker.setIcon(icon);
+        } else if (featureEntry.feature.properties.type === types.streetofinterest.id) { //isA line
+            var style = id === $scope.selectedFeatureId ? styleFactory.getClickedStyleForFeature() :
+                styleFactory.getDefaultStyleForFeature();
+            featureEntry.layer.setStyle(style);
+            featureEntry.layer.redraw();
+        }
     };
 
     var nextPageSuccessListener = function(event, data) {
