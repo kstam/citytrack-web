@@ -150,8 +150,48 @@ describe('SearchButtonController', function() {
             expect(appState.getCategories()).to.deep.equal([]);
             expect(appState.getSources()).to.deep.equal([]);
         });
+
+        it('should not reset the categories when the type is "streetofinterest"', function() {
+            appState.setType(types.streetofinterest);
+            appState.setArea(testUtils.createRandomArea('Athens'));
+            appState.setCategories(['Food']);
+            scope.search();
+
+            expect(appState.getCategories()).to.deep.equal(['Food']);
+            appState.setArea(testUtils.createRandomArea('Berlin'));
+            scope.search();
+
+            expect(appState.getCategories()).to.deep.equal(['Food']);
+        });
     });
 
+    describe('listens to MAIN_QUERY_STARTED event and', function() {
+        it('should set the loading to true', function() {
+            expect(scope.loading).to.be.false();
+            eventService.broadcastEvent(constants.MAIN_QUERY_STARTED, appState.getParams());
+            expect(scope.loading).to.be.true();
+        });
+    });
+
+    describe('listens to MAIN_QUERY_SUCCESS and MAIN_QUERY_ERROR events and', function() {
+        it('should set the loading back to false', function() {
+            scope.loading = true;
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS);
+            expect(scope.loading).to.be.false();
+
+            scope.loading = true;
+            eventService.broadcastEvent(constants.MAIN_QUERY_FAILURE);
+            expect(scope.loading).to.be.false();
+        });
+    });
+
+    describe('listens to MAIN_QUERY_STARTED event and', function() {
+        it('should set the loading to true', function() {
+            expect(scope.loading).to.be.false();
+            eventService.broadcastEvent(constants.MAIN_QUERY_STARTED, appState.getParams());
+            expect(scope.loading).to.be.true();
+        });
+    });
     function initController() {
         $$controller('SearchButtonController',
             {$scope: scope, AppState: appState, NgEventService: eventService, SearchService: searchService});

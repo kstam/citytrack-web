@@ -17,14 +17,11 @@ module.exports = function($scope, appState, eventService, searchService) {
     $scope.search = function() {
         if ($scope.active === true) {
             resetCategoriesAndSourcesIfNecessary();
-            $scope.loading = true;
             eventService.broadcastEvent(constants.MAIN_QUERY_STARTED, $scope.params);
             searchService.query($scope.params)
                 .then(function(data) { //success
-                    $scope.loading = false;
                     eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, data);
                 }, function() { //failure
-                    $scope.loading = false;
                     eventService.broadcastEvent(constants.MAIN_QUERY_FAILURE);
                 });
         }
@@ -38,6 +35,14 @@ module.exports = function($scope, appState, eventService, searchService) {
     };
 
     // LISTENERS
+    var mainQueryStartedListener = function() {
+        $scope.loading = true;
+    };
+
+    var mainQueryFinishedListener = function() {
+        $scope.loading = false;
+    };
+
     var appStateListener = function() {
         $scope.params = appState.getParams();
         $scope.active = $scope.params.isValid();
@@ -57,6 +62,10 @@ module.exports = function($scope, appState, eventService, searchService) {
         eventService.on(constants.KEYWORD_ENTER_PRESSED, enterPressedListener);
         eventService.on(constants.MAP_VIEW_CHANGED, enterPressedListener);
         eventService.on(constants.FILTER_CHANGED_EVT, enterPressedListener);
+
+        eventService.on(constants.MAIN_QUERY_STARTED, mainQueryStartedListener);
+        eventService.on(constants.MAIN_QUERY_FAILURE, mainQueryFinishedListener);
+        eventService.on(constants.MAIN_QUERY_SUCCESS, mainQueryFinishedListener);
 
         eventService.on(appState.TYPE_CHANGED_EVT, topLevelSearchChangedListener);
         eventService.on(appState.AREA_CHANGED_EVT, topLevelSearchChangedListener);
