@@ -25,6 +25,7 @@ module.exports = function($scope, appState, eventService) {
     };
 
     var initListeners = function() {
+        eventService.on(constants.MAIN_QUERY_STARTED, mainQueryListener);
         eventService.on(constants.MAIN_QUERY_SUCCESS, mainQueryListener);
         eventService.on(constants.MAIN_QUERY_FAILURE, mainQueryListener);
     };

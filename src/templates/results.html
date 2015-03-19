@@ -10,7 +10,7 @@
                model="selectedFacets[facetList[0].facetField]"></facet>
     </div>
 
-    <div class="rows" ng-hide="error || (rows.length === 0)">
+    <div class="rows" ng-hide="loading || error || (rows.length === 0)">
         <result-row ng-repeat="row in rows" model="row"
                     ng-click="selectRow(row.id)"
                     ng-class="{selected: isRowSelected(row.id)}"
@@ -25,13 +25,18 @@
         </div>
     </div>
 
-    <div class="no-rows" ng-hide="error || (rows.length > 0)">
+    <div class="no-rows" ng-hide="loading || error || (rows.length > 0)">
         <i class="fa fa-warning"></i>
         <p>Your search returned no data</p>
     </div>
 
-    <div class="error" ng-show="error">
+    <div class="error" ng-show="error && !loading">
         <i class="fa fa-warning"></i>
         <p>An unexpected error occurred. Please try again.</p>
+    </div>
+
+    <div class="loading" ng-show="loading">
+        <i class="fa fa-spinner fa-spin"></i>
+        <p>Loading...</p>
     </div>
 </div>

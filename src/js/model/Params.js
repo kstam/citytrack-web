@@ -86,7 +86,7 @@ Params.Validator = function() {
             }
             return false;
         }
-    }
+    };
 };
 
 function equalAreas(a1, a2) {

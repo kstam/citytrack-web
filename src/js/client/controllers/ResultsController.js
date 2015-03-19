@@ -25,15 +25,20 @@ module.exports = function($scope, appState, eventService) {
     var setDefaults = function() {
         $scope.rows = [];
         $scope.error = false;
+        $scope.loading = false;
     };
 
     // LISTENERS
+    var mainQueryStartedListener = function() {
+        $scope.loading = true;
+    };
 
     var mapFeatureSelectedListener = function(event, pointId) {
         $scope.selectedRow = pointId;
     };
 
     var mainSuccessListener = function(event, data) {
+        $scope.loading = false;
         $scope.error = false;
         $scope.rows = [];
         if (data && data.collection && utils.isArray(data.collection.features)) {
@@ -48,11 +53,13 @@ module.exports = function($scope, appState, eventService) {
     };
 
     var mainErrorListener = function() {
+        $scope.loading = false;
         $scope.error = true;
         $scope.rows = [];
     };
 
     var initListeners = function() {
+        eventService.on(constants.MAIN_QUERY_STARTED, mainQueryStartedListener);
         eventService.on(constants.MAIN_QUERY_SUCCESS, mainSuccessListener);
         eventService.on(constants.MAIN_QUERY_FAILURE, mainErrorListener);
         eventService.on(constants.FETCH_NEXT_PAGE_SUCCESS, fetchNextPageSuccessListener);

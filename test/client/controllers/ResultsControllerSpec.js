@@ -32,9 +32,19 @@ describe('ResultsController', function() {
         it('should set the "error" to false', function() {
             expect(scope.error).to.be.false();
         });
+
+        it('should set the "loading" to false', function() {
+            expect(scope.loading).to.be.false();
+        });
     });
 
     describe('listens to MAIN_QUERY_SUCCESS and', function() {
+        it('should set the "loading" to false', function() {
+            scope.loading = true;
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData1);
+            expect(scope.loading).to.be.false();
+        });
+
         it('should set the "rows" to the array contained in the collection', function() {
             eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, mockedData1);
             expect(scope.rows).to.deep.equal(mockedData1.collection.features);
@@ -63,7 +73,21 @@ describe('ResultsController', function() {
         });
     });
 
+    describe('listens to MAIN_QUERY_STARTED and', function() {
+        it('should set the "loading" to true', function() {
+            scope.loading = false;
+            eventService.broadcastEvent(constants.MAIN_QUERY_STARTED);
+            expect(scope.loading).to.be.true();
+        });
+    });
+
     describe('listens to MAIN_QUERY_FAILURE and', function() {
+        it('should set the "loading" to false', function() {
+            scope.loading = true;
+            eventService.broadcastEvent(constants.MAIN_QUERY_FAILURE);
+            expect(scope.loading).to.be.false();
+        });
+
         it('should set the "error" to true', function() {
             eventService.broadcastEvent(constants.MAIN_QUERY_FAILURE);
             expect(scope.error).to.be.true();
