@@ -15,7 +15,7 @@
         </div>
 
         <div class="description" ng-if="!isStreet()">
-            <img class="description-image" ng-if="isMap()" ng-src="{{data.mainPhoto}}" err-src="img/no_image_available.jpg" />
+            <img class="description-image" ng-if="isMap()" ng-src="{{data.mainPhoto}}" err-src="" />
             <span ng-bind-html="data.description"></span>
         </div>
 
@@ -34,6 +34,27 @@
             </a>
         </div>
 
+        <div class="photos" ng-if="isMap() && isStreet()">
+            <div class="title">
+                Related Photos
+            </div>
+            <div class="photo-bucket" ng-show = "extras.diversePhotos.length > 0 && extras.diversePhotos !== 'loading'">
+                <a ng-repeat="photo in extras.diversePhotos" href="{{photo.properties.url}}" target="_blank">
+                    <img ng-src="{{photo.properties.url}}"
+                         err-src=""
+                         class="photo" />
+                </a>
+            </div>
+            <div class="no-photos" ng-show="extras.diversePhotos.length === 0">
+                No photos for this street :(
+            </div>
+
+            <div class="loading" ng-show="extras.diversePhotos === 'loading'">
+                <i class="fa fa-spinner fa-spin"></i>
+                Loading...
+            </div>
+        </div>
+
         <div class="source" ng-if="!isStreet()">
             Origin: <a href="{{data.url}}" target="_blank">{{ data.source }}</a>
         </div>
@@ -50,6 +71,6 @@
     </div>
 
     <div class="result-image" ng-if="isResult() && !isStreet()">
-        <img ng-src="{{data.mainPhoto}}" err-src="img/no_image_available.jpg"/>
+        <img ng-src="{{data.mainPhoto}}" err-src=""/>
     </div>
 </div>

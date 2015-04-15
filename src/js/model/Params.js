@@ -4,12 +4,12 @@ var utils = require('../common/utils');
 var types = require('./types');
 var Area = require('./Area');
 
-var Params = function(keyword, area, page, pageSize, sources, categories, type) {
+var Params = function(keyword, area, page, pageSize, sources, categories, type, streetId) {
 
     var validator = new Params.Validator();
 
     if (!(this instanceof Params)) {
-        return new Params(keyword, area, page, pageSize, sources, categories, type);
+        return new Params(keyword, area, page, pageSize, sources, categories, type, streetId);
     }
 
     this.keyword = keyword;
@@ -19,6 +19,7 @@ var Params = function(keyword, area, page, pageSize, sources, categories, type) 
     this.sources = sources || [];
     this.categories = categories || [];
     this.type = type;
+    this.streetId = streetId;
 
     this.isValid = function() {
         return validator.isValid(this);
@@ -39,7 +40,8 @@ var Params = function(keyword, area, page, pageSize, sources, categories, type) 
             this.page === that.page &&
             this.pageSize === that.pageSize &&
             utils.sameContent(this.sources, that.sources) &&
-            utils.sameContent(this.categories, that.categories);
+            utils.sameContent(this.categories, that.categories) &&
+            this.streetId === that.streetId;
     };
 };
 
@@ -62,8 +64,7 @@ Params.Validator = function() {
     };
 
     var isValidForPoisForStreet = function(params) {
-        return (params.area instanceof Area) &&
-            utils.isInteger(params.streetId) &&
+        return utils.isInteger(params.streetId) &&
             utils.optional(params.categories)(utils.isArray);
     };
 
@@ -79,6 +80,7 @@ Params.Validator = function() {
                     case types.streetofinterest.id:
                         return isValidForStreetOfInterest(params);
                     case types.poisforstreet.id:
+                    case types.diversestreetphotos.id:
                         return isValidForPoisForStreet(params);
                     default:
                         break;
@@ -95,10 +97,10 @@ function equalAreas(a1, a2) {
 
 Params.Builder = function() {
     var keyword, area, page, pageSize, type,
-        sources = [], categories = [];
+        sources = [], categories = [], streetId;
 
     if (!(this instanceof Params.Builder)) {
-        return new Params();
+        return new Params.Builder();
     }
 
     this.withKeyword = function(theKeyword) {
@@ -137,8 +139,13 @@ Params.Builder = function() {
         return this;
     };
 
+    this.withStreetId = function(theStreetId) {
+        streetId = theStreetId;
+        return this;
+    };
+
     this.build = function() {
-        return new Params(keyword, area, page, pageSize, sources, categories, type);
+        return new Params(keyword, area, page, pageSize, sources, categories, type, streetId);
     };
 };
 

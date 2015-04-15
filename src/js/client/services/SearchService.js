@@ -41,6 +41,13 @@ module.exports = function($resource) {
         }
     });
 
+    var DiverseStreetPhotos = $resource('api/streets/:streetId/diversePhotos', {streetId: '@id'}, {
+        query: {
+            method: 'GET',
+            params: {}
+        }
+    });
+
     var validateParams = function(params) {
         if(!params.isValid()) {
             throw new Error('Attempted to call the SearchService with invalid parameters');
@@ -50,7 +57,6 @@ module.exports = function($resource) {
     var generateParamsObject = function(params) {
         var p = {};
 
-        p.box = params.area.getBoundingBoxAsList().join(',');
         p.cat = (params.categories && params.categories.length > 0) ? params.categories.join(',') : undefined;
         p.pg = params.page;
         p.pgsize = params.pageSize;
@@ -61,10 +67,13 @@ module.exports = function($resource) {
             case types.photo.id:
                 p.q = params.keyword;
                 p.src = (params.sources && params.sources.length > 0) ? params.sources.join(',') : undefined;
+                p.box = params.area.getBoundingBoxAsList().join(',');
                 break;
             case types.streetofinterest.id:
+                p.box = params.area.getBoundingBoxAsList().join(',');
                 break;
             case types.poisforstreet.id:
+            case types.diversestreetphotos.id:
                 p.streetId = params.streetId;
                 break;
             default:
@@ -86,7 +95,10 @@ module.exports = function($resource) {
                 return StreetOfInterest;
             case types.poisforstreet.id:
                 return PoisForStreet;
+            case types.diversestreetphotos.id:
+                return DiverseStreetPhotos;
             default:
+                throw new Error(params.type.id + ' is not supported by the SearchService');
                 break;
         }
     };

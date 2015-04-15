@@ -6,21 +6,43 @@ require('angular-mocks');
 var directives = require('client/directives/directives');
 var controllers = require('client/controllers/controllers');
 var mockedData = require('../../data/poiResponse');
+var diversePhotoResponse = require('../../data/diversePhotosResponse');
 var utils = require('common/utils');
+var types = require('model/types');
 var constants = require('client/config/constants');
+var expect = require('../../testCommons/chaiExpect');
+var sinon = require('sinon');
 
 describe('result-row directive', function() {
-    var element, scope, $$compile, row;
+    var element, scope, $$compile, row, eventService, searchService, searchServiceResult;
 
     beforeEach(angular.mock.module('templates/resultRow.html'));
 
     beforeEach(angular.mock.module(directives.name));
     beforeEach(angular.mock.module(controllers.name));
 
-    beforeEach(inject(function($rootScope, $compile) {
+    beforeEach(function() {
+        var mockedResponse = {
+            then: function(callback) {
+                callback(searchServiceResult);
+            }
+        };
+        searchService = {
+            query: function() {
+                return mockedResponse;
+            }
+        };
+        angular.mock.module(function($provide) {
+            $provide.value('SearchService', searchService);
+        });
+    });
+
+    beforeEach(inject(function($rootScope, $compile, _NgEventService_, _SearchService_) {
         row = angular.copy(mockedData.collection.features[0]);
         scope = $rootScope.$new();
         $$compile = $compile;
+        eventService = _NgEventService_;
+        searchService = _SearchService_;
         element = '<result-row model="row"></result-row>';
     }));
 
@@ -107,6 +129,38 @@ describe('result-row directive', function() {
             it('should display the photos section if there are more than 1 photos', function() {
                 expect($(element).find('.photos').length).to.equal(1);
                 expect($(element).find('.photos img.photo').length).to.equal(1);
+            });
+
+            describe('listens to MAP_FEATURE_SELECTED and RESULT_ROW_SELECTED events and', function() {
+                it('should invoke the resultSelected method when event id is the feature id', function() {
+                    var isolateScope = element.isolateScope();
+                    isolateScope.data.id = 'theId';
+                    var spy = sinon.spy(isolateScope, 'resultSelected');
+                    eventService.broadcastEvent(constants.MAP_FEATURE_SELECTED, 'theId');
+                    expect(spy).to.have.callCount(1);
+                    eventService.broadcastEvent(constants.RESULTS_ROW_SELECTED, 'theId');
+                    expect(spy).to.have.callCount(2);
+                });
+                it('should not invoke the resultSelected method if event id does not match the feature id', function() {
+                    var isolateScope = element.isolateScope();
+                    isolateScope.data.id = 'theId';
+                    var spy = sinon.spy(isolateScope, 'resultSelected');
+                    eventService.broadcastEvent(constants.MAP_FEATURE_SELECTED, 'otherId');
+                    expect(spy).to.have.callCount(0);
+                    eventService.broadcastEvent(constants.RESULTS_ROW_SELECTED, 'otherId');
+                    expect(spy).to.have.callCount(0);
+                });
+            });
+
+            describe('when type is street', function() {
+                it('should load the diverse photos for the streat when popup is opened', function() {
+                    var isolateScope = element.isolateScope();
+                    isolateScope.data.type = types.streetofinterest.id;
+                    isolateScope.data.id = 12314;
+                    searchServiceResult = diversePhotoResponse;
+                    isolateScope.resultSelected();
+                    expect(isolateScope.extras.diversePhotos.length).to.equal(diversePhotoResponse.rows);
+                });
             });
         });
     });
