@@ -53,6 +53,19 @@ describe('result-row directive', function() {
         expect($(element).find('.description > span').text()).to.equal(scope.row.properties.description);
     });
 
+
+    it('it should deregister the events when removed', function() {
+        scope.row = row;
+        scope.row.properties.target = constants.TARGET_MAP;
+        compileDirective();
+        var isolateScope = element.isolateScope();
+        isolateScope.data.id = 'theId';
+        var spy = sinon.spy(isolateScope, 'resultSelected');
+        scope.$broadcast('$destroy');
+        eventService.broadcastEvent(constants.MAP_FEATURE_SELECTED, 'theId');
+        expect(spy).to.have.callCount(0);
+    });
+
     describe('creates intermediate "data" object and', function() {
         it('should define the correct "categories"', function() {
             scope.row = row;
@@ -146,8 +159,6 @@ describe('result-row directive', function() {
                     isolateScope.data.id = 'theId';
                     var spy = sinon.spy(isolateScope, 'resultSelected');
                     eventService.broadcastEvent(constants.MAP_FEATURE_SELECTED, 'otherId');
-                    expect(spy).to.have.callCount(0);
-                    eventService.broadcastEvent(constants.RESULTS_ROW_SELECTED, 'otherId');
                     expect(spy).to.have.callCount(0);
                 });
             });

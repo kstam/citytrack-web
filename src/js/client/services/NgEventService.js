@@ -1,6 +1,7 @@
 'use strict';
 
 var angular = require('../shims/angular');
+var utils = require('../../common/utils');
 
 var NgEventService = function($rootScope) {
 
@@ -34,9 +35,39 @@ var NgEventService = function($rootScope) {
         $rootScope.$on(eventName, callback);
     };
 
+    var unregisterEvent = function(event, callback) {
+        var listeners = $rootScope.$$listeners[event];
+        var result = 0;
+        if (utils.isArray(listeners)) {
+            var listenerIndexes = [];
+            listeners.forEach(function(listener, idx) {
+                if(listener === callback) {
+                    listenerIndexes.push(idx);
+                }
+            });
+            listenerIndexes.forEach(function(idx) {
+                listeners[idx] = null;
+                result += 1;
+            });
+        }
+        return result;
+    };
+
+    var registerOnce = function(eventName, callback) {
+        validateCallback(callback);
+        validateEventName(eventName);
+        var unregisterHandler = $rootScope.$on(eventName, function() {
+            var args = Array.prototype.splice.call(arguments, 0);
+            callback.apply(undefined, args);
+            unregisterHandler();
+        });
+    };
+
     return {
         broadcastEvent: broadcastEvent,
-        on: registerEvent
+        on: registerEvent,
+        once: registerOnce,
+        off: unregisterEvent
     };
 };
 

@@ -7,6 +7,9 @@ var types = require('../../model/types');
 var ParamsBuilder = require('../../model/Params').Builder;
 
 module.exports = function(eventService, searchService) {
+
+    var LOADING_ID = 'loading';
+
     var getExtraPhotos = function(photos) {
         var i, result = [];
         for (i = 1; i < photos.length; i++) {
@@ -52,7 +55,7 @@ module.exports = function(eventService, searchService) {
                     .withType(types.diversestreetphotos)
                     .withStreetId(Number($scope.data.id))
                     .build();
-                $scope.extras.diversePhotos = "loading";
+                $scope.extras.diversePhotos = LOADING_ID;
                 searchService.query(params)
                     .then(function(response) {
                         $scope.extras.diversePhotos = response.collection.features;
@@ -70,9 +73,15 @@ module.exports = function(eventService, searchService) {
         };
 
         // LISTENERS
-        eventService.on(constants.RESULTS_ROW_SELECTED, resultSelectedListener);
-        eventService.on(constants.MAP_FEATURE_SELECTED, resultSelectedListener);
+        if ($scope.isMap()) {
+            eventService.on(constants.RESULTS_ROW_SELECTED, resultSelectedListener);
+            eventService.on(constants.MAP_FEATURE_SELECTED, resultSelectedListener);
 
+            $scope.$on('$destroy', function() {
+                eventService.off(constants.RESULTS_ROW_SELECTED, resultSelectedListener);
+                eventService.off(constants.MAP_FEATURE_SELECTED, resultSelectedListener);
+            });
+        }
     };
 
     return {

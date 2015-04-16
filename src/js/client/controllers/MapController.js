@@ -111,6 +111,9 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
                 if (utils.isFunction(layer.setStyle)) {
                     layer.setStyle(styleFactory.getDefaultStyleForFeature());
                 }
+                layer.on('remove', function() {
+                    popupElement.destroy();
+                });
             }
         });
     };

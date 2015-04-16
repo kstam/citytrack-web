@@ -63,4 +63,37 @@ describe('NgEventService', function() {
             }).to.throw();
         });
     });
+
+    describe('exposes off method that', function() {
+        it('should allow de-registering an event handler when the eventHandler is passed', function() {
+            var eventHandler = function() {};
+            ngEventService.on('event', eventHandler);
+            expect(ngEventService.off('event', eventHandler)).to.equal(1);
+        });
+
+        it('should return zero when the given handler is not found', function() {
+            var eventHandler = function() {};
+            var otherEventHandler = function() {};
+            ngEventService.on('event', eventHandler);
+            expect(ngEventService.off('event', otherEventHandler)).to.equal(0);
+        });
+
+        it('should return the correct amound when removing multiple listeners', function() {
+            var eventHandler = function() {};
+            ngEventService.on('event', eventHandler);
+            ngEventService.on('event', eventHandler);
+            expect(ngEventService.off('event', eventHandler)).to.equal(2);
+        });
+    });
+
+    describe('exposes once method that', function() {
+        it('should fire the listener only one time', function() {
+            var eventHandler = sinon.spy();
+            ngEventService.once('event', eventHandler);
+            ngEventService.broadcastEvent('event');
+            ngEventService.broadcastEvent('event');
+            ngEventService.broadcastEvent('event');
+            expect(eventHandler).to.have.callCount(1);
+        });
+    });
 });

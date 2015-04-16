@@ -12,6 +12,10 @@ module.exports = {
             var scope = $parentScope.$new();
             scope.row = angular.copy(feature);
             scope.row.properties.target = 'map';
-            return $compile(popupHtml)(scope);
+            var element = $compile(popupHtml)(scope);
+            element.destroy = function() {
+                scope.$broadcast('$destroy');
+            };
+            return element;
         }
 };
