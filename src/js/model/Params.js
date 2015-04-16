@@ -78,6 +78,7 @@ Params.Validator = function() {
                     case types.photo.id:
                         return isValidForPoiPhotoOrEvent(params);
                     case types.streetofinterest.id:
+                    case types.scenicstreets.id:
                         return isValidForStreetOfInterest(params);
                     case types.poisforstreet.id:
                     case types.diversestreetphotos.id:

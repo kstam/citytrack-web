@@ -18,12 +18,12 @@ module.exports = function($scope, appState, eventService, searchService) {
         if ($scope.active === true) {
             resetCategoriesAndSourcesIfNecessary();
             eventService.broadcastEvent(constants.MAIN_QUERY_STARTED, $scope.params);
-            searchService.query($scope.params)
-                .then(function(data) { //success
-                    eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, data);
-                }, function() { //failure
-                    eventService.broadcastEvent(constants.MAIN_QUERY_FAILURE);
-                });
+                searchService.query($scope.params)
+                    .then(function(data) { //success
+                        eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, data);
+                    }, function() { //failure
+                        eventService.broadcastEvent(constants.MAIN_QUERY_FAILURE);
+                    });
         }
     };
 

@@ -34,6 +34,13 @@ module.exports = function($resource) {
         }
     });
 
+    var ScenicStreets = $resource('api/scenicStreets', {}, {
+        query: {
+            method: 'GET',
+            params: {}
+        }
+    });
+
     var PoisForStreet = $resource('api/streets/:streetId/pois', {streetId: '@id'}, {
         query: {
             method: 'GET',
@@ -77,6 +84,7 @@ module.exports = function($resource) {
                 p.box = params.area.getBoundingBoxAsList().join(',');
                 break;
             case types.streetofinterest.id:
+            case types.scenicstreets.id:
                 p.box = params.area.getBoundingBoxAsList().join(',');
                 break;
             case types.poisforstreet.id:
@@ -101,6 +109,8 @@ module.exports = function($resource) {
                 return Photo;
             case types.streetofinterest.id:
                 return StreetOfInterest;
+            case types.scenicstreets.id:
+                return ScenicStreets;
             case types.poisforstreet.id:
                 return PoisForStreet;
             case types.diversestreetphotos.id:

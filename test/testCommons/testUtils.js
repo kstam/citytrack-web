@@ -62,4 +62,12 @@ testUtils.createSearchServiceMockThatFails = function() {
     };
 };
 
+testUtils.createSearchServiceMockThatThrows = function() {
+    return {
+        query: function() {
+            throw new Error();
+        }
+    };
+};
+
 module.exports = testUtils;

@@ -122,7 +122,7 @@ describe('SearchButtonController', function() {
             expect(eventService.broadcastEvent).to.have.been.calledWith(constants.MAIN_QUERY_SUCCESS, mockedData);
         });
 
-        it('should trigger an ERROR event if the service call false', function() {
+        it('should trigger an ERROR event if the service call fails', function() {
             searchService = testUtils.createSearchServiceMockThatFails();
             initController();
             eventService.broadcastEvent = sinon.spy();

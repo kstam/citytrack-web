@@ -11,6 +11,8 @@ var eventData = require('../../data/eventResponse');
 var Params = require('model/Params');
 var AppState = require('client/services/AppState');
 var types = require('model/types');
+var expect = require('../../testCommons/chaiExpect');
+var sinon = require('sinon');
 
 describe('SearchService', function() {
     var httpBackend, searchService;
@@ -30,6 +32,7 @@ describe('SearchService', function() {
         httpBackend.whenGET(/api\/photos?.*/).respond(photoData);
         httpBackend.whenGET(/api\/events?.*/).respond(eventData);
         httpBackend.whenGET(/api\/streets?.*/).respond(eventData);
+        httpBackend.whenGET(/api\/scenicStreets?.*/).respond(eventData);
         params = new Params.Builder()
             .withKeyword('keyword')
             .withArea(testUtils.createRandomArea('Athens'))
@@ -43,7 +46,7 @@ describe('SearchService', function() {
 
     describe('query', function() {
 
-        it('should throw an error if called invalid params', function() {
+        it('should return an errored promise if called invalid params', function() {
             expect(function() {
                 searchService.query(Params(''));
             }).to.throw(Error);
@@ -157,6 +160,15 @@ describe('SearchService', function() {
             it('should call the "streets" rest endpoint', function() {
                 params.type = types.streetofinterest;
                 httpBackend.expectGET(/api\/streets?.*/);
+                searchService.query(params);
+                httpBackend.flush();
+            });
+        });
+
+        describe('when params.type is scenicstreets', function() {
+            it('should call the "scenicStreets" rest endpoint', function() {
+                params.type = types.scenicstreets;
+                httpBackend.expectGET(/api\/scenicStreets?.*/);
                 searchService.query(params);
                 httpBackend.flush();
             });
