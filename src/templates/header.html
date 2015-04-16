@@ -5,10 +5,10 @@
     <div class="type-box" ng-controller="TypeSelectController">
         <selectize options='types' ng-model="selectedTypeId" config="config"></selectize>
     </div>
-    <div class="keyword-box" ng-controller="KeywordController" ng-hide="selectedType() === 'streetofinterest'">
+    <div class="keyword-box" ng-controller="KeywordController" ng-hide="shouldHide()">
         <input type="text" ng-model="keyword" ng-keypress="processKeyPress($event)" placeholder="What..."/>
     </div>
-    <div class="category-box" ng-controller="CategorySelectController" ng-show="selectedType() === 'streetofinterest'">
+    <div class="category-box" ng-controller="CategorySelectController" ng-show="shouldShow()">
         <selectize options='categories' ng-model="selectedCategory" config="config"></selectize>
     </div>
     <div class="area-select" ng-controller="AreaSelectController"  ng-keypress="processKeyPress($event)">

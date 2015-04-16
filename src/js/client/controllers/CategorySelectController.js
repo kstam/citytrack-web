@@ -3,8 +3,14 @@
 var angular = require('../shims/angular');
 var Area = require('../../model/Area');
 var constants = require('../config/constants');
+var types = require('../../model/types');
 
 module.exports = function($scope, categoryService, appState, eventService) {
+
+    $scope.shouldShow = function() {
+        var type = appState.getType();
+        return type === types.streetofinterest;
+    };
 
     var initDefaults = function() {
         $scope.selectedCategory = constants.ANY_CATEGORY;

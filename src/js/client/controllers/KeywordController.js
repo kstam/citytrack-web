@@ -2,8 +2,15 @@
 
 var angular = require('../shims/angular');
 var constants = require('../config/constants');
+var types = require('../../model/types');
 
 module.exports = function($scope, appState, eventService) {
+
+    $scope.shouldHide = function() {
+        var type = appState.getType();
+        return type === types.scenicstreets ||
+                type === types.streetofinterest
+    };
 
     var setDefaults = function() {
         $scope.keyword = appState.getKeyword();

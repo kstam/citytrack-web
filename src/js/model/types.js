@@ -21,6 +21,11 @@ module.exports = {
         iconClass: ['fa-road', 'fa-map-marker'],
         selectable: true
     },
+    scenicstreets: {
+        id: 'scenicstreets',
+        iconClass: ['fa-road', 'fa-photo'],
+        selectable: true
+    },
     poisforstreet: {
         id: 'poisforstreet',
         iconClass: '',
