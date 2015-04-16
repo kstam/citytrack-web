@@ -1,6 +1,7 @@
 'use strict';
 var angular = require('../shims/angular');
 var types = require('../../model/types');
+var utils = require('../../common/utils');
 
 module.exports = function($scope, appState, eventService) {
 
@@ -24,6 +25,16 @@ module.exports = function($scope, appState, eventService) {
     };
 
     var initConfig = function() {
+        var renderIcon = function(item) {
+            var icons = utils.isArray(item.iconClass) ? item.iconClass : [item.iconClass];
+            var result = '<div><span class="fa-stack">';
+            icons.forEach(function(icon, idx) {
+                var stackClass = icons.length > 1 ? 'fa-stack-' + (idx + 1) + 'x' : '';
+                result += '<i class="fa ' + icon + ' ' + stackClass + '"></i>';
+            });
+            result += '</span></div>';
+            return result;
+        };
         $scope.config = {
             create: false,
             maxItems: 1,
@@ -35,13 +46,8 @@ module.exports = function($scope, appState, eventService) {
                 return false;
             },
             render: {
-                item: function(item) {
-                    return '<div><i class="fa ' + item.iconClass + '"></i></div>';
-                },
-
-                option: function(item) {
-                    return '<div><i class="fa ' + item.iconClass + '"></i></div>';
-                }
+                item: renderIcon,
+                option: renderIcon
             }
         };
     };

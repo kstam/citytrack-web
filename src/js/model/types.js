@@ -18,7 +18,7 @@ module.exports = {
     },
     streetofinterest: {
         id: 'streetofinterest',
-        iconClass: 'fa-road',
+        iconClass: ['fa-road', 'fa-map-marker'],
         selectable: true
     },
     poisforstreet: {
