@@ -26,6 +26,11 @@ module.exports = {
         iconClass: '',
         selectable: false
     },
+    photosforstreet: {
+        id: 'photosforstreet',
+        iconClass: '',
+        selectable: false
+    },
     diversestreetphotos: {
         id: 'diversestreetphotos',
         iconClass: '',

@@ -41,6 +41,13 @@ module.exports = function($resource) {
         }
     });
 
+    var PhotosForStreet = $resource('api/streets/:streetId/photos', {streetId: '@id'}, {
+        query: {
+            method: 'GET',
+            params: {}
+        }
+    });
+
     var DiverseStreetPhotos = $resource('api/streets/:streetId/diversePhotos', {streetId: '@id'}, {
         query: {
             method: 'GET',
@@ -74,6 +81,7 @@ module.exports = function($resource) {
                 break;
             case types.poisforstreet.id:
             case types.diversestreetphotos.id:
+            case types.photosforstreet.id:
                 p.streetId = params.streetId;
                 break;
             default:
@@ -97,6 +105,8 @@ module.exports = function($resource) {
                 return PoisForStreet;
             case types.diversestreetphotos.id:
                 return DiverseStreetPhotos;
+            case types.photosforstreet.id:
+                return PhotosForStreet;
             default:
                 throw new Error(params.type.id + ' is not supported by the SearchService');
                 break;

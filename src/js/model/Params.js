@@ -81,6 +81,7 @@ Params.Validator = function() {
                         return isValidForStreetOfInterest(params);
                     case types.poisforstreet.id:
                     case types.diversestreetphotos.id:
+                    case types.photosforstreet.id:
                         return isValidForPoisForStreet(params);
                     default:
                         break;

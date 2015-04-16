@@ -4,6 +4,7 @@ var angular = require('../shims/angular');
 var constants = require('../config/constants');
 var fields = require('../../model/fields');
 var types = require('../../model/types');
+var ParamsBuilder = require('../../model/Params').Builder;
 
 module.exports = function($scope, appState, eventService, searchService) {
 
@@ -11,10 +12,30 @@ module.exports = function($scope, appState, eventService, searchService) {
         if ($scope.loading === true) {
             return;
         }
-        var params = appState.getParams();
+        var params = ParamsBuilder()
+            .withType(types.poisforstreet)
+            .withStreetId(Number(streetId))
+            .withCategories(appState.getCategories())
+            .build();
         eventService.broadcastEvent(constants.MAIN_QUERY_STARTED, params);
-        params.type = types.poisforstreet;
-        params.streetId = Number(streetId);
+        searchService.query(params).then(
+            function(data) {
+                eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, data);
+            }, function() {
+                eventService.broadcastEvent(constants.MAIN_QUERY_FAILURE);
+            }
+        );
+    };
+
+    $scope.getPhotosForStreet = function(streetId) {
+        if ($scope.loading === true) {
+            return;
+        }
+        var params = ParamsBuilder()
+            .withType(types.photosforstreet)
+            .withStreetId(Number(streetId))
+            .build();
+        eventService.broadcastEvent(constants.MAIN_QUERY_STARTED, params);
         searchService.query(params).then(
             function(data) {
                 eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, data);

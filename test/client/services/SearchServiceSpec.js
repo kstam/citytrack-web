@@ -172,6 +172,16 @@ describe('SearchService', function() {
             });
         });
 
+        describe('when params.type is photosforstreet', function() {
+            it('should call the /streets/{id}/photos endpoint', function() {
+                params.type = types.photosforstreet;
+                params.streetId = 12345;
+                httpBackend.expectGET(/api\/streets\/12345\/photos?.*/);
+                searchService.query(params);
+                httpBackend.flush();
+            });
+        });
+
         describe('when params.type is diversestreetphotos', function() {
             it('should call the /streets/{id}/diversePhotos endpoint', function() {
                 params.type = types.diversestreetphotos;
