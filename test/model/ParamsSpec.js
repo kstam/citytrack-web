@@ -19,7 +19,7 @@ describe('Params', function() {
         });
 
         it('should return true when everything is equal', function() {
-            var area = testUtils.createRandomArea('Athens');
+            var area = testUtils.createRandomBoxArea('Athens');
             var params1 = new Params('keyword', area, 1, 10, ['Source1', 'Source2'], ['Cat1', 'Cat2'], types.poi);
             var params2 = new Params('keyword', testUtils.cloneArea(area), 1, 10,
                 ['Source1', 'Source2'], ['Cat2', 'Cat1'], types.poi);
@@ -27,7 +27,7 @@ describe('Params', function() {
         });
 
         it('should return false if types are not equal', function() {
-            var area = testUtils.createRandomArea('Athens');
+            var area = testUtils.createRandomBoxArea('Athens');
             var params1 = new Params('keyword', area, 1, 10, ['Source1', 'Source2'], ['Cat1', 'Cat2'], types.poi);
             var params2 = new Params('keyword', testUtils.cloneArea(area), 1, 10,
                 ['Source1', 'Source2'], ['Cat2', 'Cat1'], types.event);
@@ -45,7 +45,7 @@ describe('Params', function() {
                 var params = new Params.Builder()
                     .withType(types.poi)
                     .withKeyword('a')
-                    .withArea(testUtils.createRandomArea('Athens')).build();
+                    .withArea(testUtils.createRandomBoxArea('Athens')).build();
 
                 expect(params.isValid()).to.be.true();
             });
@@ -53,7 +53,7 @@ describe('Params', function() {
             it('should return false if type is missing', function() {
                 var params = new Params.Builder()
                     .withKeyword('a')
-                    .withArea(testUtils.createRandomArea('Athens')).build();
+                    .withArea(testUtils.createRandomBoxArea('Athens')).build();
 
                 expect(params.isValid()).to.be.false();
             });
@@ -62,7 +62,7 @@ describe('Params', function() {
                 var params = new Params.Builder()
                     .withType(types.event)
                     .withKeyword('a')
-                    .withArea(testUtils.createRandomArea('Athens'))
+                    .withArea(testUtils.createRandomBoxArea('Athens'))
                     .withPage(1).withPageSize(20)
                     .withCategories([]).withSources([])
                     .build();
@@ -74,7 +74,7 @@ describe('Params', function() {
                 var params = new Params.Builder()
                     .withKeyword('a')
                     .withType(types.photo)
-                    .withArea(testUtils.createRandomArea('Athens'))
+                    .withArea(testUtils.createRandomBoxArea('Athens'))
                     .withPage('a')
                     .build();
 
@@ -85,7 +85,7 @@ describe('Params', function() {
                 var params = new Params.Builder()
                     .withKeyword('a')
                     .withType(types.photo)
-                    .withArea(testUtils.createRandomArea('Athens'))
+                    .withArea(testUtils.createRandomBoxArea('Athens'))
                     .withPageSize('a')
                     .build();
 
@@ -96,7 +96,7 @@ describe('Params', function() {
                 var params = new Params.Builder()
                     .withKeyword('a')
                     .withType(types.photo)
-                    .withArea(testUtils.createRandomArea('Athens'))
+                    .withArea(testUtils.createRandomBoxArea('Athens'))
                     .withSources({})
                     .build();
 
@@ -107,7 +107,7 @@ describe('Params', function() {
                 var params = new Params.Builder()
                     .withKeyword('a')
                     .withType(types.photo)
-                    .withArea(testUtils.createRandomArea('Athens'))
+                    .withArea(testUtils.createRandomBoxArea('Athens'))
                     .withCategories({})
                     .build();
 
@@ -119,7 +119,7 @@ describe('Params', function() {
             it('should return true when everything is set and valid', function() {
                 var params = new Params.Builder()
                     .withType(types.streetofinterest)
-                    .withArea(testUtils.createRandomArea('Athens'))
+                    .withArea(testUtils.createRandomBoxArea('Athens'))
                     .withCategories(['Food'])
                     .build();
 
@@ -129,7 +129,7 @@ describe('Params', function() {
             it('should return true when only the type and the area are set', function() {
                 var params = new Params.Builder()
                     .withType(types.streetofinterest)
-                    .withArea(testUtils.createRandomArea('Athens'))
+                    .withArea(testUtils.createRandomBoxArea('Athens'))
                     .build();
 
                 expect(params.isValid()).to.be.true();

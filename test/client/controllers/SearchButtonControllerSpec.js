@@ -45,14 +45,14 @@ describe('SearchButtonController', function() {
             appState.setKeyword('hello');
             expect(scope.params.keyword).to.equal('hello');
 
-            var newArea = testUtils.createRandomArea('Athens');
+            var newArea = testUtils.createRandomBoxArea('Athens');
             appState.setArea(newArea);
             expect(scope.params.area.equals(newArea)).to.be.true();
         });
 
         it('should update the value of the "active" to true if the params are valid', function() {
             appState.setKeyword('hello');
-            appState.setArea(testUtils.createRandomArea('Athens'));
+            appState.setArea(testUtils.createRandomBoxArea('Athens'));
             appState.setType(types.poi);
             expect(scope.active).to.be.true();
         });
@@ -135,7 +135,7 @@ describe('SearchButtonController', function() {
         it('should reset the categories and the sources if a new keyword is selected', function() {
             appState.setType(types.poi);
             appState.setKeyword('old');
-            appState.setArea(testUtils.createRandomArea('Athens'));
+            appState.setArea(testUtils.createRandomBoxArea('Athens'));
             scope.search();
 
             appState.setCategories(['Technology']);
@@ -153,12 +153,12 @@ describe('SearchButtonController', function() {
 
         it('should not reset the categories when the type is "streetofinterest"', function() {
             appState.setType(types.streetofinterest);
-            appState.setArea(testUtils.createRandomArea('Athens'));
+            appState.setArea(testUtils.createRandomBoxArea('Athens'));
             appState.setCategories(['Food']);
             scope.search();
 
             expect(appState.getCategories()).to.deep.equal(['Food']);
-            appState.setArea(testUtils.createRandomArea('Berlin'));
+            appState.setArea(testUtils.createRandomBoxArea('Berlin'));
             scope.search();
 
             expect(appState.getCategories()).to.deep.equal(['Food']);

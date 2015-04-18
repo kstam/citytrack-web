@@ -39,7 +39,7 @@ describe('ResultsPaginationController', function() {
     describe('listens to MAIN_QUERY_STARTED and', function() {
         it('should save the applied parameters to "lastSearchParams"', function() {
             appState.setType(types.poi);
-            appState.setArea(testUtils.createRandomArea('Athens'));
+            appState.setArea(testUtils.createRandomBoxArea('Athens'));
             appState.setKeyword('some');
             eventService.broadcastEvent(constants.MAIN_QUERY_STARTED, appState.getParams());
             expect(scope.lastSearchParams.equals(appState.getParams())).to.be.true();
@@ -55,7 +55,7 @@ describe('ResultsPaginationController', function() {
             //save the params
             appState.setKeyword('some');
             appState.setType(types.poi);
-            appState.setArea(testUtils.createRandomArea('Area'));
+            appState.setArea(testUtils.createRandomBoxArea('Area'));
             scope.lastSearchParams = appState.getParams();
         });
 

@@ -56,7 +56,7 @@ describe('AreaSelectController', function() {
 
     describe('watches the selectedAreaId for changes and', function() {
         it('should update the selectedArea', function() {
-            scope.areaMap.Berlin = testUtils.createRandomArea('Berlin');
+            scope.areaMap.Berlin = testUtils.createRandomBoxArea('Berlin');
             scope.$digest();
 
             scope.selectedAreaId = 'Berlin';
@@ -66,7 +66,7 @@ describe('AreaSelectController', function() {
         });
 
         it('should update the appState with the new area', function() {
-            scope.areaMap.Berlin = testUtils.createRandomArea('Berlin');
+            scope.areaMap.Berlin = testUtils.createRandomBoxArea('Berlin');
             scope.$digest();
             expect(appState.getArea()).to.equal(undefined);
 
@@ -77,8 +77,8 @@ describe('AreaSelectController', function() {
 
         it('should remove the "Current View" from the map if the new id is not CURRENT_VIEW_ID', function() {
             scope.$digest();
-            scope.areaMap.Berlin = testUtils.createRandomArea('Berlin');
-            scope.areaMap[constants.CURRENT_VIEW_ID] = testUtils.createRandomArea(constants.CURRENT_VIEW_ID);
+            scope.areaMap.Berlin = testUtils.createRandomBoxArea('Berlin');
+            scope.areaMap[constants.CURRENT_VIEW_ID] = testUtils.createRandomBoxArea(constants.CURRENT_VIEW_ID);
             scope.selectedAreaId = constants.CURRENT_VIEW_ID;
             scope.$digest();
             expect(scope.selectedArea.equals(scope.areaMap[constants.CURRENT_VIEW_ID])).to.be.true();
@@ -93,7 +93,7 @@ describe('AreaSelectController', function() {
     describe('watches the areaMap for changes and', function() {
         it('should update the options array', function() {
             scope.$digest();
-            scope.areaMap['Berlin'] = testUtils.createRandomArea('Berlin');
+            scope.areaMap['Berlin'] = testUtils.createRandomBoxArea('Berlin');
             scope.$digest();
             expect(scope.areas.length).to.equal(1);
             expect(scope.areas[0].getName()).to.equal('Berlin');
@@ -102,10 +102,10 @@ describe('AreaSelectController', function() {
 
     describe('listens to AppState changes and', function() {
         it('should update the selectedArea and the selectedAreaId to the new value', function() {
-            scope.areaMap['Berlin'] = testUtils.createRandomArea('Berlin');
-            scope.areaMap['Athens'] = testUtils.createRandomArea('Athens');
+            scope.areaMap['Berlin'] = testUtils.createRandomBoxArea('Berlin');
+            scope.areaMap['Athens'] = testUtils.createRandomBoxArea('Athens');
             scope.$digest();
-            appState.setArea(testUtils.createRandomArea('Athens'));
+            appState.setArea(testUtils.createRandomBoxArea('Athens'));
             scope.$digest();
             expect(scope.selectedAreaId).to.equal('Athens');
             expect(scope.selectedArea.equals(appState.getArea())).to.equal(true);
@@ -128,12 +128,12 @@ describe('AreaSelectController', function() {
     }
 
     function mockServiceForSuccess() {
-        var mockedData = [testUtils.createRandomArea('Athens'), testUtils.createRandomArea('London')];
+        var mockedData = [testUtils.createRandomBoxArea('Athens'), testUtils.createRandomBoxArea('London')];
         mockedAreaService.getAreas = function(callback) {
             callback(undefined, mockedData);
         };
         mockedAreaService.getCurrentArea = function(callback) {
-            callback(undefined, testUtils.createRandomArea(constants.CURRENT_AREA_ID));
+            callback(undefined, testUtils.createRandomBoxArea(constants.CURRENT_AREA_ID));
         };
     }
 

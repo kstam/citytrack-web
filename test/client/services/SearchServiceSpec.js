@@ -35,7 +35,7 @@ describe('SearchService', function() {
         httpBackend.whenGET(/api\/scenicStreets?.*/).respond(eventData);
         params = new Params.Builder()
             .withKeyword('keyword')
-            .withArea(testUtils.createRandomArea('Athens'))
+            .withArea(testUtils.createRandomBoxArea('Athens'))
             .withType(types.poi).build();
     }));
 
@@ -71,7 +71,7 @@ describe('SearchService', function() {
         });
 
         it('should set the box in the request parameters', function() {
-            var area = testUtils.createRandomArea('Athens');
+            var area = testUtils.createRandomBoxArea('Athens');
             httpBackend.expectGET(function(url) {
                 return url.indexOf('box=' + area.getBoundingBoxAsList().join(',')) !== -1;
             });
@@ -85,7 +85,7 @@ describe('SearchService', function() {
                 return url.indexOf('pg=2') !== -1;
             });
             var params = new Params.Builder().withType(types.poi)
-                .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
+                .withKeyword('some').withArea(testUtils.createRandomBoxArea('Athens'))
                 .withPage(2)
                 .build();
             searchService.query(params);
@@ -97,7 +97,7 @@ describe('SearchService', function() {
                 return url.indexOf('pgsize=40') !== -1;
             });
             var params = new Params.Builder().withType(types.poi)
-                .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
+                .withKeyword('some').withArea(testUtils.createRandomBoxArea('Athens'))
                 .withPageSize(40)
                 .build();
             searchService.query(params);
@@ -110,7 +110,7 @@ describe('SearchService', function() {
                 return url.indexOf('src=' + sources.join(',')) !== -1;
             });
             var params = new Params.Builder().withType(types.poi)
-                .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
+                .withKeyword('some').withArea(testUtils.createRandomBoxArea('Athens'))
                 .withSources(sources)
                 .build();
             searchService.query(params);
@@ -130,7 +130,7 @@ describe('SearchService', function() {
                     return url.indexOf('cat=' + categories.join(',')) !== -1;
                 });
                 var params = new Params.Builder().withType(types.poi)
-                    .withKeyword('some').withArea(testUtils.createRandomArea('Athens'))
+                    .withKeyword('some').withArea(testUtils.createRandomBoxArea('Athens'))
                     .withCategories(categories)
                     .build();
                 searchService.query(params);

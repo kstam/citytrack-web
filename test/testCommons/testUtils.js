@@ -1,15 +1,16 @@
 'use strict';
 var Area = require('model/Area');
+var AreaBox = require('model/AreaBox');
 var L = require('leaflet');
 
 var testUtils = {};
 
-testUtils.createRandomArea = function(name) {
+testUtils.createRandomBoxArea = function(name) {
 
     var lat = Math.floor(Math.random() * 161 * 1024) / 1024 - 80;
     var lng = Math.floor(Math.random() * 341 * 1024) / 1024 - 170;
 
-    return new Area(name, L.latLngBounds(L.latLng(lat - 10, lng - 10), L.latLng(lat + 10, lng + 10)), 'interactive');
+    return new AreaBox(name, L.latLngBounds(L.latLng(lat - 10, lng - 10), L.latLng(lat + 10, lng + 10)), Area.INTERACTIVE_TYPE);
 };
 
 testUtils.createRandomAreaServerResult = function(name) {
@@ -26,11 +27,17 @@ testUtils.createRandomAreaServerResult = function(name) {
 
 
 testUtils.cloneArea = function(area) {
-    return new Area(area.getName(), area.getBoundingBox(), area.getType());
+    if (area instanceof AreaBox) {
+        return new AreaBox(area.getName(), area.getBoundingBox(), area.getType());
+    } else if (area instanceof Area) {
+        return new Area(area.getName(), area.getType());
+    } else {
+        throw new Error(area + ' type is not supported by clone');
+    }
 };
 
 
-testUtils.createSearchServiceMock = function (data) {
+testUtils.createSearchServiceMock = function(data) {
     return {
         query: function() {
             return {
@@ -44,9 +51,12 @@ testUtils.createSearchServiceMock = function (data) {
 
 testUtils.getMockMap = function() {
     return {
-        invalidateSize: function() {},
-        addLayer: function() {},
-        removeLayer: function() {}
+        invalidateSize: function() {
+        },
+        addLayer: function() {
+        },
+        removeLayer: function() {
+        }
     };
 };
 

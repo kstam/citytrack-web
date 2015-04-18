@@ -90,7 +90,7 @@ describe('MapController', function() {
         });
 
         it('should update the name back to current view', function() {
-            appState.setArea(testUtils.createRandomArea('Athens'));
+            appState.setArea(testUtils.createRandomBoxArea('Athens'));
             scope.$digest();
             scope.bounds = {southWest: {lat: 10, lng: 11}, northEast: {lat: 15, lng: 16}};
             scope.$digest();
@@ -99,7 +99,7 @@ describe('MapController', function() {
         });
 
         it('should set the new area type to INTERACTIVE', function() {
-            appState.setArea(testUtils.createRandomArea('Athens'));
+            appState.setArea(testUtils.createRandomBoxArea('Athens'));
             scope.$digest();
             scope.bounds = {southWest: {lat: 10, lng: 11}, northEast: {lat: 15, lng: 16}};
             scope.$digest();
@@ -108,7 +108,7 @@ describe('MapController', function() {
         });
 
         it('should update the value of "displayUpdateCurrentView"', function() {
-            var area = testUtils.createRandomArea(constants.CURRENT_VIEW_ID);
+            var area = testUtils.createRandomBoxArea(constants.CURRENT_VIEW_ID);
             var bbox = area.getBoundingBox();
             appState.setArea(area);
             scope.$digest();
@@ -127,14 +127,14 @@ describe('MapController', function() {
 
     describe('exposes applyCurrentView function that', function() {
         it('should update the appState with the current view', function() {
-            scope.currentView = testUtils.createRandomArea('Athens');
+            scope.currentView = testUtils.createRandomBoxArea('Athens');
             scope.applyCurrentView();
             scope.$digest();
             expect(appState.getArea().equals(scope.currentView)).to.equal(true);
         });
 
         it('should set the displayUpdateCurrentView back to false', function() {
-            scope.currentView = testUtils.createRandomArea(constants.CURRENT_VIEW_ID);
+            scope.currentView = testUtils.createRandomBoxArea(constants.CURRENT_VIEW_ID);
             scope.displayUpdateCurrentView = true;
             scope.applyCurrentView();
             scope.$digest();
@@ -142,7 +142,7 @@ describe('MapController', function() {
         });
         it('should fire a MAP_VIEW_CHANGED event', function() {
             eventService.broadcastEvent = sinon.spy();
-            scope.currentView = testUtils.createRandomArea(constants.CURRENT_VIEW_ID);
+            scope.currentView = testUtils.createRandomBoxArea(constants.CURRENT_VIEW_ID);
             scope.applyCurrentView();
             scope.$digest();
             expect(eventService.broadcastEvent).to.have.been.calledWith(constants.MAP_VIEW_CHANGED);
@@ -151,7 +151,7 @@ describe('MapController', function() {
 
     describe('listens for changes in the AppState and', function() {
         it('should update the currentView and bounds variables', function() {
-            appState.setArea(testUtils.createRandomArea('Athens'));
+            appState.setArea(testUtils.createRandomBoxArea('Athens'));
             expect(scope.currentView.equals(appState.getArea())).to.equal(true);
             $rootScope.$digest();
 

@@ -59,7 +59,7 @@ describe('appState', function() {
         });
 
         it('should allow setting the area and should emit the corresponding events', function() {
-            var area = testUtils.createRandomArea('Athens');
+            var area = testUtils.createRandomBoxArea('Athens');
             appState.setArea(area);
 
             expect(appState.getArea()).to.equal(area);
@@ -67,7 +67,7 @@ describe('appState', function() {
         });
 
         it('should not emit an event twice if the setter is called with an existing value', function() {
-            var area = testUtils.createRandomArea('Athens');
+            var area = testUtils.createRandomBoxArea('Athens');
             appState.setArea(area);
             appState.setArea(area);
             expect(mockedEventService.broadcastEvent).to.have.callCount(2);
@@ -195,7 +195,7 @@ describe('appState', function() {
         it('should return a params object representing the current appState', function() {
             expect(appState.getParams().equals(new Params(''))).to.be.true();
 
-            var area = testUtils.createRandomArea('Athens');
+            var area = testUtils.createRandomBoxArea('Athens');
             appState.setArea(area);
             expect(appState.getParams().equals(new Params('', area))).to.be.true();
             appState.setType(types.poi);

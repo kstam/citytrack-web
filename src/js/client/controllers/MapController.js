@@ -3,6 +3,7 @@
 var angular = require('../shims/angular');
 var config = require('../config/leafletConfig');
 var Area = require('../../model/Area');
+var AreaBox = require('../../model/AreaBox');
 var constants = require('../config/constants');
 var L = require('leaflet');
 var popupFactory = require('../map/popupFactory');
@@ -23,7 +24,7 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
     var initCurrentView = function() {
         var bounds = L.latLngBounds(config.maxbounds.southWest, config.maxbounds.northEast);
         $scope.displayUpdateCurrentView = false;
-        $scope.currentView = new Area(constants.CURRENT_VIEW_ID, bounds, Area.INTERACTIVE_TYPE);
+        $scope.currentView = new AreaBox(constants.CURRENT_VIEW_ID, bounds, Area.INTERACTIVE_TYPE);
     };
 
     var setDefaults = function() {
@@ -138,7 +139,7 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
             return;
         }
         var newBox = L.latLngBounds($scope.bounds.southWest, $scope.bounds.northEast);
-        $scope.currentView = new Area(constants.CURRENT_VIEW_ID, newBox, Area.INTERACTIVE_TYPE);
+        $scope.currentView = new AreaBox(constants.CURRENT_VIEW_ID, newBox, Area.INTERACTIVE_TYPE);
         updateDisplayUpdateCurrentView();
     };
 
