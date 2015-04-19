@@ -30,8 +30,8 @@ describe('AreaSelectController', function() {
         expect(scope.areaMap).to.deep.equal({});
     });
 
-    it('should start with an undefined currentArea', function() {
-        expect(scope.currentArea).to.equal(undefined);
+    it('should initialize with a redius set to undefined', function() {
+        expect(scope.radius).to.be.undefined();
     });
 
     it('should initialize the selectedArea and selectedAreaId to undefined', function() {
@@ -63,6 +63,15 @@ describe('AreaSelectController', function() {
             scope.$digest();
 
             expect(scope.selectedArea).to.equal(scope.areaMap.Berlin);
+        });
+
+        it('should set the radius from the selectedArea if area is AreaCircle', function() {
+            scope.areaMap.A = testUtils.createRandomCircleArea('A');
+            scope.$digest();
+            scope.selectedAreaId = 'A';
+            scope.$digest();
+
+            expect(scope.radius).to.equal(scope.areaMap.A.getRadius());
         });
 
         it('should update the appState with the new area', function() {
@@ -109,6 +118,45 @@ describe('AreaSelectController', function() {
             scope.$digest();
             expect(scope.selectedAreaId).to.equal('Athens');
             expect(scope.selectedArea.equals(appState.getArea())).to.equal(true);
+        });
+
+        it('should update the radius to the new value', function() {
+            scope.areaMap['Berlin'] = testUtils.createRandomCircleArea('Berlin');
+            scope.areaMap['Athens'] = testUtils.createRandomCircleArea('Athens');
+            scope.$digest();
+            appState.setArea(testUtils.createRandomCircleArea('Athens'));
+            scope.$digest();
+            expect(scope.selectedAreaId).to.equal('Athens');
+            expect(scope.selectedArea.equals(appState.getArea())).to.equal(true);
+            expect(scope.radius).to.equal(appState.getArea().getRadius());
+        });
+    });
+
+    describe('listens to radius for changes and', function() {
+        it('should update the selected area and the map and the appState with the new value', function() {
+            scope.areaMap['Athens'] = testUtils.createRandomCircleArea('Athens');
+            scope.$digest();
+            appState.setArea(testUtils.createRandomCircleArea('Athens'));
+            scope.$digest();
+
+            scope.radius = appState.getArea().getRadius() - 1;
+            scope.$digest();
+
+            expect(appState.getArea().getRadius()).to.equal(scope.radius);
+            expect(scope.areaMap.Athens.getRadius()).to.equal(scope.radius);
+            expect(scope.selectedArea.getRadius()).to.equal(scope.radius);
+        });
+
+        it('should update the radius back to what it was if it is invalid', function() {
+            scope.areaMap['Athens'] = testUtils.createRandomCircleArea('Athens');
+            scope.$digest();
+            appState.setArea(testUtils.createRandomCircleArea('Athens'));
+            scope.$digest();
+
+            scope.radius = 'a';
+            scope.$digest();
+
+            expect(scope.radius).not.to.equal(appState.getArea().getRadius());
         });
     });
 

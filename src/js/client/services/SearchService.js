@@ -2,6 +2,8 @@
 
 var utils = require('../../common/utils');
 var Area = require('../../model/Area');
+var AreaBox = require('../../model/AreaBox');
+var AreaCircle = require('../../model/AreaCircle');
 var types = require('../../model/types');
 
 module.exports = function($resource) {
@@ -68,6 +70,21 @@ module.exports = function($resource) {
         }
     };
 
+    var setAreaAsBox = function(p, area) {
+        p.box = area.getBoundingBoxAsList().join(',');
+    };
+
+    var setAreaInRequest = function(p, area) {
+        if (area instanceof AreaBox) {
+            p.box = area.getBoundingBoxAsList().join(',');
+        } else if (area instanceof AreaCircle) {
+            p.pt = area.getCenterAsList().join(',');
+            p.r = area.getRadius();
+        } else {
+            throw new Error(area + ' is not a supported Area type');
+        }
+    };
+
     var generateParamsObject = function(params) {
         var p = {};
 
@@ -81,11 +98,11 @@ module.exports = function($resource) {
             case types.photo.id:
                 p.q = params.keyword;
                 p.src = (params.sources && params.sources.length > 0) ? params.sources.join(',') : undefined;
-                p.box = params.area.getBoundingBoxAsList().join(',');
+                setAreaInRequest(p, params.area);
                 break;
             case types.streetofinterest.id:
             case types.scenicstreets.id:
-                p.box = params.area.getBoundingBoxAsList().join(',');
+                setAreaAsBox(p, params.area);
                 break;
             case types.poisforstreet.id:
             case types.diversestreetphotos.id:

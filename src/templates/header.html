@@ -12,7 +12,18 @@
         <selectize options='categories' ng-model="selectedCategory" config="config"></selectize>
     </div>
     <div class="area-select" ng-controller="AreaSelectController"  ng-keypress="processKeyPress($event)">
-        <selectize options='areas' ng-model="selectedAreaId" config="config"></selectize>
+        <div ng-show="isCircleArea()" class="around">
+            <div class="radius-description">Around</div>
+        </div>
+        <div class="input-container">
+            <selectize options="areas" ng-model="selectedAreaId" config="config"></selectize>
+        </div>
+        <div ng-show="isCircleArea()" class="around">
+            <div class="radius-description">within</div>
+            <input type="number" min="0" class="radius-input" ng-model="radius"/>
+            <div class="radius-description">km</div>
+
+        </div>
     </div>
     <div class="search-button" ng-controller="SearchButtonController">
         <a href="" ng-click="search()" ng-enabled="active"

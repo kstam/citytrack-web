@@ -3,6 +3,7 @@
 var $ = require('jquery');
 var Area = require('model/Area');
 var AreaBox = require('model/AreaBox');
+var AreaCircle = require('model/AreaCircle');
 var utils = require('common/utils');
 var constants = require('client/config/constants');
 var latLngBounds = require('leaflet').latLngBounds;
@@ -43,8 +44,8 @@ var AreaService = function() {
 
         function onSuccess(position) {
             var center = latLng(position.coords.latitude, position.coords.longitude);
-            var boundingBox = latLngBounds(center, center);
-            callback(undefined, new AreaBox(constants.CURRENT_AREA_ID, boundingBox, Area.INTERACTIVE_TYPE));
+            var radius = 1; //km
+            callback(undefined, new AreaCircle(constants.CURRENT_AREA_ID, center, radius, Area.INTERACTIVE_TYPE));
         }
 
         function onError(error) {

@@ -67,8 +67,22 @@
                     <span class="label">Get POIs</span>
                 </div>
                 <div class="action" ng-click="getPhotosForStreet(data.id)">
-                    <i class="fa" ng-class="{'fa-map-marker':!loading, 'fa-spinner':loading, 'fa-spin':loading}"></i>
+                    <i class="fa" ng-class="{'fa-photo':!loading, 'fa-spinner':loading, 'fa-spin':loading}"></i>
                     <span class="label">Get Photos</span>
+                </div>
+            </div>
+            <div class="marker-actions" ng-if="!isStreet()">
+                <div class="action" ng-click="getRelatedPoisAroundFeature(feature, 0.05)">
+                    <i class="fa" ng-class="{'fa-map-marker':!loading, 'fa-spinner':loading, 'fa-spin':loading}"></i>
+                    <span class="label">Related POIs</span>
+                </div>
+                <div class="action" ng-click="getRelatedPhotosAroundFeature(feature, 0.05)">
+                    <i class="fa" ng-class="{'fa-photo':!loading, 'fa-spinner':loading, 'fa-spin':loading}"></i>
+                    <span class="label">Related Photos</span>
+                </div>
+                <div class="action" ng-click="getRelatedEventsAroundFeature(feature, 0.05)">
+                    <i class="fa" ng-class="{'fa-calendar':!loading, 'fa-spinner':loading, 'fa-spin':loading}"></i>
+                    <span class="label">Related Events</span>
                 </div>
             </div>
         </div>

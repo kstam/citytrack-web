@@ -26,6 +26,7 @@ module.exports = function(eventService, searchService) {
         $scope.data.mainPhoto = $scope.data.photos[0] || constants.NO_IMG_URL;
         $scope.data.extraPhotos = getExtraPhotos($scope.data.photos);
         $scope.data.description = $scope.data.description || 'No description available.';
+        $scope.feature = angular.copy($scope.row);
 
         $scope.extras = {};
 

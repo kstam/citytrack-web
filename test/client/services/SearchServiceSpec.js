@@ -70,10 +70,21 @@ describe('SearchService', function() {
             httpBackend.flush();
         });
 
-        it('should set the box in the request parameters', function() {
+        it('should set the box in the request parameters if area is of AreaBox type', function() {
             var area = testUtils.createRandomBoxArea('Athens');
             httpBackend.expectGET(function(url) {
                 return url.indexOf('box=' + area.getBoundingBoxAsList().join(',')) !== -1;
+            });
+            params.area = area;
+            searchService.query(params);
+            httpBackend.flush();
+        });
+
+        it('should set the "pt" and "r" in the request parameters if area is of AreaCircle type', function() {
+            var area = testUtils.createRandomCircleArea('Athens');
+            httpBackend.expectGET(function(url) {
+                return url.indexOf('pt=' + area.getCenterAsList().join(',')) !== -1 &&
+                    url.indexOf('r=' + area.getRadius()) !== -1;
             });
             params.area = area;
             searchService.query(params);

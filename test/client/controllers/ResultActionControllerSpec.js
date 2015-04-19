@@ -13,6 +13,7 @@ var types = require('model/types');
 var expect = require('../../testCommons/chaiExpect');
 var sinon = require('sinon');
 var mockedData = require('../../data/poisForStreetResponse');
+var latLng = require('leaflet').latLng;
 
 
 describe('ResultActionController', function() {
@@ -82,7 +83,6 @@ describe('ResultActionController', function() {
         });
     });
 
-
     describe('exposes getPhotosForStreet method that', function() {
         it('should do nothing if query is already running', function() {
             eventService.broadcastEvent = sinon.spy();
@@ -127,6 +127,69 @@ describe('ResultActionController', function() {
             initController();
             scope.getPhotosForStreet("123");
             expect(theParams.streetId).to.equal(123);
+        });
+    });
+
+    describe('exposes getRelatedPhotosAroundFeature method that', function() {
+        it('should do nothing if query is already running', function() {
+            eventService.broadcastEvent = sinon.spy();
+            scope.loading = true;
+            scope.getRelatedPhotosAroundFeature(mockedData.collection.features[0], 0.150);
+            expect(eventService.broadcastEvent).to.have.callCount(0);
+        });
+
+        it('should trigger an event to notify that it started querying', function() {
+            eventService.broadcastEvent = sinon.spy();
+            scope.getRelatedPhotosAroundFeature(mockedData.collection.features[0], 0.150);
+            expect(eventService.broadcastEvent).to.have.been.calledWith(constants.KEYWORD_ENTER_PRESSED);
+            expect(appState.getKeyword()).to.equal(mockedData.collection.features[0].properties.label);
+            expect(appState.getType()).to.equal(types.photo);
+            var usedArea = appState.getArea();
+            expect(usedArea.getName()).to.equal(mockedData.collection.features[0].properties.label);
+            expect(usedArea.getRadius()).to.equal(0.150);
+            expect(usedArea.getCenter().equals(latLng(mockedData.collection.features[0].geometry.coordinates)));
+        });
+    });
+
+    describe('exposes getRelatedPoisAroundFeature method that', function() {
+        it('should do nothing if query is already running', function() {
+            eventService.broadcastEvent = sinon.spy();
+            scope.loading = true;
+            scope.getRelatedPoisAroundFeature(mockedData.collection.features[0], 0.150);
+            expect(eventService.broadcastEvent).to.have.callCount(0);
+        });
+
+        it('should trigger an event to notify that it started querying', function() {
+            eventService.broadcastEvent = sinon.spy();
+            scope.getRelatedPoisAroundFeature(mockedData.collection.features[0], 0.150);
+            expect(eventService.broadcastEvent).to.have.been.calledWith(constants.KEYWORD_ENTER_PRESSED);
+            expect(appState.getKeyword()).to.equal(mockedData.collection.features[0].properties.label);
+            expect(appState.getType()).to.equal(types.poi);
+            var usedArea = appState.getArea();
+            expect(usedArea.getName()).to.equal(mockedData.collection.features[0].properties.label);
+            expect(usedArea.getRadius()).to.equal(0.150);
+            expect(usedArea.getCenter().equals(latLng(mockedData.collection.features[0].geometry.coordinates)));
+        });
+    });
+
+    describe('exposes getRelatedEventsAroundFeature method that', function() {
+        it('should do nothing if query is already running', function() {
+            eventService.broadcastEvent = sinon.spy();
+            scope.loading = true;
+            scope.getRelatedEventsAroundFeature(mockedData.collection.features[0], 0.150);
+            expect(eventService.broadcastEvent).to.have.callCount(0);
+        });
+
+        it('should trigger an event to notify that it started querying', function() {
+            eventService.broadcastEvent = sinon.spy();
+            scope.getRelatedEventsAroundFeature(mockedData.collection.features[0], 0.150);
+            expect(eventService.broadcastEvent).to.have.been.calledWith(constants.KEYWORD_ENTER_PRESSED);
+            expect(appState.getKeyword()).to.equal(mockedData.collection.features[0].properties.label);
+            expect(appState.getType()).to.equal(types.event);
+            var usedArea = appState.getArea();
+            expect(usedArea.getName()).to.equal(mockedData.collection.features[0].properties.label);
+            expect(usedArea.getRadius()).to.equal(0.150);
+            expect(usedArea.getCenter().equals(latLng(mockedData.collection.features[0].geometry.coordinates)));
         });
     });
 

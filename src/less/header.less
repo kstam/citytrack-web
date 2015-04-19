@@ -108,8 +108,30 @@
         }
 
         .area-select {
+            .around {
+                float: left;
+                .radius-input {
+                    float: left;
+                    width: 50px;
+                    background: @input-background;
+                    border: none;
+                    border-radius: 3px;
+                    padding: 9px;
+                    font-size: 13px;
+                    color: @input-text-color;
+                    outline-color: @input-background + 20;
+                }
+                .radius-description {
+                    float:left;
+                    margin: 8px 5px 0 5px;
+                    font-size: 14px;
+                }
+            }
+            .input-container {
+                float: left;
+            }
             .selectize-input {
-                min-width: 200px;
+                min-width: 250px;
             }
         }
 
