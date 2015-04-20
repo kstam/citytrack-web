@@ -129,6 +129,9 @@ describe('AreaSelectController', function() {
             expect(scope.selectedAreaId).to.equal('Athens');
             expect(scope.selectedArea.equals(appState.getArea())).to.equal(true);
             expect(scope.radius).to.equal(appState.getArea().getRadius());
+
+            appState.setArea(scope.areaMap.Athens);
+            expect(scope.radius).to.equal(scope.areaMap.Athens.getRadius());
         });
     });
 

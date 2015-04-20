@@ -4,6 +4,7 @@ var constants = {};
 
 // IDS
 constants.CURRENT_AREA_ID = 'My Location';
+constants.CUSTOM_POINT = 'Custom Point';
 constants.CURRENT_VIEW_ID = 'Current View';
 constants.ANY_CATEGORY = 'All Categories';
 
@@ -23,6 +24,7 @@ constants.RESULTS_ROW_MOUSE_OUT = 'Results:RowMouseOut';
 
 constants.MAP_VIEW_CHANGED = 'Map:ViewChanged';
 constants.MAP_FEATURE_SELECTED = 'Map:FeatureSelected';
+constants.MAP_CONTEXT_CLOSE_EVT = 'Map:CloseContext';
 
 constants.FILTER_CHANGED_EVT = 'Filter:Changed';
 

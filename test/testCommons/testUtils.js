@@ -67,6 +67,8 @@ testUtils.getMockMap = function() {
         addLayer: function() {
         },
         removeLayer: function() {
+        },
+        on: function() {
         }
     };
 };

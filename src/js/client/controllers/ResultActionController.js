@@ -11,6 +11,10 @@ var latLng = require('leaflet').latLng;
 
 module.exports = function($scope, appState, eventService, searchService) {
 
+    var extractLatLng = function(feature) {
+        return latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
+    };
+
     $scope.getPoisForStreet = function(streetId) {
         if ($scope.loading === true) {
             return;
@@ -46,10 +50,6 @@ module.exports = function($scope, appState, eventService, searchService) {
                 eventService.broadcastEvent(constants.MAIN_QUERY_FAILURE);
             }
         );
-    };
-
-    var extractLatLng = function(feature) {
-        return latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
     };
 
     $scope.getRelatedPhotosAroundFeature = function(feature, radius) {

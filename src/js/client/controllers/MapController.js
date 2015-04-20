@@ -4,6 +4,7 @@ var angular = require('../shims/angular');
 var config = require('../config/leafletConfig');
 var Area = require('../../model/Area');
 var AreaBox = require('../../model/AreaBox');
+var AreaCircle = require('../../model/AreaCircle');
 var constants = require('../config/constants');
 var L = require('leaflet');
 var popupFactory = require('../map/popupFactory');
@@ -120,8 +121,8 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
     };
 
     var removeLayerFromMap = function(layer, map) {
-        if ($scope.geoJsonLayer) {
-            map.removeLayer($scope.geoJsonLayer);
+        if (layer) {
+            map.removeLayer(layer);
         }
     };
 
@@ -130,6 +131,42 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
         if (bounds && bounds._northEast && bounds._southWest) {
             setBounds($scope.geoJsonLayer.getBounds());
         }
+    };
+
+    var createAreaLayer = function(area, map) {
+        removeLayerFromMap($scope.areaLayer, map);
+        if (area instanceof AreaBox) {
+            $scope.areaLayer = L.rectangle(area.getBoundingBox());
+        } else if (area instanceof AreaCircle) {
+            $scope.areaLayer = L.circle(area.getCenter(), area.getRadius() * 1000);
+        }
+        $scope.areaLayer.addTo(map);
+    };
+
+    // MAP EVENTS
+    var openContextMenu = function(map, point) {
+        var popupElement = popupFactory.getContextPopup(point, $compile, $scope);
+        $scope.$applyAsync(function() {
+            var popupOptions = {
+                closeButton: false,
+                className: 'context-popup-container'
+            };
+            var popup = L.popup(popupOptions)
+                .setContent(popupElement[0])
+                .setLatLng(point)
+                .openOn(map);
+        });
+    };
+
+    var registerMapEvents = function() {
+        $scope.$applyAsync(function() {
+            leafletData.getMap().then(function(map) {
+                // CONTEXT MENU
+                map.on('contextmenu', function(event) {
+                    openContextMenu(map, event.latlng);
+                });
+            });
+        });
     };
 
     // WATCHERS
@@ -154,6 +191,7 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
         // Get the map to add the data
         leafletData.getMap().then(function(map) {
             removeLayerFromMap($scope.geoJsonLayer, map);
+            removeLayerFromMap($scope.areaLayer, map);
             $scope.geoJsonLayer = createGeoJSONLayer(data.collection);
             $scope.geoJsonLayer.addTo(map);
             zoomMapToLayer($scope.geoJsonLayer);
@@ -221,7 +259,21 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
 
             setBounds(newBbox);
             updateDisplayUpdateCurrentView();
+
+            $scope.$applyAsync(function() {
+                leafletData.getMap().then(function(map) {
+                    createAreaLayer(newArea, map);
+                });
+            });
         }
+    };
+
+    var contextCloseEventListener = function() {
+        $scope.$applyAsync(function() {
+            leafletData.getMap().then(function(map) {
+                map.closePopup();
+            });
+        });
     };
 
     var initEventListeners = function() {
@@ -231,6 +283,7 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
         eventService.on(constants.RESULTS_ROW_SELECTED, resultRowSelectedListener);
         eventService.on(constants.RESULTS_ROW_MOUSE_OVER, resultRowMouseOverListener);
         eventService.on(constants.RESULTS_ROW_MOUSE_OUT, resultRowMouseOutListener);
+        eventService.on(constants.MAP_CONTEXT_CLOSE_EVT, contextCloseEventListener);
     };
 
     var initialize = function() {
@@ -239,6 +292,7 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
         initWatchers();
         initEventListeners();
         fixMapSize();
+        registerMapEvents();
     };
 
     initialize();

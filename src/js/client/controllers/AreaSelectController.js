@@ -126,6 +126,9 @@ module.exports = function($scope, areaService, appState, eventService) {
         var newArea = appState.getArea();
         if (newArea && (!newArea.equals($scope.selectedArea))) {
             $scope.selectedAreaId = newArea.getName();
+            if (newArea instanceof AreaCircle) {
+                $scope.radius = newArea.getRadius();
+            }
             addAreaToMap(newArea);
         }
     };

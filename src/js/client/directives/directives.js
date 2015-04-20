@@ -15,6 +15,10 @@ citytrackDirectives.directive('resultRow', ['NgEventService', 'SearchService', f
     return require('./resultRowDirective')(eventService, searchService);
 }]);
 
+citytrackDirectives.directive('mapContext', ['NgEventService', 'AppState', function(eventService, appState) {
+    return require('./mapContextDirective')(eventService, appState);
+}]);
+
 citytrackDirectives.directive('errSrc', function() {
     return require('./errSrcDirective');
 });
