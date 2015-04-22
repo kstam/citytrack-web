@@ -19,7 +19,7 @@ module.exports = function($scope, appState, eventService, searchService) {
         if ($scope.loading === true) {
             return;
         }
-        var params = ParamsBuilder()
+        var params = new ParamsBuilder()
             .withType(types.poisforstreet)
             .withStreetId(Number(streetId))
             .withCategories(appState.getCategories())
@@ -38,7 +38,7 @@ module.exports = function($scope, appState, eventService, searchService) {
         if ($scope.loading === true) {
             return;
         }
-        var params = ParamsBuilder()
+        var params = new ParamsBuilder()
             .withType(types.photosforstreet)
             .withStreetId(Number(streetId))
             .build();

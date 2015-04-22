@@ -52,7 +52,7 @@ module.exports = function(eventService, searchService) {
 
         $scope.resultSelected = function() {
             if ($scope.isStreet() && !$scope.extras.diversePhotos) {
-                var params = ParamsBuilder()
+                var params = new ParamsBuilder()
                     .withType(types.diversestreetphotos)
                     .withStreetId(Number($scope.data.id))
                     .build();
@@ -68,7 +68,6 @@ module.exports = function(eventService, searchService) {
 
         var resultSelectedListener = function(event, id) {
             if ($scope.isMap() && $scope.data.id === id) {
-                console.log(event.name + ' | ' + id);
                 $scope.resultSelected();
             }
         };

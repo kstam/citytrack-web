@@ -9,7 +9,7 @@ module.exports = function($scope, appState, eventService) {
     $scope.shouldHide = function() {
         var type = appState.getType();
         return type === types.scenicstreets ||
-                type === types.streetofinterest
+                type === types.streetofinterest;
     };
 
     var setDefaults = function() {

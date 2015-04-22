@@ -136,7 +136,6 @@ module.exports = function($resource) {
                 return PhotosForStreet;
             default:
                 throw new Error(params.type.id + ' is not supported by the SearchService');
-                break;
         }
     };
 
