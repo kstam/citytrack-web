@@ -3,26 +3,31 @@
 module.exports = {
     poi: {
         id: 'poi',
+        caption: 'Places',
         iconClass: 'fa-map-marker',
         selectable: true
     },
     photo: {
         id: 'photo',
+        caption: 'Photos',
         iconClass: 'fa-photo',
         selectable: true
     },
     event: {
         id: 'event',
+        caption: 'Events',
         iconClass: 'fa-calendar',
         selectable: true
     },
     streetofinterest: {
         id: 'streetofinterest',
+        caption: 'Streets of Interest',
         iconClass: ['fa-road', 'fa-map-marker'],
         selectable: true
     },
     scenicstreets: {
         id: 'scenicstreets',
+        caption: 'Scenic Streets',
         iconClass: ['fa-road', 'fa-photo'],
         selectable: true
     },

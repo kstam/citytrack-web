@@ -21,6 +21,12 @@ module.exports = function($scope, areaService, appState, eventService) {
     };
 
     var initConfig = function() {
+        var renderAreaOption = function(item) {
+            if (item instanceof AreaCircle) {
+                return '<div>Around: ' + item.name + '</div>';
+            }
+            return '<div>' + item.name + '</div>';
+        };
         $scope.config = {
             optgroups: [
                 {$order: 2, id: Area.STATIC_TYPE, name: 'From the server'},
@@ -38,15 +44,8 @@ module.exports = function($scope, areaService, appState, eventService) {
             openOnFocus: true,
             placeholder: 'Where...',
             render: {
-                item: function(item) {
-                    return '<div>' + item.name + '</div>';
-                },
-                option: function(item) {
-                    if (item instanceof AreaCircle) {
-                        return '<div>Around: ' + item.name + '</div>';
-                    }
-                    return '<div>' + item.name + '</div>';
-                }
+                item: renderAreaOption,
+                option: renderAreaOption
             }
         };
     };

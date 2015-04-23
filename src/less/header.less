@@ -76,7 +76,7 @@
 
             .selectize-input {
                 padding: @type-padding;
-                width: @type-width;
+                width:  @type-width;
                 cursor: pointer;
                 &:after {
                     display: none; // Hides the dropdown arrow
@@ -85,6 +85,12 @@
                     visibility: hidden;
                     height: 0;
                     cursor: pointer;
+                }
+            }
+
+            .type-entry {
+                & > span {
+                    margin-right: 5px;
                 }
             }
         }

@@ -27,12 +27,13 @@ module.exports = function($scope, appState, eventService) {
     var initConfig = function() {
         var renderIcon = function(item) {
             var icons = utils.isArray(item.iconClass) ? item.iconClass : [item.iconClass];
-            var result = '<div><span class="fa-stack">';
+            var result = '<div class="type-entry"><span class="fa-stack">';
             icons.forEach(function(icon, idx) {
                 var stackClass = icons.length > 1 ? 'fa-stack-' + (idx + 1) + 'x' : '';
                 result += '<i class="fa ' + icon + ' ' + stackClass + '"></i>';
             });
-            result += '</span></div>';
+            var text = item.caption;
+            result += '</span>' + text + '</div>';
             return result;
         };
         $scope.config = {

@@ -12,9 +12,6 @@
         <selectize options='categories' ng-model="selectedCategory" config="config"></selectize>
     </div>
     <div class="area-select" ng-controller="AreaSelectController"  ng-keypress="processKeyPress($event)">
-        <div ng-show="isCircleArea()" class="around">
-            <div class="radius-description">Around</div>
-        </div>
         <div class="input-container">
             <selectize options="areas" ng-model="selectedAreaId" config="config"></selectize>
         </div>
