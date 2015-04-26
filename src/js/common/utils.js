@@ -16,7 +16,7 @@ utils.isNullOrUndefined = function(obj) {
 
 utils.isType = function(obj, theType) {
     return utils.isNotNullOrUndefined(obj) &&
-            getType(obj) === '[object ' + theType + ']';
+        getType(obj) === '[object ' + theType + ']';
 };
 
 utils.isString = function(obj) {
@@ -107,7 +107,9 @@ utils.getArrayFromString = function(stringArray) {
  * @returns {*} This Is A Weird String
  */
 utils.capitalizeWords = function(x) {
-    return x.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+    return x.replace(/(?:^|\s)\S/g, function(a) {
+        return a.toUpperCase();
+    });
 };
 
 /**
@@ -116,7 +118,7 @@ utils.capitalizeWords = function(x) {
  * @param a2
  * @returns {boolean}
  */
-utils.sameContent = function (a1, a2) {
+utils.sameContent = function(a1, a2) {
     if (utils.isArray(a1) && utils.isArray(a2)) {
         var i, map1 = {}, map2 = {};
         a1.forEach(function(elm) {
@@ -124,14 +126,14 @@ utils.sameContent = function (a1, a2) {
         });
         // check if all elements in a2 are in map1
         // construct map2
-        for (i=0; i<a2.length; i++) {
+        for (i = 0; i < a2.length; i++) {
             map2[a2[i]] = true;
             if (!map1[a2[i]]) {
                 return false;
             }
         }
         //check if all elements in a1 are in map2
-        for (i=0; i<a1.length; i++) {
+        for (i = 0; i < a1.length; i++) {
             if (!map2[a1[i]]) {
                 return false;
             }
@@ -142,7 +144,7 @@ utils.sameContent = function (a1, a2) {
     }
 };
 
-utils.extend = function (base, sub) {
+utils.extend = function(base, sub) {
     // Avoid instantiating the base class just to setup inheritance
     // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create
     // for a polyfill
@@ -151,7 +153,7 @@ utils.extend = function (base, sub) {
     // Thanks to @ccnokes
     var origProto = sub.prototype;
     sub.prototype = Object.create(base.prototype);
-    for (var key in origProto)  {
+    for (var key in origProto) {
         sub.prototype[key] = origProto[key];
     }
     // Remember the constructor property was set wrong, let's fix it
