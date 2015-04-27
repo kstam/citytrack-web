@@ -6,6 +6,10 @@ var fields = require('../../model/fields');
 var types = require('../../model/types');
 
 module.exports = function($scope, appState, eventService) {
+    var APP_STATE_ORIGIN = 'appState';
+    var POPUP_ORIGIN = 'popup';
+
+    var filterChangeOrigin = POPUP_ORIGIN;
 
     // LISTENERS
     var mainSuccessListener = function(event, data) {
@@ -14,10 +18,12 @@ module.exports = function($scope, appState, eventService) {
 
     var categoriesChangedListener = function(event, newCategories) {
         $scope.selectedFacets[fields.CATEGORY_ID] = newCategories;
+        filterChangeOrigin = APP_STATE_ORIGIN;
     };
 
     var sourcesChangedListener = function(event, newSources) {
         $scope.selectedFacets[fields.SOURCE_ID] = newSources;
+        filterChangeOrigin = APP_STATE_ORIGIN;
     };
 
     var initListeners = function() {
@@ -29,15 +35,17 @@ module.exports = function($scope, appState, eventService) {
     // WATCHERS
     var selectedFacetsWatcher = function(nSelFacets, oSelFacets) {
         if(!angular.equals(nSelFacets, oSelFacets)) {
+            var shouldFireEvent = filterChangeOrigin === POPUP_ORIGIN;
             if (nSelFacets[fields.CATEGORY_ID]) {
                 appState.setCategories(nSelFacets[fields.CATEGORY_ID]);
             }
             if (nSelFacets[fields.SOURCE_ID]) {
                 appState.setSources(nSelFacets[fields.SOURCE_ID]);
             }
-            if (appState.getType() !== types.streetofinterest) {
+            if (shouldFireEvent) {
                 eventService.broadcastEvent(constants.FILTER_CHANGED_EVT);
             }
+            filterChangeOrigin = POPUP_ORIGIN;
         }
     };
 

@@ -4,12 +4,12 @@ var utils = require('../common/utils');
 var types = require('./types');
 var Area = require('./Area');
 
-var Params = function(keyword, area, page, pageSize, sources, categories, type, streetId) {
+var Params = function(keyword, area, page, pageSize, sources, categories, type, streetId, minPois, maxDistance) {
 
     var validator = new Params.Validator();
 
     if (!(this instanceof Params)) {
-        return new Params(keyword, area, page, pageSize, sources, categories, type, streetId);
+        return new Params(keyword, area, page, pageSize, sources, categories, type, streetId, minPois, maxDistance);
     }
 
     this.keyword = keyword;
@@ -20,6 +20,8 @@ var Params = function(keyword, area, page, pageSize, sources, categories, type, 
     this.categories = categories || [];
     this.type = type;
     this.streetId = streetId;
+    this.minPois = minPois;
+    this.maxDistance = maxDistance;
 
     this.isValid = function() {
         return validator.isValid(this);
@@ -68,25 +70,47 @@ Params.Validator = function() {
             utils.optional(params.categories)(utils.isArray);
     };
 
+    var isValidForRegionOfInterest = function(params) {
+        return params.area instanceof Area &&
+            utils.isArray(params.categories) &&
+            utils.isInteger(params.maxDistance) &&
+            params.maxDistance > 0 &&
+            params.categories.length === 1 &&
+            utils.optional(params.minPois)(utils.isInteger) &&
+            utils.optional(params.minPois)(function(minPois) {
+                return minPois > 0;
+            });
+    };
+
+    var falsyValidator = function() {
+        return false;
+    };
+
+    var getValidatorForType = function(type) {
+        switch (type.id) {
+            case types.poi.id:
+            case types.event.id:
+            case types.photo.id:
+                return isValidForPoiPhotoOrEvent;
+            case types.streetofinterest.id:
+            case types.scenicstreets.id:
+                return isValidForStreetOfInterest;
+            case types.poisforstreet.id:
+            case types.diversestreetphotos.id:
+            case types.photosforstreet.id:
+                return isValidForPoisForStreet;
+            case types.regionsofinterest.id:
+                return isValidForRegionOfInterest;
+            default:
+                return falsyValidator;
+        }
+    };
+
     return {
         isValid: function(params) {
             var type = params.type;
             if (utils.isNotNullOrUndefined(type) && (utils.isString(type.id))) {
-                switch (type.id) {
-                    case types.poi.id:
-                    case types.event.id:
-                    case types.photo.id:
-                        return isValidForPoiPhotoOrEvent(params);
-                    case types.streetofinterest.id:
-                    case types.scenicstreets.id:
-                        return isValidForStreetOfInterest(params);
-                    case types.poisforstreet.id:
-                    case types.diversestreetphotos.id:
-                    case types.photosforstreet.id:
-                        return isValidForPoisForStreet(params);
-                    default:
-                        break;
-                }
+                return getValidatorForType(type)(params);
             }
             return false;
         }
@@ -99,7 +123,8 @@ function equalAreas(a1, a2) {
 
 Params.Builder = function() {
     var keyword, area, page, pageSize, type,
-        sources = [], categories = [], streetId;
+        sources = [], categories = [], streetId,
+        minPois, maxDistance;
 
     if (!(this instanceof Params.Builder)) {
         return new Params.Builder();
@@ -146,8 +171,18 @@ Params.Builder = function() {
         return this;
     };
 
+    this.withMaxDistance = function(theMaxDistance) {
+        maxDistance = theMaxDistance;
+        return this;
+    };
+
+    this.withMinPois = function(theMinPois) {
+        minPois = theMinPois;
+        return this;
+    };
+
     this.build = function() {
-        return new Params(keyword, area, page, pageSize, sources, categories, type, streetId);
+        return new Params(keyword, area, page, pageSize, sources, categories, type, streetId, minPois, maxDistance);
     };
 };
 

@@ -7,7 +7,11 @@ var types = require('../../model/types');
 module.exports = function($scope, appState, eventService, searchService) {
 
     var resetCategoriesAndSourcesIfNecessary = function() {
-        if($scope.topLevelSearchChanged && appState.getType() !== types.streetofinterest) {
+        if ($scope.topLevelSearchChanged &&
+            appState.getType() !== types.streetofinterest &&
+                appState.getType() !== types.scenicstreets &&
+                appState.getType() !== types.regionsofinterest
+        ) {
             appState.setCategories([]);
             appState.setSources([]);
             $scope.topLevelSearchChanged = false;
@@ -18,12 +22,12 @@ module.exports = function($scope, appState, eventService, searchService) {
         if ($scope.active === true) {
             resetCategoriesAndSourcesIfNecessary();
             eventService.broadcastEvent(constants.MAIN_QUERY_STARTED, $scope.params);
-                searchService.query($scope.params)
-                    .then(function(data) { //success
-                        eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, data);
-                    }, function() { //failure
-                        eventService.broadcastEvent(constants.MAIN_QUERY_FAILURE);
-                    });
+            searchService.query($scope.params)
+                .then(function(data) { //success
+                    eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, data);
+                }, function() { //failure
+                    eventService.broadcastEvent(constants.MAIN_QUERY_FAILURE);
+                });
         }
     };
 

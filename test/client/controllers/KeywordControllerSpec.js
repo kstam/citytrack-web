@@ -6,6 +6,7 @@ var controllers = require('client/controllers/controllers');
 var constants = require('client/config/constants');
 var AppState = require('client/services/AppState');
 var NgEventService = require('client/services/NgEventService');
+var types = require('model/types');
 
 describe('KeywordController', function() {
     var scope, appState, eventService, $$controller;
@@ -46,6 +47,26 @@ describe('KeywordController', function() {
             appState.setKeyword('bla');
             scope.$digest();
             expect(scope.keyword).to.equal('bla');
+        });
+    });
+    
+    describe('shouldHide', function() {
+        it('should return true for the appropriate types', function() {
+            appState.setType(types.streetofinterest);
+            expect(scope.shouldHide()).to.be.true();
+            appState.setType(types.scenicstreets);
+            expect(scope.shouldHide()).to.be.true();
+            appState.setType(types.regionsofinterest);
+            expect(scope.shouldHide()).to.be.true();
+        });
+
+        it('should return false for the appropriate types', function() {
+            appState.setType(types.poi);
+            expect(scope.shouldHide()).to.be.false();
+            appState.setType(types.photo);
+            expect(scope.shouldHide()).to.be.false();
+            appState.setType(types.event);
+            expect(scope.shouldHide()).to.be.false();
         });
     });
 

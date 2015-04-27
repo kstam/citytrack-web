@@ -62,6 +62,11 @@
                     color: @street-color;
                 }
 
+                &.fa-dot-circle-o {
+                    color: @regions-color;
+                    padding: 1px 4px;
+                }
+
                 &.fa-stack-2x.fa-photo {
                     font-size: 16px;
                     text-align: right;
@@ -76,7 +81,7 @@
 
             .selectize-input {
                 padding: @type-padding;
-                width:  @type-width;
+                width: @type-width;
                 cursor: pointer;
                 &:after {
                     display: none; // Hides the dropdown arrow
@@ -128,7 +133,7 @@
                     outline-color: @input-background + 20;
                 }
                 .radius-description {
-                    float:left;
+                    float: left;
                     margin: 8px 5px 0 5px;
                     font-size: 14px;
                 }
@@ -162,6 +167,84 @@
                 }
             }
         }
+
+        .extra-params {
+            .extra-params-button {
+                a {
+                    outline-color: @input-background + 20;
+                    cursor: pointer;
+                    color: #020202;
+
+                }
+                i {
+                    font-size: 25px;
+                    padding: 6px 6px 4px 6px;
+                    &:hover {
+                        background: @input-background - 1;
+                        .border-radius(5px);
+                    }
+                    &.visible {
+                        color: #EEE;
+                        background: @input-background - 1;
+                        .border-radius(5px);
+                    }
+                }
+            }
+            .extra-params-popup {
+                @popup-width: 300px;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+
+                position: fixed;
+                left: 50%;
+                top: @header-height + 10;
+                margin-left: -(@popup-width / 2);
+
+                height: 200px;
+                width: @popup-width;
+
+                padding: 10px;
+                overflow-y: scroll;
+
+                background: @header-background;
+                .border-radius(10px);
+
+                h3 {
+                    margin: 0;
+                    font-size: 14px;
+                    margin-bottom: 10px;
+                }
+
+                .param-box {
+                    margin-bottom: 5px;
+                    .param-label {
+                        display: inline-block;
+                        width: 150px;
+                        font-size: 14px;
+                    }
+
+                    .param-input {
+                        float: none;
+                        display: inline;
+                        width: 50px;
+                        background: @input-background;
+                        border: none;
+                        border-radius: 3px;
+                        padding: 9px;
+                        font-size: 13px;
+                        color: @input-text-color;
+                        outline-color: @input-background + 20;
+                    }
+
+                    .param-unit {
+                        display: inline;
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+
         .selectize-control {
             .selectize-input {
                 background: @input-background;

@@ -143,5 +143,81 @@ describe('Params', function() {
                 expect(params.isValid()).to.be.false();
             });
         });
+
+        describe('for regionsOfInterest', function() {
+            it('should return true when everything is set and valid', function() {
+                var params = new Params.Builder()
+                    .withType(types.regionsofinterest)
+                    .withArea(testUtils.createRandomBoxArea('Athens'))
+                    .withCategories(['Food'])
+                    .withMinPois(5)
+                    .withMaxDistance(100)
+                    .build();
+                expect(params.isValid()).to.be.true();
+            });
+
+            it('should return false when the area is not set', function() {
+                var params = new Params.Builder()
+                    .withCategories(['Food'])
+                    .withType(types.regionsofinterest)
+                    .withMinPois(5)
+                    .withMaxDistance(100)
+                    .build();
+                expect(params.isValid()).to.be.false();
+            });
+
+            it('should return true when the minPois is not set', function() {
+                var params = new Params.Builder()
+                    .withCategories(['Food'])
+                    .withType(types.regionsofinterest)
+                    .withArea(testUtils.createRandomBoxArea('Athens'))
+                    .withMaxDistance(100)
+                    .build();
+                expect(params.isValid()).to.be.true();
+            });
+
+            it('should return true when the minPois set wrongly', function() {
+                var params = new Params.Builder()
+                    .withCategories(['Food'])
+                    .withType(types.regionsofinterest)
+                    .withArea(testUtils.createRandomBoxArea('Athens'))
+                    .withMinPois(0.2)
+                    .withMaxDistance(100)
+                    .build();
+                expect(params.isValid()).to.be.false();
+            });
+
+            it('should return false when the maxDistance is not set properly', function() {
+                var params = new Params.Builder()
+                    .withCategories(['Food'])
+                    .withType(types.regionsofinterest)
+                    .withArea(testUtils.createRandomBoxArea('Athens'))
+                    .withMinPois(5)
+                    .build();
+                expect(params.isValid()).to.be.false();
+                params.maxDistance = -1;
+                expect(params.isValid()).to.be.false();
+                params.maxDistance = 'a';
+                expect(params.isValid()).to.be.false();
+            });
+
+
+            it('should return false when the category is not set properly', function() {
+                var params = new Params.Builder()
+                    .withType(types.regionsofinterest)
+                    .withArea(testUtils.createRandomBoxArea('Athens'))
+                    .withMinPois(5)
+                    .withMaxDistance(100)
+                    .build();
+
+                expect(params.isValid()).to.be.false();
+
+                params.categories = ['Food', 'Stuff'];
+                expect(params.isValid()).to.be.false();
+
+                params.categories = [];
+                expect(params.isValid()).to.be.false();
+            });
+        });
     });
 });

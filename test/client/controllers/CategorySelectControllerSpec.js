@@ -72,23 +72,34 @@ describe('CategorySelectController', function() {
         });
     });
 
+
+    describe('shouldShow', function() {
+        it('should return true for the appropriate types', function() {
+            appState.setType(types.streetofinterest);
+            expect(scope.shouldShow()).to.be.true();
+            appState.setType(types.regionsofinterest);
+            expect(scope.shouldShow()).to.be.true();
+        });
+
+        it('should return false for the appropriate types', function() {
+            appState.setType(types.poi);
+            expect(scope.shouldShow()).to.be.false();
+            appState.setType(types.photo);
+            expect(scope.shouldShow()).to.be.false();
+            appState.setType(types.event);
+            expect(scope.shouldShow()).to.be.false();
+            appState.setType(types.scenicstreets);
+            expect(scope.shouldShow()).to.be.false();
+        });
+    });
+
+
     function mockServiceForSuccess() {
         mockedCategories = ['Food', 'Service'];
         mockedCategoryService.getCategories = function() {
             return {
                 then: function(success) {
                     success(mockedCategories);
-                }
-            }
-        };
-    }
-
-    function mockServiceForError() {
-        var mockedCategories = ['Food', 'Service'];
-        mockedCategoryService.getCategories = function() {
-            return {
-                then: function(success, error) {
-                    error();
                 }
             }
         };

@@ -40,6 +40,14 @@ describe('appState', function() {
         it('should set the sources to an empty array', function() {
             expect(appState.getSources()).to.deep.equal([]);
         });
+
+        it('should set the minPois to 5', function() {
+            expect(appState.getMinPois()).to.equal(5);
+        });
+
+        it('should set the maxDistance to 50', function() {
+            expect(appState.getMaxDistance()).to.equal(50);
+        });
     });
 
     describe('setters', function() {
@@ -189,6 +197,58 @@ describe('appState', function() {
             appState.setSources(['this', 'that']);
             expect(mockedEventService.broadcastEvent).to.have.callCount(4); // new events
         });
+
+        it('should allow setting the minPois and fire appropriate events', function() {
+            appState.setMinPois(10);
+            expect(appState.getMinPois()).to.equal(10);
+            expect(mockedEventService.broadcastEvent).to.have.callCount(2);
+            expect(mockedEventService.broadcastEvent).to.have.been.calledWith(appState.MIN_POIS_CHANGED_EVT, 10);
+            expect(mockedEventService.broadcastEvent).to.have.been.calledWith(appState.APP_STATE_CHANGED_EVT, 10);
+
+            appState.setMinPois(10);
+            expect(mockedEventService.broadcastEvent).to.have.callCount(2);
+        });
+
+        it('should not allow setting invalid minPois', function() {
+            expect(function() {
+                appState.setMinPois('a');
+            }).to.throw(Error);
+            expect(function() {
+                appState.setMinPois({});
+            }).to.throw(Error);
+            expect(function() {
+                appState.setMinPois([]);
+            }).to.throw(Error);
+            expect(function() {
+                appState.setMinPois(0);
+            }).to.throw(Error);
+        });
+
+        it('should allow setting the maxDistance and fire appropriate events', function() {
+            appState.setMaxDistance(10);
+            expect(appState.getMaxDistance()).to.equal(10);
+            expect(mockedEventService.broadcastEvent).to.have.callCount(2);
+            expect(mockedEventService.broadcastEvent).to.have.been.calledWith(appState.MAX_DISTANCE_CHANGED_EVT, 10);
+            expect(mockedEventService.broadcastEvent).to.have.been.calledWith(appState.APP_STATE_CHANGED_EVT, 10);
+
+            appState.setMaxDistance(10);
+            expect(mockedEventService.broadcastEvent).to.have.callCount(2);
+        });
+
+        it('should not allow setting invalid minPois', function() {
+            expect(function() {
+                appState.setMaxDistance('a');
+            }).to.throw(Error);
+            expect(function() {
+                appState.setMaxDistance({});
+            }).to.throw(Error);
+            expect(function() {
+                appState.setMaxDistance([]);
+            }).to.throw(Error);
+            expect(function() {
+                appState.setMaxDistance(0);
+            }).to.throw(Error);
+        });
     });
 
     describe('getParams', function() {
@@ -206,6 +266,10 @@ describe('appState', function() {
 
             appState.setSources(['theother']);
             expect(appState.getParams().sources).to.deep.equal(appState.getSources());
+
+            //minPois and maxDistance
+            expect(appState.getParams().minPois).to.equal(appState.getMinPois());
+            expect(appState.getParams().maxDistance).to.equal(appState.getMaxDistance());
         });
     });
 });

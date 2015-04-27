@@ -31,6 +31,12 @@ module.exports = {
         iconClass: ['fa-road', 'fa-photo'],
         selectable: true
     },
+    regionsofinterest: {
+        id: 'regionsofinterest',
+        caption: 'Regions of Interest',
+        iconClass: 'fa-dot-circle-o',
+        selectable: true
+    },
     poisforstreet: {
         id: 'poisforstreet',
         iconClass: '',

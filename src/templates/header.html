@@ -1,31 +1,48 @@
-<div class = "logo">
+<div class="logo">
     <h1>CityTrack</h1>
 </div>
-<div class = "search">
+<div class="search">
     <div class="type-box" ng-controller="TypeSelectController">
         <selectize options='types' ng-model="selectedTypeId" config="config"></selectize>
     </div>
     <div class="keyword-box" ng-controller="KeywordController" ng-hide="shouldHide()">
-        <input type="text" ng-model="keyword" ng-keypress="processKeyPress($event)" placeholder="What..."/>
+        <input type="text" ng-model="keyword" ng-keypress="processKeyPress($event)" placeholder="Keyword..."/>
     </div>
     <div class="category-box" ng-controller="CategorySelectController" ng-show="shouldShow()">
         <selectize options='categories' ng-model="selectedCategory" config="config"></selectize>
     </div>
-    <div class="area-select" ng-controller="AreaSelectController"  ng-keypress="processKeyPress($event)">
+    <div class="area-select" ng-controller="AreaSelectController" ng-keypress="processKeyPress($event)">
         <div class="input-container">
             <selectize options="areas" ng-model="selectedAreaId" config="config"></selectize>
         </div>
-        <div ng-show="isCircleArea()" class="around">
-            <div class="radius-description">within</div>
-            <input type="number" min="0" class="radius-input" ng-model="radius"/>
-            <div class="radius-description">km</div>
-
+    </div>
+    <div class="extra-params" ng-controller="ParametersPopupController">
+        <div class="extra-params-button">
+            <a href="" ng-click="toggle()"><i class="fa fa-cog" ng-class="{visible: visible}"></i></a>
+        </div>
+        <div class="extra-params-popup" ng-show="visible">
+            <h3>More Parameters</h3>
+            <div class="param-box" ng-controller="RadiusSelectController" ng-show="isCircleArea()">
+                <label class="param-label">Area Radius</label>
+                <input type="number" min="0" class="number-input param-input" ng-model="radius"/>
+                <div class="param-unit">(km)</div>
+            </div>
+            <div class="param-box" ng-controller="MinPoisController" ng-show="shouldShow()">
+                <div class="param-label">Min POI Number</div>
+                <input type="number" min="3" class="number-input param-input" ng-model="minPois"/>
+            </div>
+            <div class="param-box" ng-controller="MaxDistanceController" ng-show="shouldShow()">
+                <label class="param-label">Max Distance</label>
+                <input type="number" min="1" class="param-input" ng-model="maxDistance"/>
+                <div class="param-unit">(m)</div>
+            </div>
         </div>
     </div>
+
     <div class="search-button" ng-controller="SearchButtonController">
         <a href="" ng-click="search()" ng-enabled="active"
-                ng-class="{active: active, inactive:(!active)}"
-                ng-hide="loading">
+           ng-class="{active: active, inactive:(!active)}"
+           ng-hide="loading">
             <i class="fa fa-search"></i>
         </a>
         <i class="fa fa-spinner fa-spin" ng-show="loading"></i>

@@ -21,6 +21,20 @@ citytrackControllers.controller('MapController', ['$scope', 'AppState', 'NgEvent
         require('./MapController')($scope, appState, eventService, leafletData, $compile);
     }]);
 
+citytrackControllers.controller('MinPoisController', ['$scope', 'AppState', 'NgEventService',
+    function($scope, appState, eventService) {
+        require('./MinPoisController')($scope, appState, eventService);
+    }]);
+citytrackControllers.controller('MaxDistanceController', ['$scope', 'AppState', 'NgEventService',
+    function($scope, appState, eventService) {
+        require('./MaxDistanceController')($scope, appState, eventService);
+    }]);
+
+citytrackControllers.controller('RadiusSelectController', ['$scope', 'AppState', 'NgEventService',
+    function($scope, appState, eventService) {
+        require('./RadiusSelectController')($scope, appState, eventService);
+    }]);
+
 citytrackControllers.controller('KeywordController', ['$scope', 'AppState', 'NgEventService',
     function($scope, appState, eventService) {
         require('./KeywordController')($scope, appState, eventService);
@@ -59,6 +73,11 @@ citytrackControllers.controller('CategorySelectController', ['$scope', 'Category
 citytrackControllers.controller('ResultActionController', ['$scope', 'AppState', 'NgEventService', 'SearchService',
     function($scope, appState, eventService, searchService) {
         require('./ResultActionController')($scope, appState, eventService, searchService);
+    }]);
+
+citytrackControllers.controller('ParametersPopupController', ['$scope',
+    function($scope) {
+        require('./ParametersPopupController')($scope);
     }]);
 
 module.exports = citytrackControllers;

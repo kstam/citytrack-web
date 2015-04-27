@@ -31,6 +31,7 @@ describe('SearchService', function() {
         httpBackend.whenGET(/api\/pois?.*/).respond(poiData);
         httpBackend.whenGET(/api\/photos?.*/).respond(photoData);
         httpBackend.whenGET(/api\/events?.*/).respond(eventData);
+        httpBackend.whenGET(/api\/regions?.*/).respond(eventData);
         httpBackend.whenGET(/api\/streets?.*/).respond(eventData);
         httpBackend.whenGET(/api\/scenicStreets?.*/).respond(eventData);
         params = new Params.Builder()
@@ -210,6 +211,21 @@ describe('SearchService', function() {
                 params.type = types.diversestreetphotos;
                 params.streetId = 12345;
                 httpBackend.expectGET(/api\/streets\/12345\/diversePhotos?.*/);
+                searchService.query(params);
+                httpBackend.flush();
+            });
+        });
+
+        describe('when params.type is regionsofinterest', function() {
+            it('should call the /regions endpoint', function() {
+                var params = new Params.Builder()
+                    .withCategories(['Food'])
+                    .withArea(testUtils.createRandomBoxArea('Athens'))
+                    .withType(types.regionsofinterest)
+                    .withMinPois(5)
+                    .withMaxDistance(100)
+                    .build();
+                httpBackend.expectGET(/api\/regions?.*/);
                 searchService.query(params);
                 httpBackend.flush();
             });

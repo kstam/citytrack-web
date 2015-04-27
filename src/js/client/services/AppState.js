@@ -10,13 +10,17 @@ var KEYWORD_CHANGED_EVT = 'AppState:KeywordChanged';
 var TYPE_CHANGED_EVT = 'AppState:TypeChanged';
 var CATEGORIES_CHANGED_EVT = 'AppState:CategoriesChanged';
 var SOURCES_CHANGED_EVT = 'AppState:SourcesChanged';
+var MIN_POIS_CHANGED_EVT = 'AppState:MinPoisChanged';
+var MAX_DISTANCE_CHANGED_EVT = 'AppState:MaxDistanceChanged';
 
 var AppState = function(eventBus) {
 
     var area, type,
         keyword = '',
         categories = [],
-        sources = [];
+        sources = [],
+        minPois = 5,
+        maxDistance = 50;
 
     var fireChangeEvent = function(eventName) {
         var args = Array.prototype.splice.call(arguments, 0);
@@ -93,6 +97,26 @@ var AppState = function(eventBus) {
         }
     };
 
+    var setMinPois = function(newMinPois) {
+        if(!utils.isInteger(newMinPois) || newMinPois <= 0) {
+            throw new Error('[' + newMinPois + '] is not a valid minPois value');
+        }
+        if (minPois !== newMinPois) {
+            minPois = newMinPois;
+            fireChangeEvent(MIN_POIS_CHANGED_EVT, minPois);
+        }
+    };
+
+    var setMaxDistance = function(newMaxDistance) {
+        if(!utils.isInteger(newMaxDistance) || newMaxDistance <= 0) {
+            throw new Error('[' + newMaxDistance + '] is not a valid maxDistance value');
+        }
+        if (maxDistance !== newMaxDistance) {
+            maxDistance = newMaxDistance;
+            fireChangeEvent(MAX_DISTANCE_CHANGED_EVT, maxDistance);
+        }
+    };
+
     var getType = function() {
         return type;
     };
@@ -113,6 +137,14 @@ var AppState = function(eventBus) {
         return sources;
     };
 
+    var getMaxDistance = function() {
+        return maxDistance;
+    };
+
+    var getMinPois = function() {
+        return minPois;
+    };
+
     var getParams = function() {
         return new Params.Builder()
             .withKeyword(keyword)
@@ -120,6 +152,8 @@ var AppState = function(eventBus) {
             .withType(type)
             .withCategories(categories)
             .withSources(sources)
+            .withMinPois(minPois)
+            .withMaxDistance(maxDistance)
             .build();
     };
 
@@ -129,18 +163,24 @@ var AppState = function(eventBus) {
         setType: setType,
         setCategories: setCategories,
         setSources: setSources,
+        setMinPois: setMinPois,
+        setMaxDistance: setMaxDistance,
         getArea: getArea,
         getKeyword: getKeyword,
         getType: getType,
         getCategories: getCategories,
         getSources: getSources,
         getParams: getParams,
+        getMinPois: getMinPois,
+        getMaxDistance: getMaxDistance,
         APP_STATE_CHANGED_EVT: APP_STATE_CHANGED_EVT,
         AREA_CHANGED_EVT: AREA_CHANGED_EVT,
         KEYWORD_CHANGED_EVT: KEYWORD_CHANGED_EVT,
         TYPE_CHANGED_EVT: TYPE_CHANGED_EVT,
         CATEGORIES_CHANGED_EVT: CATEGORIES_CHANGED_EVT,
-        SOURCES_CHANGED_EVT: SOURCES_CHANGED_EVT
+        SOURCES_CHANGED_EVT: SOURCES_CHANGED_EVT,
+        MIN_POIS_CHANGED_EVT: MIN_POIS_CHANGED_EVT,
+        MAX_DISTANCE_CHANGED_EVT: MAX_DISTANCE_CHANGED_EVT
     };
 };
 

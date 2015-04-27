@@ -42,7 +42,7 @@ module.exports = function($scope, areaService, appState, eventService) {
             optgroupValueField: 'id',
             lockOptgroupOrder: true,
             openOnFocus: true,
-            placeholder: 'Where...',
+            placeholder: 'Location...',
             render: {
                 item: renderAreaOption,
                 option: renderAreaOption
@@ -95,28 +95,15 @@ module.exports = function($scope, areaService, appState, eventService) {
             return;
         }
         $scope.selectedArea = $scope.areaMap[current];
-        if ($scope.selectedArea instanceof AreaCircle) {
-            $scope.radius = $scope.selectedArea.getRadius();
-        }
         appState.setArea($scope.selectedArea);
         if (current !== constants.CURRENT_VIEW_ID) {
             removeFromMap(constants.CURRENT_VIEW_ID);
         }
     };
 
-    var radiusWatcher = function(current, old) {
-        if(angular.equals(current, old) || !utils.isType(current, 'Number') || current <= 0) {
-            return;
-        }
-        var area = appState.getArea();
-        appState.setArea(new AreaCircle(area.getName(), area.getCenter(), current, area.getType()));
-        $scope.selectedArea = appState.getArea();
-    };
-
     var initWatchers = function() {
         $scope.$watch('areaMap', areaMapWatcher, true);
         $scope.$watch('selectedAreaId', selectedAreaIdWathcer);
-        $scope.$watch('radius', radiusWatcher);
     };
 
     // EVENT LISTENERS
@@ -125,9 +112,6 @@ module.exports = function($scope, areaService, appState, eventService) {
         var newArea = appState.getArea();
         if (newArea && (!newArea.equals($scope.selectedArea))) {
             $scope.selectedAreaId = newArea.getName();
-            if (newArea instanceof AreaCircle) {
-                $scope.radius = newArea.getRadius();
-            }
             addAreaToMap(newArea);
         }
     };
