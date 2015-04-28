@@ -2,7 +2,7 @@
     <div class="info">
         <div class="title">{{data.label}}</div>
 
-        <div class="categories" ng-if="!isStreet()">
+        <div class="categories" ng-if="!isStreet() || isRegion()">
             <span ng-repeat="category in data.categories track by $index" class="category">
                 {{category}}
             </span>
@@ -14,7 +14,7 @@
             </span>
         </div>
 
-        <div class="description" ng-if="!isStreet()">
+        <div class="description" ng-if="!isStreet() && !isRegion()">
             <img class="description-image" ng-if="isMap()" ng-src="{{data.mainPhoto}}" err-src="" />
             <span ng-bind-html="data.description"></span>
         </div>
@@ -24,8 +24,11 @@
                 (<strong>{{formattedDensity()}}</strong>/m)</p>
         </div>
 
+        <div class="description" ng-if="isRegion()">
+            <p>{{data.label}} contains <strong>{{data.entityCount}}</strong> POIs matching the selected criteria.
+        </div>
         <!-- Display only for map and if there are more than 1 photos for the feature -->
-        <div class="photos" ng-if="isMap() && hasMorePhotos() && !isStreet()">
+        <div class="photos" ng-if="isMap() && hasMorePhotos() && !isStreet() && !isRegion()">
             <div class="title">
                 More Photos
             </div>
@@ -55,7 +58,7 @@
             </div>
         </div>
 
-        <div class="source" ng-if="!isStreet()">
+        <div class="source" ng-if="!isStreet() && !isRegion()">
             Origin: <a href="{{data.url}}" target="_blank">{{ data.source }}</a>
         </div>
 
@@ -71,7 +74,7 @@
                     <span class="label">Get Photos</span>
                 </div>
             </div>
-            <div class="marker-actions" ng-if="!isStreet()">
+            <div class="marker-actions" ng-if="!isStreet() && !isRegion">
                 <div class="action" ng-click="getRelatedPoisAroundFeature(feature, 0.05)">
                     <i class="fa" ng-class="{'fa-map-marker':!loading, 'fa-spinner':loading, 'fa-spin':loading}"></i>
                     <span class="label">Related POIs</span>

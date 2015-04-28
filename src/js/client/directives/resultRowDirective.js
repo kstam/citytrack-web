@@ -38,6 +38,10 @@ module.exports = function(eventService, searchService) {
             return $scope.data.type === types.streetofinterest.id;
         };
 
+        $scope.isRegion = function() {
+            return $scope.data.type === types.regionofinterest.id;
+        };
+
         $scope.isMap = function() {
             return $scope.data.target === constants.TARGET_MAP;
         };

@@ -212,7 +212,10 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
                 featureEntry.marker.openPopup();
             }
             featureEntry.marker.setIcon(iconFactory.clickedMarkerIcon());
-        } else if (featureEntry.feature.properties.type === types.streetofinterest.id) { //isA line
+        } else if (
+            featureEntry.feature.properties.type === types.streetofinterest.id ||
+            featureEntry.feature.properties.type === types.regionofinterest.id
+        ) { //isA line or region
             if (oldFeatureEntry) {
                 oldFeatureEntry.layer.setStyle(styleFactory.getDefaultStyleForFeature());
             }
@@ -225,7 +228,10 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
         var featureEntry = $scope.featureMap[id];
         if (featureEntry.marker) { //isA marker
             featureEntry.marker.setIcon(iconFactory.hoverMarkerIcon());
-        } else if (featureEntry.feature.properties.type === types.streetofinterest.id) { //isA line
+        } else if (
+            featureEntry.feature.properties.type === types.streetofinterest.id ||
+            featureEntry.feature.properties.type === types.regionofinterest.id
+        ) { //isA line or region
             featureEntry.layer.setStyle(styleFactory.getHoverStyleForFeature());
             featureEntry.layer.redraw();
         }
@@ -236,7 +242,10 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
         if (featureEntry.marker) { //isA marker
             var icon = id === $scope.selectedFeatureId ? iconFactory.clickedMarkerIcon() : iconFactory.defaultMarkerIcon();
             featureEntry.marker.setIcon(icon);
-        } else if (featureEntry.feature.properties.type === types.streetofinterest.id) { //isA line
+        } else if (
+            featureEntry.feature.properties.type === types.streetofinterest.id ||
+            featureEntry.feature.properties.type === types.regionofinterest.id
+        ) { //isA line or region
             var style = id === $scope.selectedFeatureId ? styleFactory.getClickedStyleForFeature() :
                 styleFactory.getDefaultStyleForFeature();
             featureEntry.layer.setStyle(style);
