@@ -1,6 +1,7 @@
 module.exports = {
     "page": 1,
     "rows": 20,
+    "paginable": true,
     "collection": {
         "type": "FeatureCollection",
         "features": [{

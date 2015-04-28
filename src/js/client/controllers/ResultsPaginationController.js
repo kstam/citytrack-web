@@ -8,8 +8,7 @@ var types = require('../../model/types');
 module.exports = function($scope, appState, eventService, searchService) {
 
     $scope.isPaginable = function() {
-        return utils.isNotNullOrUndefined($scope.lastSearchParams) &&
-            $scope.lastSearchParams.type !== types.poisforstreet;
+        return $scope.lastSearchWasPaginable;
     };
 
     var getParamsForNextPage = function(params) {
@@ -45,6 +44,7 @@ module.exports = function($scope, appState, eventService, searchService) {
     var initDefaults = function() {
         $scope.queryRunning = false;
         $scope.reachedTheEnd = false;
+        $scope.lastSearchWasPaginable = false;
     };
 
     // LISTENERS
@@ -54,7 +54,12 @@ module.exports = function($scope, appState, eventService, searchService) {
         $scope.reachedTheEnd = false;
     };
 
+    var mainQuerySuccessListener = function(event, data) {
+        $scope.lastSearchWasPaginable = data.paginable || false;
+    };
+
     var initListeners = function() {
+        eventService.on(constants.MAIN_QUERY_SUCCESS, mainQuerySuccessListener);
         eventService.on(constants.MAIN_QUERY_STARTED, mainQueryStartedListener);
     };
 

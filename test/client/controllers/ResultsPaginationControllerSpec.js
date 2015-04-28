@@ -143,15 +143,17 @@ describe('ResultsPaginationController', function() {
     });
 
     describe('exposes isPaginable method that', function() {
-        it('should return false when result is for "poisforstreet" type', function() {
-            var params = appState.getParams();
-            params.type = types.poisforstreet;
-            params.streetId = 123;
-            eventService.broadcastEvent(constants.MAIN_QUERY_STARTED, params);
+        it('should return false when result contains paginable set to false', function() {
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, require('../../data/poisForStreetResponse'));
             expect(scope.isPaginable()).to.be.false();
         });
 
-        it('should return false when no query has been excecuted yet', function() {
+        it('should return true when result contains paginable set to true', function() {
+            eventService.broadcastEvent(constants.MAIN_QUERY_SUCCESS, require('../../data/poiResponse'));
+            expect(scope.isPaginable()).to.be.true();
+        });
+
+        it('should return false when no query has been finished yet', function() {
             expect(scope.isPaginable()).to.be.false();
         });
     });

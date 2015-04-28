@@ -1,6 +1,7 @@
 module.exports = {
     "page": 1,
     "rows": 0,
+    "paginable": true,
     "collection": {"type": "FeatureCollection", "features": []},
     "facets": {
         "source": [{"facetField": "source", "name": "dbpedia", "count": 0}, {
