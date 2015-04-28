@@ -10,7 +10,7 @@ module.exports = function($scope, appState, eventService, searchService) {
         if ($scope.topLevelSearchChanged &&
             appState.getType() !== types.streetofinterest &&
                 appState.getType() !== types.scenicstreets &&
-                appState.getType() !== types.regionsofinterest
+                appState.getType() !== types.regionofinterest
         ) {
             appState.setCategories([]);
             appState.setSources([]);

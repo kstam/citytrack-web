@@ -10,7 +10,7 @@ module.exports = function($scope, categoryService, appState, eventService) {
     $scope.shouldShow = function() {
         var type = appState.getType();
         return type === types.streetofinterest ||
-            type === types.regionsofinterest;
+            type === types.regionofinterest;
     };
 
     var initDefaults = function() {

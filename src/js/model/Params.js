@@ -99,7 +99,7 @@ Params.Validator = function() {
             case types.diversestreetphotos.id:
             case types.photosforstreet.id:
                 return isValidForPoisForStreet;
-            case types.regionsofinterest.id:
+            case types.regionofinterest.id:
                 return isValidForRegionOfInterest;
             default:
                 return falsyValidator;

@@ -56,7 +56,7 @@ describe('KeywordController', function() {
             expect(scope.shouldHide()).to.be.true();
             appState.setType(types.scenicstreets);
             expect(scope.shouldHide()).to.be.true();
-            appState.setType(types.regionsofinterest);
+            appState.setType(types.regionofinterest);
             expect(scope.shouldHide()).to.be.true();
         });
 

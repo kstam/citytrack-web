@@ -117,7 +117,7 @@ module.exports = function($resource) {
             case types.photosforstreet.id:
                 p.streetId = params.streetId;
                 break;
-            case types.regionsofinterest.id:
+            case types.regionofinterest.id:
                 p.minPois = params.minPois;
                 p.maxDist = params.maxDistance;
                 setAreaInRequest(p, params.area);
@@ -147,7 +147,7 @@ module.exports = function($resource) {
                 return DiverseStreetPhotos;
             case types.photosforstreet.id:
                 return PhotosForStreet;
-            case types.regionsofinterest.id:
+            case types.regionofinterest.id:
                 return RegionsOfInterest;
             default:
                 throw new Error(params.type.id + ' is not supported by the SearchService');

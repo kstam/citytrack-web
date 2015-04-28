@@ -226,12 +226,12 @@ describe('SearchService', function() {
             });
         });
 
-        describe('when params.type is regionsofinterest', function() {
+        describe('when params.type is regionofinterest', function() {
             it('should call the /regions endpoint', function() {
                 var params = new Params.Builder()
                     .withCategories(['Food'])
                     .withArea(testUtils.createRandomBoxArea('Athens'))
-                    .withType(types.regionsofinterest)
+                    .withType(types.regionofinterest)
                     .withMinPois(5)
                     .withMaxDistance(100)
                     .build();

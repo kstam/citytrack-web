@@ -10,7 +10,7 @@ module.exports = function($scope, appState, eventService) {
         var type = appState.getType();
         return type === types.scenicstreets ||
             type === types.streetofinterest ||
-            type === types.regionsofinterest;
+            type === types.regionofinterest;
     };
 
     var setDefaults = function() {

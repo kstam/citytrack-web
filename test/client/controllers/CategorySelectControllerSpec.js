@@ -76,7 +76,7 @@ describe('CategorySelectController', function() {
         it('should return true for the appropriate types', function() {
             appState.setType(types.streetofinterest);
             expect(scope.shouldShow()).to.be.true();
-            appState.setType(types.regionsofinterest);
+            appState.setType(types.regionofinterest);
             expect(scope.shouldShow()).to.be.true();
         });
 
