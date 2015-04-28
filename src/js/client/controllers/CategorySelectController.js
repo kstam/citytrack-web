@@ -14,7 +14,6 @@ module.exports = function($scope, categoryService, appState, eventService) {
     };
 
     var initDefaults = function() {
-        $scope.selectedCategory = constants.ANY_CATEGORY;
     };
 
     var initConfig = function() {
@@ -30,7 +29,7 @@ module.exports = function($scope, categoryService, appState, eventService) {
     };
 
     var initCategories = function() {
-        $scope.categories = [{name: constants.ANY_CATEGORY}];
+        $scope.categories = [];
         categoryService.getCategories()
             .then(function(data) {
                 data.forEach(function(category) {
@@ -43,10 +42,10 @@ module.exports = function($scope, categoryService, appState, eventService) {
     // WATCHERS
 
     var selectedCategoryWatcher = function(current, old) {
-        if (!current || angular.equals(current, old)) {
+        if (angular.equals(current, old)) {
             return;
         }
-        if (current === constants.ANY_CATEGORY) {
+        if (!current) {
             appState.setCategories([]);
         } else {
             appState.setCategories([current]);
@@ -63,7 +62,7 @@ module.exports = function($scope, categoryService, appState, eventService) {
         if (appState.getCategories() && appState.getCategories().length === 1) {
             $scope.selectedCategory = appState.getCategories()[0];
         } else if (appState.getCategories() && appState.getCategories().length === 0) {
-            $scope.selectedCategory = constants.ANY_CATEGORY;
+            $scope.selectedCategory = undefined;
         }
     };
 

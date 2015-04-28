@@ -29,7 +29,6 @@ describe('CategorySelectController', function() {
             mockedCategories.forEach(function(category) {
                 expect(scope.categories).to.contain({name: category});
             });
-            expect(scope.categories).to.contain({name: constants.ANY_CATEGORY});
         });
 
         it('should set an initial config', function() {
@@ -37,7 +36,7 @@ describe('CategorySelectController', function() {
         });
 
         it('should init the selectedCategory to ANY', function() {
-            expect(scope.selectedCategory).to.equal(constants.ANY_CATEGORY);
+            expect(scope.selectedCategory).to.be.undefined();
         });
     });
 
@@ -54,7 +53,7 @@ describe('CategorySelectController', function() {
             scope.$digest();
             scope.selectedCategory = 'Food';
             scope.$digest();
-            scope.selectedCategory = constants.ANY_CATEGORY;
+            scope.selectedCategory = undefined;
             scope.$digest();
             expect(appState.getCategories().length).to.equal(0);
         });
@@ -68,7 +67,7 @@ describe('CategorySelectController', function() {
 
         it('should set the selectedCategory to Any if none is selected', function() {
             appState.setCategories([]);
-            expect(scope.selectedCategory).to.equal(constants.ANY_CATEGORY);
+            expect(scope.selectedCategory).to.be.undefined();
         });
     });
 
