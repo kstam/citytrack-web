@@ -9,7 +9,9 @@ module.exports = function($scope, appState, eventService) {
 
     $scope.shouldShow = function() {
         var type = appState.getType();
-        return type === types.regionsofinterest;
+        return type === types.regionsofinterest ||
+            type === types.streetofinterest ||
+            type === types.scenicstreets;
     };
 
     var setDefaults = function() {

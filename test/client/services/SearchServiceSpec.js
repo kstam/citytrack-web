@@ -175,6 +175,16 @@ describe('SearchService', function() {
                 searchService.query(params);
                 httpBackend.flush();
             });
+
+            it('should set the minPois in the api if specified', function() {
+                params.type = types.streetofinterest;
+                params.minPois = 5;
+                httpBackend.expectGET(function(url) {
+                    return url.indexOf('minPois=' + 5) !== -1;
+                });
+                searchService.query(params);
+                httpBackend.flush();
+            });
         });
 
         describe('when params.type is scenicstreets', function() {

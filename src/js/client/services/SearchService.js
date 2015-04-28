@@ -109,6 +109,7 @@ module.exports = function($resource) {
                 break;
             case types.streetofinterest.id:
             case types.scenicstreets.id:
+                p.minPois = params.minPois;
                 setAreaAsBox(p, params.area);
                 break;
             case types.poisforstreet.id:
