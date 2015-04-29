@@ -131,21 +131,24 @@ describe('SearchButtonController', function() {
             expect(scope.loading).to.be.false();
             expect(eventService.broadcastEvent).to.have.been.calledWith(constants.MAIN_QUERY_FAILURE);
         });
+    });
+
+    describe('exposes "searchButtonClick" method that', function() {
 
         it('should reset the categories and the sources if a new keyword is selected', function() {
             appState.setType(types.poi);
             appState.setKeyword('old');
             appState.setArea(testUtils.createRandomBoxArea('Athens'));
-            scope.search();
+            scope.searchButtonClick();
 
             appState.setCategories(['Technology']);
             appState.setSources(['foursquare']);
-            scope.search();
+            scope.searchButtonClick();
 
             expect(appState.getCategories()).to.deep.equal(['Technology']);
             expect(appState.getSources()).to.deep.equal(['foursquare']);
             appState.setKeyword('new');
-            scope.search();
+            scope.searchButtonClick();
 
             expect(appState.getCategories()).to.deep.equal([]);
             expect(appState.getSources()).to.deep.equal([]);

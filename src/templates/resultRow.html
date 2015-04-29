@@ -74,7 +74,7 @@
                     <span class="label">Get Photos</span>
                 </div>
             </div>
-            <div class="marker-actions" ng-if="!isStreet() && !isRegion">
+            <div class="marker-actions" ng-if="!isStreet() && !isRegion()">
                 <div class="action" ng-click="getRelatedPoisAroundFeature(feature, 0.05)">
                     <i class="fa" ng-class="{'fa-map-marker':!loading, 'fa-spinner':loading, 'fa-spin':loading}"></i>
                     <span class="label">Related POIs</span>
@@ -86,6 +86,16 @@
                 <div class="action" ng-click="getRelatedEventsAroundFeature(feature, 0.05)">
                     <i class="fa" ng-class="{'fa-calendar':!loading, 'fa-spinner':loading, 'fa-spin':loading}"></i>
                     <span class="label">Related Events</span>
+                </div>
+            </div>
+            <div class="region-actions" ng-if="isRegion()">
+                <div class="action" ng-click="getPoisForRegion(feature)">
+                    <i class="fa" ng-class="{'fa-map-marker':!loading, 'fa-spinner':loading, 'fa-spin':loading}"></i>
+                    <span class="label">Related POIs</span>
+                </div>
+                <div class="action" ng-click="getPhotosForRegion(feature)">
+                    <i class="fa" ng-class="{'fa-photo':!loading, 'fa-spinner':loading, 'fa-spin':loading}"></i>
+                    <span class="label">Related Photos</span>
                 </div>
             </div>
         </div>

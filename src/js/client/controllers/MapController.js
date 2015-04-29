@@ -5,6 +5,7 @@ var config = require('../config/leafletConfig');
 var Area = require('../../model/Area');
 var AreaBox = require('../../model/AreaBox');
 var AreaCircle = require('../../model/AreaCircle');
+var AreaPolygon = require('../../model/AreaPolygon');
 var constants = require('../config/constants');
 var L = require('leaflet');
 var popupFactory = require('../map/popupFactory');
@@ -139,6 +140,8 @@ module.exports = function($scope, appState, eventService, leafletData, $compile)
             $scope.areaLayer = L.rectangle(area.getBoundingBox());
         } else if (area instanceof AreaCircle) {
             $scope.areaLayer = L.circle(area.getCenter(), area.getRadius() * 1000);
+        } else if (area instanceof AreaPolygon) {
+            $scope.areaLayer = L.polygon(area.getPolygon());
         }
         $scope.areaLayer.addTo(map);
     };

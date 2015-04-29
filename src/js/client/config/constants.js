@@ -28,6 +28,8 @@ constants.MAP_CONTEXT_CLOSE_EVT = 'Map:CloseContext';
 
 constants.FILTER_CHANGED_EVT = 'Filter:Changed';
 
+constants.PERFORM_SEARCH_NO_RESET_EVT = 'Search:Perform:NoReset';
+
 // URLS
 constants.NO_IMG_URL = 'img/no_image_available.jpg';
 

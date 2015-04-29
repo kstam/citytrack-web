@@ -20,7 +20,6 @@ module.exports = function($scope, appState, eventService, searchService) {
 
     $scope.search = function() {
         if ($scope.active === true) {
-            resetCategoriesAndSourcesIfNecessary();
             eventService.broadcastEvent(constants.MAIN_QUERY_STARTED, $scope.params);
             searchService.query($scope.params)
                 .then(function(data) { //success
@@ -29,6 +28,11 @@ module.exports = function($scope, appState, eventService, searchService) {
                     eventService.broadcastEvent(constants.MAIN_QUERY_FAILURE);
                 });
         }
+    };
+
+    $scope.searchButtonClick = function() {
+        resetCategoriesAndSourcesIfNecessary();
+        $scope.search();
     };
 
     var setDefaults = function() {
@@ -54,6 +58,7 @@ module.exports = function($scope, appState, eventService, searchService) {
 
     var enterPressedListener = function() {
         $scope.active = $scope.params.isValid();
+        resetCategoriesAndSourcesIfNecessary();
         $scope.search();
     };
 
@@ -61,9 +66,15 @@ module.exports = function($scope, appState, eventService, searchService) {
         $scope.topLevelSearchChanged = true;
     };
 
+    var searchNoResetListener = function() {
+        $scope.active = $scope.params.isValid();
+        $scope.search();
+    };
+
     var initListeners = function() {
         eventService.on(appState.APP_STATE_CHANGED_EVT, appStateListener);
         eventService.on(constants.KEYWORD_ENTER_PRESSED, enterPressedListener);
+        eventService.on(constants.PERFORM_SEARCH_NO_RESET_EVT, searchNoResetListener);
         eventService.on(constants.MAP_VIEW_CHANGED, enterPressedListener);
         eventService.on(constants.FILTER_CHANGED_EVT, enterPressedListener);
 

@@ -4,6 +4,7 @@ var utils = require('../../common/utils');
 var Area = require('../../model/Area');
 var AreaBox = require('../../model/AreaBox');
 var AreaCircle = require('../../model/AreaCircle');
+var AreaPolygon = require('../../model/AreaPolygon');
 var types = require('../../model/types');
 
 module.exports = function($resource) {
@@ -87,6 +88,8 @@ module.exports = function($resource) {
         } else if (area instanceof AreaCircle) {
             p.pt = area.getCenterAsList().join(',');
             p.r = area.getRadius();
+        } else if (area instanceof AreaPolygon) {
+            p.poly = area.getPolygonAsList().join(',');
         } else {
             throw new Error(area + ' is not a supported Area type');
         }
@@ -120,7 +123,11 @@ module.exports = function($resource) {
             case types.regionofinterest.id:
                 p.minPois = params.minPois;
                 p.maxDist = params.maxDistance;
-                setAreaInRequest(p, params.area);
+                if (params.area instanceof AreaPolygon) {
+                    setAreaAsBox(p, params.area);
+                } else {
+                    setAreaInRequest(p, params.area);
+                }
                 break;
             default:
                 break;

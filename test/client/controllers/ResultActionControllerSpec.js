@@ -141,7 +141,7 @@ describe('ResultActionController', function() {
         it('should trigger an event to notify that it started querying', function() {
             eventService.broadcastEvent = sinon.spy();
             scope.getRelatedPhotosAroundFeature(mockedData.collection.features[0], 0.150);
-            expect(eventService.broadcastEvent).to.have.been.calledWith(constants.KEYWORD_ENTER_PRESSED);
+            expect(eventService.broadcastEvent).to.have.been.calledWith(constants.PERFORM_SEARCH_NO_RESET_EVT);
             expect(appState.getKeyword()).to.equal(mockedData.collection.features[0].properties.label);
             expect(appState.getType()).to.equal(types.photo);
             var usedArea = appState.getArea();
@@ -162,7 +162,7 @@ describe('ResultActionController', function() {
         it('should trigger an event to notify that it started querying', function() {
             eventService.broadcastEvent = sinon.spy();
             scope.getRelatedPoisAroundFeature(mockedData.collection.features[0], 0.150);
-            expect(eventService.broadcastEvent).to.have.been.calledWith(constants.KEYWORD_ENTER_PRESSED);
+            expect(eventService.broadcastEvent).to.have.been.calledWith(constants.PERFORM_SEARCH_NO_RESET_EVT);
             expect(appState.getKeyword()).to.equal(mockedData.collection.features[0].properties.label);
             expect(appState.getType()).to.equal(types.poi);
             var usedArea = appState.getArea();
@@ -183,7 +183,7 @@ describe('ResultActionController', function() {
         it('should trigger an event to notify that it started querying', function() {
             eventService.broadcastEvent = sinon.spy();
             scope.getRelatedEventsAroundFeature(mockedData.collection.features[0], 0.150);
-            expect(eventService.broadcastEvent).to.have.been.calledWith(constants.KEYWORD_ENTER_PRESSED);
+            expect(eventService.broadcastEvent).to.have.been.calledWith(constants.PERFORM_SEARCH_NO_RESET_EVT);
             expect(appState.getKeyword()).to.equal(mockedData.collection.features[0].properties.label);
             expect(appState.getType()).to.equal(types.event);
             var usedArea = appState.getArea();
