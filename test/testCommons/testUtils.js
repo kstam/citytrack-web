@@ -2,6 +2,7 @@
 var Area = require('model/Area');
 var AreaBox = require('model/AreaBox');
 var AreaCircle = require('model/AreaCircle');
+var AreaPolygon = require('model/AreaPolygon');
 var L = require('leaflet');
 
 var testUtils = {};
@@ -21,6 +22,13 @@ testUtils.createRandomCircleArea = function(name) {
     return new AreaCircle(name, L.latLng(lat + 10, lng + 10), radius, Area.INTERACTIVE_TYPE);
 };
 
+testUtils.createRandomPolygonArea = function(name) {
+    var lat = Math.floor(Math.random() * 161 * 1024) / 1024 - 80;
+    var lng = Math.floor(Math.random() * 341 * 1024) / 1024 - 170;
+    var polygon = [L.latLng(lat, lng), L.latLng(lat, lng + 10), L.latLng(lat + 10, lng + 10), L.latLng(lat + 10, lng),
+        L.latLng(lat, lng)];
+    return new AreaPolygon(name, polygon, Area.INTERACTIVE_TYPE);
+};
 
 testUtils.createRandomAreaServerResult = function(name) {
 
@@ -40,6 +48,8 @@ testUtils.cloneArea = function(area) {
         return new AreaBox(area.getName(), area.getBoundingBox(), area.getType());
     } else if (area instanceof AreaCircle) {
         return new AreaCircle(area.getName(), area.getCenter(), area.getRadius(), area.getType());
+    } else if (area instanceof AreaPolygon) {
+        return new AreaPolygon(area.getName(), area.getPolygon(), area.getType());
     } else if (area instanceof Area) {
         return new Area(area.getName(), area.getType());
     } else {
