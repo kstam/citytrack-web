@@ -9,22 +9,9 @@ var AreaCircle = require('../../model/AreaCircle');
 var AreaPolygon = require('../../model/AreaPolygon');
 var Area = require('../../model/Area');
 var latLng = require('leaflet').latLng;
+var cUtils = require('../common/client-utils');
 
 module.exports = function($scope, appState, eventService, searchService) {
-
-    var extractLatLng = function(feature) {
-        return latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
-    };
-
-    var extractPolygon = function(feature) {
-        var points = feature.geometry.coordinates[0];
-        var result = [];
-        console.log(points);
-        points.forEach(function(point) {
-            result.push(latLng(point[1], point[0]));
-        });
-        return result;
-    };
 
     $scope.getPoisForStreet = function(streetId) {
         if ($scope.loading === true) {
@@ -69,7 +56,7 @@ module.exports = function($scope, appState, eventService, searchService) {
         }
         appState.setType(types.poi);
         appState.setKeyword('*');
-        appState.setArea(new AreaPolygon(feature.properties.label, extractPolygon(feature), Area.INTERACTIVE_TYPE));
+        appState.setArea(new AreaPolygon(feature.properties.label, cUtils.extractPolygon(feature), Area.INTERACTIVE_TYPE));
         appState.setCategories(appState.getCategories());
         eventService.broadcastEvent(constants.PERFORM_SEARCH_NO_RESET_EVT);
     };
@@ -80,7 +67,7 @@ module.exports = function($scope, appState, eventService, searchService) {
         }
         appState.setType(types.photo);
         appState.setKeyword('*');
-        appState.setArea(new AreaPolygon(feature.properties.label, extractPolygon(feature), Area.INTERACTIVE_TYPE));
+        appState.setArea(new AreaPolygon(feature.properties.label, cUtils.extractPolygon(feature), Area.INTERACTIVE_TYPE));
         appState.setCategories(appState.getCategories());
         eventService.broadcastEvent(constants.PERFORM_SEARCH_NO_RESET_EVT);
     };
@@ -91,7 +78,7 @@ module.exports = function($scope, appState, eventService, searchService) {
         }
         appState.setType(types.photo);
         appState.setKeyword(feature.properties.label);
-        appState.setArea(new AreaCircle(feature.properties.label, extractLatLng(feature), radius, Area.INTERACTIVE_TYPE));
+        appState.setArea(new AreaCircle(feature.properties.label, cUtils.extractLatLng(feature), radius, Area.INTERACTIVE_TYPE));
         eventService.broadcastEvent(constants.PERFORM_SEARCH_NO_RESET_EVT);
     };
 
@@ -101,7 +88,7 @@ module.exports = function($scope, appState, eventService, searchService) {
         }
         appState.setType(types.poi);
         appState.setKeyword(feature.properties.label);
-        appState.setArea(new AreaCircle(feature.properties.label, extractLatLng(feature), radius, Area.INTERACTIVE_TYPE));
+        appState.setArea(new AreaCircle(feature.properties.label, cUtils.extractLatLng(feature), radius, Area.INTERACTIVE_TYPE));
         eventService.broadcastEvent(constants.PERFORM_SEARCH_NO_RESET_EVT);
     };
 
@@ -111,7 +98,7 @@ module.exports = function($scope, appState, eventService, searchService) {
         }
         appState.setType(types.event);
         appState.setKeyword(feature.properties.label);
-        appState.setArea(new AreaCircle(feature.properties.label, extractLatLng(feature), radius, Area.INTERACTIVE_TYPE));
+        appState.setArea(new AreaCircle(feature.properties.label, cUtils.extractLatLng(feature), radius, Area.INTERACTIVE_TYPE));
         eventService.broadcastEvent(constants.PERFORM_SEARCH_NO_RESET_EVT);
     };
 
