@@ -1,6 +1,6 @@
 'use strict';
 
-require('angular');
+require('client/shims/angular');
 require('angular-mocks');
 var services = require('client/services/services');
 var AppState = require('client/services/AppState');

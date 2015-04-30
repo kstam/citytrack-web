@@ -1,7 +1,7 @@
 'use strict';
 
 var $ = require('jquery');
-require('angular');
+require('client/shims/angular');
 require('angular-mocks');
 var directives = require('client/directives/directives');
 var controllers = require('client/controllers/controllers');

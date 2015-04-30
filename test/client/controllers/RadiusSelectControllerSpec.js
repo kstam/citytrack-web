@@ -1,5 +1,5 @@
 'use strict';
-require('angular');
+require('client/shims/angular');
 require('angular-mocks');
 var controllers = require('client/controllers/controllers');
 var constants = require('client/config/constants');

@@ -1,6 +1,6 @@
 'use strict';
 
-require('angular');
+require('client/shims/angular');
 require('angular-mocks');
 var constants = require('client/config/constants');
 var config = require('client/config/leafletConfig');

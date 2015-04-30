@@ -144,6 +144,11 @@ utils.sameContent = function(a1, a2) {
     }
 };
 
+/**
+ * Defines correct prototypal inheritance change between base and sub object
+ * @param base the father object
+ * @param sub the child object
+ */
 utils.extend = function(base, sub) {
     // Avoid instantiating the base class just to setup inheritance
     // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create

@@ -1,6 +1,6 @@
 'use strict';
 
-require('angular');
+require('client/shims/angular');
 require('angular-mocks');
 var ngResource = require('angular-resource');
 var testUtils = require('../../testCommons/testUtils');

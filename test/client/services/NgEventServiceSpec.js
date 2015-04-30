@@ -1,6 +1,6 @@
 'use strict';
 
-require('angular');
+require('client/shims/angular');
 var sinon = require('sinon');
 var expect = require('../../testCommons/chaiExpect');
 var NgEventService = require('client/services/NgEventService');
