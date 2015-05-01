@@ -88,6 +88,8 @@ module.exports = function(eventService, searchService, tagCloudService) {
                 tagCloudService.getRegionTagCloud(area)
                     .then(function(result) {
                         $scope.extras.tagCloud = result;
+                    }, function() {
+                        $scope.extras.tagCloud = {words: [], levels: 0};
                     });
             }
         };
