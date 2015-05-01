@@ -73,7 +73,7 @@ var AreaPolygon = function AreaPolygon(name, polygon, type) {
             list.push(polygon[i].lat + ';' + polygon[i].lng);
         }
         return list;
-    }
+    };
 };
 
 function isValidPolygon(polygon) {
