@@ -30,4 +30,9 @@ describe('services', function() {
     it('correctly defines CategoryService', inject(['CategoryService', function(categoryService) {
         expect(categoryService.getCategories).not.to.be.undefined;
     }]));
+
+    it('correctly defines TagCloudService', inject(['TagCloudService', function(tagCloudService) {
+        expect(tagCloudService.getRegionTagCloud).not.to.be.undefined();
+        expect(tagCloudService.getStreetTagCloud).not.to.be.undefined();
+    }]));
 });

@@ -7,13 +7,16 @@ require('../shims/angular-selectize2');
 require('leaflet');
 require('angular-leaflet-directive');
 require('angular-sanitize');
+require('jqcloud2');
+require('angular-jqcloud');
 
 var citytrackDirectives = angular.module('citytrack.directives', [services.name,
-    'selectize', 'leaflet-directive', 'ngSanitize']);
+    'selectize', 'leaflet-directive', 'ngSanitize', 'angular-jqcloud']);
 
-citytrackDirectives.directive('resultRow', ['NgEventService', 'SearchService', function(eventService, searchService) {
-    return require('./resultRowDirective')(eventService, searchService);
-}]);
+citytrackDirectives.directive('resultRow', ['NgEventService', 'SearchService', 'TagCloudService',
+    function(eventService, searchService, tagCloudService) {
+        return require('./resultRowDirective')(eventService, searchService, tagCloudService);
+    }]);
 
 citytrackDirectives.directive('mapContext', ['NgEventService', 'AppState', function(eventService, appState) {
     return require('./mapContextDirective')(eventService, appState);

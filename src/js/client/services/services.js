@@ -30,5 +30,9 @@ services.factory('CategoryService', ['$resource', function($resource) {
     return new CategoryService($resource);
 }]);
 
+services.factory('TagCloudService', ['$resource', function($resource) {
+    var TagCloudService = require('./TagCloudService');
+    return new TagCloudService($resource);
+}]);
 
 module.exports = services;

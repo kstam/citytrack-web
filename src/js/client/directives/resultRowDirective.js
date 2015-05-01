@@ -2,11 +2,15 @@
 
 var angular = require('../shims/angular');
 var utils = require('../../common/utils');
+var cUtils = require('../common/client-utils');
+
 var constants = require('../config/constants');
 var types = require('../../model/types');
 var ParamsBuilder = require('../../model/Params').Builder;
+var Area = require('../../model/Area.js');
+var AreaPolygon = require('../../model/AreaPolygon.js');
 
-module.exports = function(eventService, searchService) {
+module.exports = function(eventService, searchService, tagCloudService) {
 
     var LOADING_ID = 'loading';
 
@@ -54,7 +58,7 @@ module.exports = function(eventService, searchService) {
             return ($scope.data.photos) && $scope.data.photos.length > 1;
         };
 
-        $scope.resultSelected = function() {
+        var diversePhotos = function() {
             if ($scope.isStreet() && !$scope.extras.diversePhotos) {
                 var params = new ParamsBuilder()
                     .withType(types.diversestreetphotos)
@@ -68,6 +72,29 @@ module.exports = function(eventService, searchService) {
                         $scope.extras.diversePhotos = [];
                     });
             }
+        };
+
+        var tagCloud = function() {
+            if ($scope.isStreet() && !$scope.extras.tagCloud) {
+                $scope.extras.tagCloud = LOADING_ID;
+                tagCloudService.getStreetTagCloud(Number($scope.data.id))
+                    .then(function(result) {
+                        $scope.extras.tagCloud = result;
+                    });
+            }
+            if ($scope.isRegion() && !$scope.extras.tagCloud) {
+                $scope.extras.tagCloud = LOADING_ID;
+                var area = new AreaPolygon("custom", cUtils.extractPolygon($scope.feature), Area.INTERACTIVE_TYPE);
+                tagCloudService.getRegionTagCloud(area)
+                    .then(function(result) {
+                        $scope.extras.tagCloud = result;
+                    });
+            }
+        };
+
+        $scope.resultSelected = function() {
+            diversePhotos();
+            tagCloud();
         };
 
         var resultSelectedListener = function(event, id) {

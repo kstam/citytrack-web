@@ -37,6 +37,28 @@
             </a>
         </div>
 
+        <div class="tag-cloud-wrapper" ng-if="isMap() && (isStreet() || isRegion())">
+            <div class="title">TagCloud</div>
+
+            <div class="tag-cloud" ng-if="extras.tagCloud && extras.tagCloud.words.length > 0">
+                <jqcloud words="extras.tagCloud.words"
+                         height="90"
+                         delay="20"
+                         font-size="{from: 0.07, to: 0.03}"
+                         remove-overflowing="true"
+                         shape="rectangular"
+                         steps="extras.tagCloud.levels"></jqcloud>
+            </div>
+            <div class="no-photos" ng-show="extras.tagCloud && extras.tagCloud.words.length === 0">
+                No photos for this street :(
+            </div>
+
+            <div class="loading" ng-show="extras.tagCloud === 'loading'">
+                <i class="fa fa-spinner fa-spin"></i>
+                Loading...
+            </div>
+        </div>
+
         <div class="photos" ng-if="isMap() && isStreet()">
             <div class="title">
                 Related Photos
@@ -57,6 +79,7 @@
                 Loading...
             </div>
         </div>
+
 
         <div class="source" ng-if="!isStreet() && !isRegion()">
             Origin: <a href="{{data.url}}" target="_blank">{{ data.source }}</a>
