@@ -58,12 +58,24 @@ module.exports = function(eventService, searchService, tagCloudService) {
             return ($scope.data.photos) && $scope.data.photos.length > 1;
         };
 
-        var diversePhotos = function() {
-            if ($scope.isStreet() && !$scope.extras.diversePhotos) {
-                var params = new ParamsBuilder()
+        var getDiversePhotoParams = function() {
+            if ($scope.isStreet()) {
+                return new ParamsBuilder()
                     .withType(types.diversestreetphotos)
                     .withStreetId(Number($scope.data.id))
                     .build();
+            } else if ($scope.isRegion()) {
+                var area = new AreaPolygon("custom", cUtils.extractPolygon($scope.feature), Area.INTERACTIVE_TYPE);
+                return new ParamsBuilder()
+                    .withType(types.diverseregionphotos)
+                    .withArea(area)
+                    .build();
+            }
+        };
+
+        var diversePhotos = function() {
+            if (($scope.isStreet() || $scope.isRegion()) && !$scope.extras.diversePhotos) {
+                var params = getDiversePhotoParams();
                 $scope.extras.diversePhotos = LOADING_ID;
                 searchService.query(params)
                     .then(function(response) {

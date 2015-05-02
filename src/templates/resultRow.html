@@ -59,7 +59,7 @@
             </div>
         </div>
 
-        <div class="photos" ng-if="isMap() && isStreet()">
+        <div class="photos" ng-if="isMap() && (isStreet() || isRegion())">
             <div class="title">
                 Related Photos
             </div>
@@ -71,7 +71,7 @@
                 </a>
             </div>
             <div class="no-photos" ng-show="extras.diversePhotos.length === 0">
-                No photos for this street :(
+                Could not find photos here :(
             </div>
 
             <div class="loading" ng-show="extras.diversePhotos === 'loading'">

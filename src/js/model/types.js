@@ -51,5 +51,10 @@ module.exports = {
         id: 'diversestreetphotos',
         iconClass: '',
         selectable: false
+    },
+    diverseregionphotos: {
+        id: 'diverseregionphotos',
+        iconClass: '',
+        selectable: false
     }
 };

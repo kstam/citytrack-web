@@ -82,6 +82,14 @@ Params.Validator = function() {
             });
     };
 
+    var isValidForDiverseRegionPhotos = function(params) {
+        return (params.area instanceof Area) &&
+            utils.optional(params.size)(utils.isInteger) &&
+            utils.optional(params.size)(function(minPois) {
+                return minPois > 0;
+            });
+    };
+
     var falsyValidator = function() {
         return false;
     };
@@ -101,6 +109,8 @@ Params.Validator = function() {
                 return isValidForPoisForStreet;
             case types.regionofinterest.id:
                 return isValidForRegionOfInterest;
+            case types.diverseregionphotos.id:
+                return isValidForDiverseRegionPhotos;
             default:
                 return falsyValidator;
         }

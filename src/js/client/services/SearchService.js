@@ -72,6 +72,14 @@ module.exports = function($resource) {
         }
     });
 
+    var DiverseRegionPhotos = $resource('api/regions/diversePhotos', {}, {
+        query: {
+            method: 'GET',
+            params: {}
+        }
+    });
+
+
     var validateParams = function(params) {
         if(!params.isValid()) {
             throw new Error('Attempted to call the SearchService with invalid parameters');
@@ -129,6 +137,9 @@ module.exports = function($resource) {
                     setAreaInRequest(p, params.area);
                 }
                 break;
+            case types.diverseregionphotos.id:
+                setAreaInRequest(p, params.area);
+                break;
             default:
                 break;
         }
@@ -156,6 +167,8 @@ module.exports = function($resource) {
                 return PhotosForStreet;
             case types.regionofinterest.id:
                 return RegionsOfInterest;
+            case types.diverseregionphotos.id:
+                return DiverseRegionPhotos;
             default:
                 throw new Error(params.type.id + ' is not supported by the SearchService');
         }
