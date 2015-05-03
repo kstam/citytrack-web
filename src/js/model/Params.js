@@ -60,14 +60,24 @@ Params.Validator = function() {
 
     var isValidForStreetOfInterest = function(params) {
         return (params.area instanceof Area) &&
+            utils.isArray(params.categories) &&
+            params.categories.length === 1 &&
             utils.optional(params.page)(utils.isInteger) &&
-            utils.optional(params.pageSize)(utils.isInteger) &&
-            utils.optional(params.categories)(utils.isArray);
+            utils.optional(params.pageSize)(utils.isInteger);
     };
 
     var isValidForPoisForStreet = function(params) {
         return utils.isInteger(params.streetId) &&
-            utils.optional(params.categories)(utils.isArray);
+            utils.isArray(params.categories) &&
+            params.categories.length === 1;
+    };
+
+    var isValidForPhotosForStreet = function(params) {
+        return utils.isInteger(params.streetId);
+    };
+
+    var isValidForScenicStreet = function(params) {
+        return params.area instanceof Area;
     };
 
     var isValidForRegionOfInterest = function(params) {
@@ -101,12 +111,14 @@ Params.Validator = function() {
             case types.photo.id:
                 return isValidForPoiPhotoOrEvent;
             case types.streetofinterest.id:
-            case types.scenicstreets.id:
                 return isValidForStreetOfInterest;
+            case types.scenicstreets.id:
+                return isValidForScenicStreet;
             case types.poisforstreet.id:
+                return isValidForPoisForStreet;
             case types.diversestreetphotos.id:
             case types.photosforstreet.id:
-                return isValidForPoisForStreet;
+                return isValidForPhotosForStreet;
             case types.regionofinterest.id:
                 return isValidForRegionOfInterest;
             case types.diverseregionphotos.id:

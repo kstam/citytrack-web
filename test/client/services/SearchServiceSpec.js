@@ -171,6 +171,7 @@ describe('SearchService', function() {
         describe('when params.type is streetofinterest', function() {
             it('should call the "streets" rest endpoint', function() {
                 params.type = types.streetofinterest;
+                params.categories = ['Food'];
                 httpBackend.expectGET(/api\/streets?.*/);
                 searchService.query(params);
                 httpBackend.flush();
@@ -179,6 +180,7 @@ describe('SearchService', function() {
             it('should set the minPois in the api if specified', function() {
                 params.type = types.streetofinterest;
                 params.minPois = 5;
+                params.categories = ['Food'];
                 httpBackend.expectGET(function(url) {
                     return url.indexOf('minPois=' + 5) !== -1;
                 });
@@ -199,6 +201,7 @@ describe('SearchService', function() {
         describe('when params.type is poisforstreet', function() {
             it('should call the streets/id/pois rest endpoint with the correct streetId', function() {
                 params.type = types.poisforstreet;
+                params.categories = ['Food'];
                 params.streetId = 12345;
                 httpBackend.expectGET(/api\/streets\/12345\/pois?.*/);
                 searchService.query(params);

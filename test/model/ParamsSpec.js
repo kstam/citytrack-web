@@ -126,13 +126,13 @@ describe('Params', function() {
                 expect(params.isValid()).to.be.true();
             });
 
-            it('should return true when only the type and the area are set', function() {
+            it('should return false when only the type and the area are set', function() {
                 var params = new Params.Builder()
                     .withType(types.streetofinterest)
                     .withArea(testUtils.createRandomBoxArea('Athens'))
                     .build();
 
-                expect(params.isValid()).to.be.true();
+                expect(params.isValid()).to.be.false();
             });
 
             it('should return false when the area is not set', function() {
