@@ -27,6 +27,17 @@
             color: @logo-color;
             margin: 0 10px;
             font-size: 28px;
+
+            &.header2 {
+                display: none;
+            }
+
+            @media all and (max-width : 960px) {
+                display: none;
+                &.header2 {
+                    display: inline;
+                }
+            }
         }
     }
 
@@ -36,6 +47,9 @@
         font-size: 16px;
         color: @input-text-color;
         .clearfix();
+        @media all and (max-width : 960px) {
+            margin: 4px 0 0 @gutter-size;
+        }
 
         > div {
             float: left;
