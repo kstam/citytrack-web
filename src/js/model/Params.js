@@ -68,8 +68,7 @@ Params.Validator = function() {
 
     var isValidForPoisForStreet = function(params) {
         return utils.isInteger(params.streetId) &&
-            utils.isArray(params.categories) &&
-            params.categories.length === 1;
+            utils.optional(params.categories)(utils.isArray);
     };
 
     var isValidForPhotosForStreet = function(params) {
